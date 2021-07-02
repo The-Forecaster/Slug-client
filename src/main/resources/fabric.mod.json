@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "id": "transrights",
-  "version": "b0.0.1",
+  "version": "0.0.1",
 
   "name": "Trans Rights!",
-  "description": "gamer hack",
+  "description": "trans people are valid uwu",
   "authors": [
     "Austin"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/theforecaster"
+    "sources": "https://github.com/the-forecaster"
   },
 
   "license": "CC0-1.0",

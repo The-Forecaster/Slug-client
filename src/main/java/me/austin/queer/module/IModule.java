@@ -1,8 +1,6 @@
 package me.austin.queer.module;
 
-import me.zero.alpine.listener.Listenable;
-
-public interface IModule extends Listenable{
+public interface IModule {
     String getName();
     String getDescription();
 }

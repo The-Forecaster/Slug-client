@@ -1,32 +1,33 @@
 package me.austin.queer.event;
 
-import me.austin.queer.TransRights;
 import me.austin.queer.event.events.*;
 import me.austin.queer.module.hacks.Hacks;
 import me.austin.queer.util.Globals;
-import me.zero.alpine.listener.EventHandler;
-import me.zero.alpine.listener.Listenable;
-import me.zero.alpine.listener.Listener;
+import meteordevelopment.orbit.EventHandler;
 
-public class Events implements Globals, Listenable {
+public class Events implements Globals {
+    public Hacks hacks;
+
+    public Events(Hacks hacks) {
+        this.hacks = hacks;
+    }
+
     public Events() {
-        TransRights.EVENTBUS.subscribeAll(packetListener, updateListener, keyListener);
+        this(new Hacks());
     }
 
     @EventHandler
-    private static final Listener<PacketEvent> packetListener = new Listener<>(event -> {
-        Hacks.hacks.forEach(hack -> {
-            hack.onPacketRecieve(event.getPacket());
-        });
-    });
+    private void onTick() {
+        hacks.onTickUpdate();
+    }
 
     @EventHandler
-    private static final Listener<TickEvent> updateListener = new Listener<>(event -> {
-        TransRights.HACKS.onTickUpdate();
-    });
+    private void onKeyPressed(KeyInputEvent event) {
+        this.hacks.onKeyPress(event.getKey());
+    }
 
     @EventHandler
-    private static final Listener<KeyInputEvent> keyListener = new Listener<>(event -> {
-        TransRights.HACKS.onKeyPress(event.getKey());
-    });
+    private void onPacketRecieve(PacketEvent event) {
+        this.hacks.onPacketRecieve(event.getPacket());
+    }
 }

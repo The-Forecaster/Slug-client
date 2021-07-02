@@ -1,9 +1,4 @@
-# Fabric Example Mod
+# Trans rights client
+so a cool person called pope made a client called queer client, this is inspired from said client
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+this is a custom base fabric utility mod, mostly for me to be able to learn java and functional interfaces

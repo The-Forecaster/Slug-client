@@ -4,7 +4,7 @@ import club.minnced.discord.rpc.*;
 
 public class DiscordPresence {
     public static DiscordRPC lib;
-    public String applicationId, steamId;
+    public static String applicationId, steamId;
 
 	public static void init(String[] args) {
         lib = DiscordRPC.INSTANCE; 

@@ -3,32 +3,30 @@ package me.austin.queer.module.hacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.austin.queer.module.Modules;
 import me.austin.queer.module.hacks.client.*;
 import me.austin.queer.module.hacks.combat.*;
-import me.zero.alpine.listener.Listenable;
 import net.minecraft.network.Packet;
 
-public class Hacks {
-    public static List<Hack> hacks;
-
+public class Hacks extends Modules<Hack> {
     public Hacks() {
-        hacks = new ArrayList<>();
+        modules = new ArrayList<Hack>();
 		
 		// client
-		hacks.add(ClickGui.INSTANCE == null ? new ClickGui() : ClickGui.INSTANCE);
+		this.modules.add(ClickGui.INSTANCE == null ? new ClickGui(this) : ClickGui.INSTANCE);
 
 		// combat
-		hacks.add(KillAura.INSTANCE == null ? new KillAura() : ClickGui.INSTANCE);
+		this.modules.add(KillAura.INSTANCE == null ? new KillAura() : ClickGui.INSTANCE);
     }
 
-    public static List<Hack> getHacks() {
-		return hacks;
+    public List<Hack> getHacks() {
+		return this.modules;
 	}
 	
-	public static List<Hack> getHacksByCategory(Category c) {
+	public List<Hack> getHacksByCategory(Category c) {
 		List<Hack> hackz = new ArrayList<>();
 		
-		for (Hack hack : hacks) {
+		for (Hack hack : modules) {
 			if (hack.getCategory() == c) {
 				hackz.add(hack);
 			}
@@ -37,7 +35,7 @@ public class Hacks {
 	}
 
 	public void onKeyPress(int key) {
-		hacks.forEach(hack -> {
+		this.modules.forEach(hack -> {
 			if (hack.getBind().getValue() == key) {
 				hack.toggle();
 			}
@@ -45,14 +43,14 @@ public class Hacks {
 	}
 
 	public void onTickUpdate() {
-		hacks.forEach(hack -> {
+		this.modules.forEach(hack -> {
 			if (hack.isEnabled()) {
 				hack.onUpdate();
 			}
 		});
 	}
 
-	public void onPacketRecieve(Packet packet) {
-		hacks.forEach(hack -> hack.onPacketRecieve(packet));
+	public void onPacketRecieve(Packet<?> packet) {
+		this.modules.forEach(hack -> hack.onPacketRecieve(packet));
 	}
 }

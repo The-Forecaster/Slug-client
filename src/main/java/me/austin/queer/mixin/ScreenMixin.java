@@ -14,6 +14,6 @@ import net.minecraft.client.util.math.MatrixStack;
 public abstract class ScreenMixin implements Globals {
     @Inject(method = "renderBackground", at = @At("HEAD"))
     private void onRenderBackground(CallbackInfo info) {
-        mc.textRenderer.draw(new MatrixStack(), "Trans Rights yo", 20, 20, new Color(255, 255, 255, 255).getRGB());
+        return;
     }
 }

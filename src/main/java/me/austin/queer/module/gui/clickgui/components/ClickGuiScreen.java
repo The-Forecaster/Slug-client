@@ -2,7 +2,6 @@ package me.austin.queer.module.gui.clickgui.components;
 
 import java.util.List;
 
-import me.austin.queer.TransRights;
 import me.austin.queer.module.hacks.Category;
 import me.austin.queer.module.hacks.Hacks;
 import me.austin.queer.module.setting.Setting;
@@ -15,41 +14,47 @@ import net.minecraft.text.LiteralText;
 public class ClickGuiScreen extends Screen implements ScreenHelper {
 	public static List<CategoryFrame> frames;
 	public static boolean shouldCloseOnEsc;
+	public Hacks hacks;
 	
-	private int x, y, backgroundRed, backgroundGreen, backgroundBlue;
-	
-	public ClickGuiScreen(Setting<Integer> backgroundRed, Setting<Integer> backgroundGreen, Setting<Integer> backgroundBlue) {
-		super(new LiteralText(TransRights.modname));
+	public ClickGuiScreen(Hacks hacks, Setting<Integer> backgroundRed, Setting<Integer> backgroundGreen, Setting<Integer> backgroundBlue) {
+		super(new LiteralText("ClickGuiScreen"));
 
-		this.backgroundRed = backgroundRed.getValue();
-		this.backgroundGreen = backgroundGreen.getValue();
-		this.backgroundBlue = backgroundBlue.getValue();
-
+		this.hacks = hacks;
+		int offset = 20;
 		for (Category category : Category.values()) {
-			frames.add(new CategoryFrame(category, Hacks.getHacksByCategory(category), x, y, this, this.backgroundRed, this.backgroundGreen, this.backgroundBlue));
+			frames.add(new CategoryFrame(category, (20 + offset) * wpixel, 20 * hpixel, this));
+			offset += 60;
 		}
 	}
-	
+
 	@Override
 	public void render(MatrixStack matrices, int mousex, int mousey, float delta) {
-		x = (int)(20d * wpixel);
-		y = (int)(20d * hpixel);
 		for (CategoryFrame frame : frames) {
-			frame.render(matrices, mc.textRenderer, x, y);
-			x += 80 * wpixel;
+			frame.render(matrices, mc.textRenderer, frame.x, frame.y);
 		}
 	}
 	
 	@Override
 	public boolean mouseClicked(double mousex, double mousey, int button) {
 		for (CategoryFrame frame : frames) {
-			if (ScreenHelper.clickCheck(mousex, mousey, x, y, frame.width, frame.height)) {
+			if (ScreenHelper.clickCheck(mousex, mousey, frame.x, frame.y, frame.width, 20)) {
 				frame.mouseClicked(mousex, mousey, button);
 				return true;
 			}
 		}
 		return false;
 	}
+
+	@Override 
+	public boolean mouseReleased(double mousex, double mousey, int button) {
+		for (CategoryFrame frame : frames) {
+			if (frame.dragging) {
+				frame.dragging = false;
+				return true;
+			}
+		}
+		return false;
+	} 
 	
 	@Override
 	public boolean isPauseScreen() {
@@ -67,5 +72,10 @@ public class ClickGuiScreen extends Screen implements ScreenHelper {
 	@Override
 	public boolean shouldCloseOnEsc() {
 		return shouldCloseOnEsc;
+	}
+
+	@Override
+	public void renderBackground(MatrixStack matrices, int vOffset) {
+		return;
 	}
 }

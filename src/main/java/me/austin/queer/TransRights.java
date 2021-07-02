@@ -5,8 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import me.austin.queer.event.Events;
 import me.austin.queer.module.hacks.Hacks;
-import me.zero.alpine.bus.EventManager;
-import me.zero.alpine.listener.EventHandler;
+import meteordevelopment.orbit.EventBus;
 import net.fabricmc.api.ModInitializer;
 
 /*
@@ -30,35 +29,28 @@ public class TransRights implements ModInitializer {
 	public static final String modid = "transrights";
 	public static final String version = "b0.0.1";
 
-	@EventHandler
-	public static Events EVENTS;
-	public static TransRights INSTANCE;
-	public static EventManager EVENTBUS;
-	public static Hacks HACKS;
+	private static Hacks hacks;
+	private static Events events;
+	public static EventBus EVENTBUS;
 	public static Logger LOGGER;
 
-	public static Object sync = new Object();
 	public static void printLog(String message) {
-		synchronized (sync) {
-			LOGGER.info(message);
-		}
+		LOGGER.info(message);
 	}
 	
 	public static void load() {
-		EVENTS = new Events();
-		INSTANCE = new TransRights();
-		EVENTBUS = new EventManager();
-		HACKS = new Hacks();
+		hacks = new Hacks();
+		events = new Events(hacks);
+		EVENTBUS = new EventBus();
 		LOGGER = LogManager.getLogger(modname);
 		
 		printLog(modname + "has been loaded");
 	}
 
 	public static void unload() {
-		EVENTS = null;
-		INSTANCE = null;
+		hacks = null;
+		events = null;
 		EVENTBUS = null;
-		HACKS = null;
 		LOGGER = null;
 
 		printLog(modname + "has been unloaded");
@@ -73,12 +65,11 @@ public class TransRights implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		if (INSTANCE == null) {
-			INSTANCE = this;
-			return;
-		}
+		long initStartTime = System.currentTimeMillis();
 
 		load();
-		EVENTBUS.subscribe(EVENTS);
+		EVENTBUS.subscribe(events);
+
+		printLog(modname + " loaded in " + (System.currentTimeMillis() - initStartTime) + " ms.");
 	}
 }

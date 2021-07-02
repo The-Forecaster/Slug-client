@@ -9,9 +9,6 @@
     "TitleScreenMixin"
   ],
   "client": [
-    "TitleScreenMixin",
-    "InventoryScreenMixin",
-    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

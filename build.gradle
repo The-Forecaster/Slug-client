@@ -12,8 +12,8 @@ group = project.maven_group
 
 repositories {
 	jcenter()
-	
 	mavenCentral()
+	
     repositories {
         maven {
 		    name = "jitpack.io"
@@ -29,7 +29,6 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	implementation "club.minnced:java-discord-rpc:${project.discordrpc_version}"
 	implementation "com.github.MeteorDevelopment:orbit:${project.orbit_version}"
-    implementation "com.github.The-Forecaster:Alpine:${project.alpine_version}"                           
 }
 
 processResources {

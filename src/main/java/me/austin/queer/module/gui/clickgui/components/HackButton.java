@@ -10,11 +10,10 @@ import me.austin.queer.module.setting.Setting;
 import me.austin.queer.util.ScreenHelper;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.BlockPos;
 
 public class HackButton extends Component {
 	public List<SettingButton> buttons;
@@ -23,21 +22,22 @@ public class HackButton extends Component {
 	public boolean settingsRendered;
 	
 	public HackButton(int x, int y, Hack hack, CategoryFrame parent) {
-		super(hack.getName(), hack.getDescription(), (int)(x * factor), (int)(y * factor), parent.width, (int)(20 * factor));
+		super(hack.getName(), hack.getDescription(), (int)(x * wpixel), (int)(y * hpixel), parent.width, (int)(20 * hpixel));
 		this.buttons = new ArrayList<>();
 		this.hack = hack;
 		this.parent = parent;
 		this.settingsRendered = false;
 
-		for (Setting<Object> setting : hack.getSettings()) {
+		for (Setting<?> setting : hack.getSettings()) {
 			buttons.add(new SettingButton((int) x, (int) y, setting, this));
 		}
 	}
 	
 	@Override
 	public void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y) {
-		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(hack.getName()), x, y, new Color(255, 255, 255, 190).getRGB());
-		Screen.fill(matrices, x, y, x + this.width, y + this.height, new Color(90, 70, 200, 150).getRGB());
+		Screen.fill(matrices, x, y, x + this.width, y + this.height, new Color(red, green, blue, 50).getRGB());
+		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(hack.getName()), x, y, white);
+		
 		if (settingsRendered) {
 			int settingPos = y + this.height * hpixel;
 			for (SettingButton button : this.buttons) {
@@ -49,11 +49,12 @@ public class HackButton extends Component {
 	
 	@Override
 	public void mouseClicked(double mousex, double mousey, int keyCode) {
-		mc.world.playSound(new BlockPos(mc.player.getPos()), SoundEvents.UI_BUTTON_CLICK, SoundCategory.MASTER, 10f, 10f, true);
-		if (keyCode == 1) {
+		mc.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+
+		if (keyCode == 0) {
 			this.hack.toggle();
 		}
-		if (keyCode == 2) {
+		if (keyCode == 1) {
 			this.settingsRendered = !this.settingsRendered;
 		}
 

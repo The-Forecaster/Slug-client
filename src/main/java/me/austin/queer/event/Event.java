@@ -1,10 +1,11 @@
 package me.austin.queer.event;
 
 import me.austin.queer.util.Globals;
-import me.zero.alpine.event.type.Cancellable;
+import meteordevelopment.orbit.ICancellable;
 
-public class Event extends Cancellable implements Globals {
+public class Event implements ICancellable, Globals {
 	int priority;
+	boolean cancelled;
 
 	public Event() {
 		this(0);
@@ -12,6 +13,7 @@ public class Event extends Cancellable implements Globals {
 
 	public Event(int priority) {
 		this.priority = priority;
+		this.cancelled = false;
 	}
 
 	public int getPriority() {
@@ -20,5 +22,13 @@ public class Event extends Cancellable implements Globals {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public boolean isCancelled() {
+		return this.cancelled;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 }

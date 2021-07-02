@@ -1,22 +1,21 @@
 package me.austin.queer.module.setting;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Settings {
-    public List<Setting> settings = new ArrayList<>();
+import me.austin.queer.module.Modules;
 
+public class Settings extends Modules<Setting> {
     public List<Setting> getSettings() {
-        return this.settings;
+        return this.modules;
     }
 
-    public void add(Setting setting) {
-        this.settings.add(setting);
+    public void add(Setting<?> setting) {
+        this.modules.add(setting);
     }
 
-    public void add(Setting... settings) {
-        for (Setting setting : settings) {
-            this.settings.add(setting);
+    public void add(Setting<?>... settings) {
+        for (Setting<?> setting : settings) {
+            this.modules.add(setting);
         }
     }
 }

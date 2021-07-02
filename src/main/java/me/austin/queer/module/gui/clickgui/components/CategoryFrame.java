@@ -19,19 +19,14 @@ public class CategoryFrame extends Component {
 	public ClickGuiScreen parent;
 
 	public boolean dragging;
-
-	private int backgroundRed, backgroundGreen, backgroundBlue;
 	
-	public CategoryFrame(Category category, List<Hack> hacks, int x, int y, ClickGuiScreen parent, int backgroundRed, int backgroundGreen, int backgroundBlue) {
-		super(category.getName(), category.getDescription(), (int)(x * factor), (int)(y * factor), (int)(80 * factor), (int)(hacks.size() * 20 * factor));
+	public CategoryFrame(Category category, int x, int y, ClickGuiScreen parent) {
+		super(category.getName(), category.getDescription(), (int)(x * wpixel), (int)(y * hpixel), (int)(80 * wpixel), parent.hacks.getHacksByCategory(category).size() * 20 * hpixel);
 		this.category = category;
 		this.parent = parent;
 		this.buttons = new ArrayList<>();
-		this.backgroundRed = backgroundRed;
-		this.backgroundGreen = backgroundGreen;
-		this.backgroundBlue = backgroundBlue;
 
-		for (Hack hack : hacks) {
+		for (Hack hack : parent.hacks.getHacksByCategory(category)) {
 			if (hack.getCategory() == category) {
 				this.buttons.add(new HackButton(x, y, hack, this));
 			}
@@ -40,17 +35,29 @@ public class CategoryFrame extends Component {
 	
 	@Override
 	public void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y) {
-		Screen.fill(new MatrixStack(), x, y, x + width, y + height, new Color(backgroundRed, backgroundGreen, backgroundBlue, 200).getRGB());
-		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(category.getName()), x, y, new Color(backgroundRed, backgroundGreen, backgroundBlue, 255).getRGB());
+		if (this.dragging) this.setPosition((int)mc.mouse.getX(), (int)mc.mouse.getY());
+
+		Screen.fill(null, x, y, x + width, y + height, new Color(red, blue, green, 90).getRGB());
+		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(category.getName()), x, y, white);
+
+
 		for (HackButton button : this.buttons) {
 			button.render(matrices, textRenderer, x, y);
 			y += button.height;
-			if (button.settingsRendered) y += button.hack.getSettings().size() * 15 * factor;
+			if (button.settingsRendered) {
+				for (SettingButton b : button.buttons) {
+					y += b.height;
+				}
+			}
 		}
 	}
 	
 	@Override
 	public void mouseClicked(double mousex, double mousey, int key) {
+		if (ScreenHelper.clickCheck(mousex, mousey, x, y, width, height)) {
+			this.dragging = true;
+		}
+
 		for (HackButton button : buttons) {
 			if (ScreenHelper.clickCheck(mousex, mousey, button.x, button.y, button.width, button.height)) {
 				button.mouseClicked(mousex, mousey, key);
