@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.austin.queer.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TitleScreenMixin",
+    "InventoryScreenMixin",
+    "TitleScreenMixin"
+  ],
+  "client": [
+    "TitleScreenMixin",
+    "InventoryScreenMixin",
+    "TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

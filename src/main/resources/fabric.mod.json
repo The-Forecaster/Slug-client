@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "transrights",
+  "version": "b0.0.1",
+
+  "name": "Trans Rights!",
+  "description": "gamer hack",
+  "authors": [
+    "Austin"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/theforecaster"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.austin.queer.TransRights"
+    ]
+  },
+  "mixins": [
+    "transrights.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "optifine probably ig": "optifine.net/"
+  }
+}
