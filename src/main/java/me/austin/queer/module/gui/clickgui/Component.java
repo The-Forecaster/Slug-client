@@ -7,6 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Component extends Module implements ScreenHelper {
 	public int x, y, width, height;
+	
 	public Component(String name, String description, int x, int y, int width, int height) {
 		super(name, description);
 		this.x = x;
@@ -24,5 +25,12 @@ public abstract class Component extends Module implements ScreenHelper {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public static boolean clickCheck(double mousex, double mousey, int x, int y, int width, int height) {
+		return mousex > x && 
+			   mousex < x + width   && 
+			   mousey > y && 
+			   mousey < y + height  ;
 	}
 }

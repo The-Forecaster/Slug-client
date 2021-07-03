@@ -34,8 +34,11 @@ public class TransRights implements ModInitializer {
 	public static EventBus EVENTBUS;
 	public static Logger LOGGER;
 
+	public static final Object sync = new Object();
 	public static void printLog(String message) {
-		LOGGER.info(message);
+		synchronized(sync) {
+			LOGGER.info(message);
+		}
 	}
 	
 	public static void load() {
@@ -55,7 +58,7 @@ public class TransRights implements ModInitializer {
 
 		printLog(modname + "has been unloaded");
 	}
-
+	
 	public static void reload() {
 		unload();
 		load();
@@ -68,8 +71,7 @@ public class TransRights implements ModInitializer {
 		long initStartTime = System.currentTimeMillis();
 
 		load();
-		EVENTBUS.subscribe(events);
 
-		printLog(modname + " loaded in " + (System.currentTimeMillis() - initStartTime) + " ms.");
+		printLog(modname + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
 	}
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import me.austin.queer.module.gui.clickgui.Component;
 import me.austin.queer.module.hacks.Hack;
 import me.austin.queer.module.setting.Setting;
-import me.austin.queer.util.ScreenHelper;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -22,7 +21,7 @@ public class HackButton extends Component {
 	public boolean settingsRendered;
 	
 	public HackButton(int x, int y, Hack hack, CategoryFrame parent) {
-		super(hack.getName(), hack.getDescription(), (int)(x * wpixel), (int)(y * hpixel), parent.width, (int)(20 * hpixel));
+		super(hack.getName(), hack.getDescription(), x, y, parent.width, 20);
 		this.buttons = new ArrayList<>();
 		this.hack = hack;
 		this.parent = parent;
@@ -35,13 +34,13 @@ public class HackButton extends Component {
 	
 	@Override
 	public void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y) {
-		Screen.fill(matrices, x, y, x + this.width, y + this.height, new Color(red, green, blue, 50).getRGB());
-		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(hack.getName()), x, y, white);
+		Screen.fill(matrices, x, y, x + this.width, y + this.height, new Color(red, green, blue, 100).getRGB());
+		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(hack.getName()), x, y, new Color(255, 255, 255, 255).getRGB());
 		
 		if (settingsRendered) {
-			int settingPos = y + this.height * hpixel;
+			int settingPos = y + this.height;
 			for (SettingButton button : this.buttons) {
-				settingPos += button.height * hpixel;
+				settingPos += button.height;
 				button.render(matrices, textRenderer, x, settingPos);
 			}
 		}
@@ -59,7 +58,7 @@ public class HackButton extends Component {
 		}
 
 		buttons.forEach(button -> {
-			if (ScreenHelper.clickCheck(mousex, mousey, this.x, this.y, this.width, this.height)) {
+			if (clickCheck(mousex, mousey, this.x, this.y, this.width, this.height)) {
 				button.mouseClicked(mousex, mousey, keyCode);
 			}
 		});

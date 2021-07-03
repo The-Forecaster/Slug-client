@@ -15,16 +15,15 @@ public interface EntityHelper extends Globals {
     }
 
     public static void face(Entity entity) {
-        mc.player.yaw = Float.parseFloat(findYaw(entity).toString());
-        mc.player.pitch = Float.parseFloat(findPitch(entity).toString());
+        PlayerUtil.setRotation(findPitchToFace(entity), findYawToFace(entity));
     }
 
-    public static Double findYaw(Entity entity) {
+    public static Double findYawToFace(Entity entity) {
         return Math.sqrt(getXDiff(entity) * getXDiff(entity) + getZDiff(entity) * getZDiff(entity));
     }
 
-    public static Double findPitch(Entity entity) {
-        return Math.sqrt(findYaw(entity) * findYaw(entity) + getZDiff(entity) * getZDiff(entity));
+    public static Double findPitchToFace(Entity entity) {
+        return Math.sqrt(findYawToFace(entity) * findYawToFace(entity) + getZDiff(entity) * getZDiff(entity));
     }
 
     public static Double getXDiff(Entity entity) {

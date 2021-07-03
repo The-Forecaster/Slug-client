@@ -1,6 +1,6 @@
 plugins {
 	id 'fabric-loom' version '0.7-SNAPSHOT'
-	id 'maven-publish'
+	id 'maven-publish'	
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -11,9 +11,8 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	jcenter()
 	mavenCentral()
-	
+
     repositories {
         maven {
 		    name = "jitpack.io"
@@ -23,12 +22,15 @@ repositories {
 }
 
 dependencies {
+
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	implementation "club.minnced:java-discord-rpc:${project.discordrpc_version}"
-	implementation "com.github.MeteorDevelopment:orbit:${project.orbit_version}"
+	implementation  "club.minnced:java-discord-rpc:${project.discordrpc_version}"
+	implementation  "com.github.MeteorDevelopment:orbit:${project.orbit_version}"
+	include "com.github.MeteorDevelopment:orbit:${project.orbit_version}"
+	implementation  "com.github.ZeroMemes:Alpine:${project.alpine_version}"
 }
 
 processResources {
@@ -69,3 +71,4 @@ publishing {
 		}
 	}
 }
+

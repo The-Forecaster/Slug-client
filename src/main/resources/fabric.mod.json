@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "transrights",
-  "version": "0.0.1",
+  "version": "${version}",
 
   "name": "Trans Rights!",
   "description": "trans people are valid uwu",
@@ -10,12 +10,12 @@
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/the-forecaster"
+    "sources": "https://github.com/the-forecaster",
+    "discord": "https://discord.gg/Austin the Forecaster#0760"
   },
 
   "license": "CC0-1.0",
   "icon": "assets/modid/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [

@@ -1,28 +1,29 @@
 package me.austin.queer.module.gui.clickgui.components;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import me.austin.queer.module.gui.clickgui.Component;
 import me.austin.queer.module.hacks.Category;
 import me.austin.queer.module.hacks.Hacks;
 import me.austin.queer.module.setting.Setting;
 import me.austin.queer.util.ScreenHelper;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 
 public class ClickGuiScreen extends Screen implements ScreenHelper {
-	public static List<CategoryFrame> frames;
+	public List<CategoryFrame> frames;
 	public static boolean shouldCloseOnEsc;
 	public Hacks hacks;
 	
 	public ClickGuiScreen(Hacks hacks, Setting<Integer> backgroundRed, Setting<Integer> backgroundGreen, Setting<Integer> backgroundBlue) {
 		super(new LiteralText("ClickGuiScreen"));
-
+		this.frames = new ArrayList<>();
 		this.hacks = hacks;
-		int offset = 20;
+		int offset = 20 * hpixel;
 		for (Category category : Category.values()) {
-			frames.add(new CategoryFrame(category, (20 + offset) * wpixel, 20 * hpixel, this));
+			this.frames.add(new CategoryFrame(category, (20 + offset) * wpixel, 20 * hpixel, this));
 			offset += 60;
 		}
 	}
@@ -37,7 +38,7 @@ public class ClickGuiScreen extends Screen implements ScreenHelper {
 	@Override
 	public boolean mouseClicked(double mousex, double mousey, int button) {
 		for (CategoryFrame frame : frames) {
-			if (ScreenHelper.clickCheck(mousex, mousey, frame.x, frame.y, frame.width, 20)) {
+			if (Component.clickCheck(mousex, mousey, frame.x, frame.y, frame.width, 20)) {
 				frame.mouseClicked(mousex, mousey, button);
 				return true;
 			}

@@ -22,7 +22,7 @@ public class SettingButton extends Component {
 	private boolean listening;
 
 	public SettingButton(int x, int y, Setting setting, HackButton parent) {
-		super(setting.getName(), setting.getDescription(), x, y, parent.width, (int)(15 * hpixel));
+		super(setting.getName(), setting.getDescription(), x, y, parent.width, 15);
 		this.setting = setting;
 		this.parent = parent;
 		this.displayName = setting instanceof KeyBindSetting ? "Bind" + GLFW.glfwGetKeyScancode((int)setting.getValue()) : setting.getName();
@@ -38,10 +38,10 @@ public class SettingButton extends Component {
 	@Override
 	public void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y) {
 		Screen.fill(matrices, this.x, this.y, this.x + this.width, this.y + this.height, new Color(red, green, blue, 100).getRGB());
-		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(displayName + "  :  " + setting.getValue().toString()), x, y, white);
+		Screen.drawTextWithShadow(matrices, textRenderer, new LiteralText(displayName + "  :  " + setting.getValue().toString()), x, y, new Color(255, 255, 255, 255).getRGB());
 
 		if ((setting.getValue() instanceof Double || setting.getValue() instanceof Integer) && !(setting instanceof KeyBindSetting)) {
-			Screen.fill(matrices, this.x, this.y, (int) (this.x + filled), this.y + height, new Color(red, green, blue, 195).getRGB());
+			Screen.fill(matrices, this.x, this.y, (int) (this.x + filled), this.y + height, new Color(red, green, blue, 150).getRGB());
 		}
 	}
 
