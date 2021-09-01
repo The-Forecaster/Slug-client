@@ -2,55 +2,94 @@ package me.austin.queer.module.hacks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
+import org.lwjgl.glfw.GLFW;
+
+import me.austin.queer.module.IModule;
 import me.austin.queer.module.Modules;
-import me.austin.queer.module.hacks.client.*;
-import me.austin.queer.module.hacks.combat.*;
+import me.austin.queer.module.gui.clickgui.ClickGuiScreen;
+import me.austin.queer.module.hacks.client.ClickGui;
+import me.austin.queer.module.hacks.combat.KillAura;
+import me.austin.queer.module.hacks.movement.NoSlow;
+import me.austin.queer.util.Util;
 import net.minecraft.network.Packet;
 
-public class Hacks extends Modules<Hack> {
-    public Hacks() {
-        modules = new ArrayList<Hack>();
-		
+public class Hacks extends Modules<Hack> implements Util {
+	public static List<Hack> HACKS;
+
+	public Hacks() {
+		HACKS = new ArrayList<>();
+
 		// client
-		this.modules.add(ClickGui.INSTANCE == null ? new ClickGui(this) : ClickGui.INSTANCE);
+		HACKS.add(new ClickGui());
 
 		// combat
-		this.modules.add(KillAura.INSTANCE == null ? new KillAura() : ClickGui.INSTANCE);
-    }
+		HACKS.add(new KillAura());
 
-    public List<Hack> getHacks() {
-		return this.modules;
+		// movement
+		HACKS.add(new NoSlow());
+
+		Modules.managers.add(this);
+	}
+
+    public static List<Hack> getHacks() {
+		return HACKS;
+	}
+
+	public static Hack getHackByClass(Class<? extends Hack> clazz) {
+		for (Hack hack : HACKS) {
+			if (hack.getClass() == clazz) {
+				return hack;
+			}
+		} 
+		return null;
 	}
 	
-	public List<Hack> getHacksByCategory(Category c) {
+	public static List<Hack> getHacksByCategory(Category c) {
 		List<Hack> hackz = new ArrayList<>();
 		
-		for (Hack hack : modules) {
+		for (Hack hack : HACKS) {
 			if (hack.getCategory() == c) {
 				hackz.add(hack);
 			}
-		} 
+		}
         return hackz;
 	}
+	
+	public static void forEachEnabled(Consumer<Hack> action) {
+		Objects.requireNonNull(action);
+        for (Hack hack : getHacks()) {
+            action.accept(hack);
+        }
+	}
 
-	public void onKeyPress(int key) {
-		this.modules.forEach(hack -> {
-			if (hack.getBind().getValue() == key) {
+	public static void onKeyPress(int key) {
+		HACKS.forEach(hack -> {
+			if (key == GLFW.GLFW_KEY_ESCAPE && ClickGuiScreen.shouldCloseOnEsc) {
+				mc.openScreen(null);
+			}
+			if (hack.getBind().get() == key) {	
 				hack.toggle();
 			}
 		});
 	}
 
-	public void onTickUpdate() {
-		this.modules.forEach(hack -> {
-			if (hack.isEnabled()) {
-				hack.onUpdate();
-			}
+	public static void onTickUpdate() {
+		forEachEnabled(hack -> {
+			hack.onUpdate();
 		});
 	}
 
-	public void onPacketRecieve(Packet<?> packet) {
-		this.modules.forEach(hack -> hack.onPacketRecieve(packet));
+	public static void onPacketRecieve(Packet<?> packet) {
+		forEachEnabled(hack -> {
+			hack.onPacketRecieve(packet);
+		});
+	}
+
+	@Override
+	public List<? extends IModule> get() {
+		return getHacks();
 	}
 }

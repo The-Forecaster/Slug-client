@@ -11,7 +11,7 @@
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/the-forecaster",
-    "discord": "https://discord.gg/Austin the Forecaster#0760"
+    "discord": "Austin the Forecaster#0760"
   },
 
   "license": "CC0-1.0",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.austin.queer.TransRights"
+      "me.austin.queer.FiveGuys"
     ]
   },
   "mixins": [
@@ -29,7 +29,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.17.x"
   },
   "suggests": {
     "optifine probably ig": "optifine.net/"

@@ -1,27 +1,22 @@
 package me.austin.queer.module.hacks;
 
-import java.util.List;
-
 import me.austin.queer.module.Module;
 import me.austin.queer.module.setting.Setting;
 import me.austin.queer.module.setting.Settings;
 import me.austin.queer.module.setting.settings.KeyBindSetting;
-import me.austin.queer.util.Globals;
+import me.austin.queer.util.Util;
 import net.minecraft.network.Packet;
 
-public abstract class Hack extends Module implements Globals {
+public abstract class Hack extends Module implements Util {
 	public static Hack INSTANCE;
+	private boolean enabled = false;
 	private final KeyBindSetting bind;
-	private boolean enabled;
-	private final Category category;	
-	public final Settings settings = new Settings();
+	private final Category category;
 
 	public Hack(String name, String description, int bind, Category category) {
 		super(name, description);
-		this.bind = new KeyBindSetting(bind);
-		this.enabled = false;
+		this.bind = new KeyBindSetting(bind, this);
 		this.category = category;
-		this.settings.add(this.bind);
 	}
 	
 	public void onEnable() {
@@ -33,7 +28,7 @@ public abstract class Hack extends Module implements Globals {
 	public void onUpdate() {
 	}
 
-	public void onPacketRecieve(Packet packet) {
+	public void onPacketRecieve(Packet<?> packet) {
 	}
 	
 	public void enable() {
@@ -52,7 +47,7 @@ public abstract class Hack extends Module implements Globals {
 	
 	public void toggle() {
 		if (this.enabled) {
-			this.onDisable();
+			this.disable();
 		} else {
 			this.onEnable();
 		}
@@ -64,7 +59,7 @@ public abstract class Hack extends Module implements Globals {
 	}
 	
 	public void setBind(int bind) {
-		this.bind.setValue(bind);
+		this.bind.set(bind);
 	}
 	
 	public boolean isEnabled() {
@@ -75,7 +70,8 @@ public abstract class Hack extends Module implements Globals {
 		return this.category;
 	}
 
-	public List<Setting> getSettings() {
-		return this.settings.getSettings();
+	public static Setting<?> register(Setting<?> setting) {
+		Settings.add(setting);
+		return setting;
 	}
 }

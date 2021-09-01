@@ -1,58 +1,32 @@
 package me.austin.queer.module.setting;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.austin.queer.TransRights;
+import me.austin.queer.event.client.SettingChangeEvent;
+import me.austin.queer.module.IModule;
 import me.austin.queer.module.Module;
+import me.austin.queer.module.Modules;
 
-public class Setting<T> extends Module {
-	private T defaultValue, currentValue, minValue, maxValue;
-	private List<T> values;
-	
-	public Setting(String name, String description, Boolean defaultValue) {
-		super(name, description);
-		this.defaultValue = (T)defaultValue;
-		this.currentValue = (T)defaultValue;
-		this.values = new ArrayList<>();
-		((List<Boolean>)(values)).add(true);
-		((List<Boolean>)(values)).add(false);
+public abstract class Setting<T> extends Module {
+	public T currentValue;
+	public IModule parent;
+
+	public Setting(String name, String description, T defaultValue, IModule parent) {
+		this(name, description, defaultValue, parent.getClass());
 	}
 
-	public Setting(String name, String description, Enum defaultValue, Enum[] values) {
+	public Setting(String name, String description, T defaultValue, Class<? extends IModule> parent) {
 		super(name, description);
-		this.defaultValue = (T)defaultValue;
-		this.currentValue = (T)defaultValue;
-		this.values = new ArrayList<>();
-		for (T value : (T[])values) {
-			this.values.add(value);
-		}
-	}
-
-	public Setting(String name, String description, T defaultValue, T minValue, T maxValue) {
-		super(name, description);
-		this.defaultValue = defaultValue;
 		this.currentValue = defaultValue;
-		this.minValue = minValue;
-		this.maxValue = maxValue;
-	}
-
-	public T getMaxValue() {
-		return this.maxValue;
-	}
-
-	public T getMinValue() {
-		return this.minValue;
+		this.parent = Modules.getModuleByClass(parent);
+		Settings.add(this);
 	}
 	
-	public T getValue() {
+	public T get() {
 		return this.currentValue;
 	}
 
-	public void setValue(T value) {
+	public void set(T value) {
 		this.currentValue = value;
-	}
-
-	public void cycle() {
-		currentValue = (currentValue == values.get(-1) ? values.get(0) : values.get(values.indexOf(currentValue) + 1));
+		TransRights.EVENTBUS.post(new SettingChangeEvent(this));
 	}
 }

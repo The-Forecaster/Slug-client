@@ -7,44 +7,53 @@ import org.lwjgl.glfw.GLFW;
 import me.austin.queer.module.hacks.Category;
 import me.austin.queer.module.hacks.Hack;
 import me.austin.queer.module.setting.Setting;
-import me.austin.queer.util.EntityHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
+import me.austin.queer.module.setting.settings.DoubleSetting;
+import me.austin.queer.module.setting.settings.ModeSetting;
+import me.austin.queer.module.setting.settings.ToggleSetting;
+import me.austin.queer.util.entity.EntityHelper;
+import me.austin.queer.util.entity.PlayerUtil;
+import net.minecraft.entity.LivingEntity;
 
 public final class KillAura extends Hack {
-    public static final Setting<Enum<Targetting>> targetting = new Setting<>("Targetting", "How the client determines its target", Targetting.CLOSEST, Targetting.values());
-    public static final Setting<Double> range = new Setting<>("Range", "How far you can hit niggas", 5d, 0d, 18d);
-    public static final Setting<Boolean> rotate = new Setting<>("Rotate", "rotate to hit the target", true);
+    public static Setting<Enum<?>> targetting;
+    public static Setting<Double> range;
+    public static Setting<Boolean> rotate;
 
-    private static PlayerEntity target;
-    private static ArrayList<PlayerEntity> entities;
+    private static LivingEntity target;
+    private static final ArrayList<LivingEntity> entities = new ArrayList<>();
 
     public KillAura() {
         super("Killaura", "Attacks players near you", GLFW.GLFW_KEY_G, Category.COMBAT);
-        this.settings.add(targetting, range, rotate);
+        targetting = new ModeSetting("Targetting", "How the client determines its target", Targetting.CLOSEST, Targetting.values(), this);
+        range = new DoubleSetting("Range", "How far you can hit your target", 5d, 0d, 18d, this);
+        rotate = new ToggleSetting("Rotate", "Rotate to hit the target", true, this);
     }
 
     @Override
     public final void onUpdate() {
         float health = Integer.MAX_VALUE;
 
-        if (targetting.getValue() == Targetting.CLOSEST) {
+        if (EntityHelper.getLivingEntities().size() == 0) {
+            return;
+        }
+
+        if (targetting.get() == Targetting.CLOSEST) {
             target = mc.world.getClosestPlayer(mc.player.getX(), mc.player.getY(), mc.player.getZ(), 255d, true);
         }
-        if (targetting.getValue() == Targetting.HEALTH) {
-            for (PlayerEntity entity : mc.world.getPlayers()) {
-               if (entity.getHealth() < health) {
-                   target = entity;
-                   health = entity.getHealth();
-               }
+        if (targetting.get() == Targetting.HEALTH) {
+            for (LivingEntity entity : EntityHelper.getLivingEntities()) {
+                if (entity.getHealth() < health) {
+                    target = entity;
+                    health = entity.getHealth();
+                }
             }
         }
         else {
-            mc.world.getPlayers().forEach(player -> entities.add(player));
+            mc.world.getPlayers().forEach(entity -> entities.add(entity));
 
-            entities.forEach(player -> {
-                if (player.getAttacking() == mc.player) {
-                    target = player;
+            entities.forEach(entity -> {
+                if (entity.getAttacking() == mc.player) {
+                    target = entity;
                 }
             });
 
@@ -57,19 +66,14 @@ public final class KillAura extends Hack {
             return;
         }
 
-        if (EntityHelper.getDistance(target) < range.getValue()) {
-            if (rotate.getValue()) {    
-                EntityHelper.face(target);
-            }
-
-            if (!mc.player.handSwinging) {
-                mc.interactionManager.attackEntity(mc.player, target);
-                mc.player.swingHand(Hand.MAIN_HAND);
+        if (EntityHelper.getDistance(target) < range.get()) {
+            if (mc.player.getAttackCooldownProgressPerTick() == mc.player.getMainHandStack().getCooldown()) {
+                PlayerUtil.hitEntity(rotate.get(), target);
             }
         }
     }
 
-    private static enum Targetting {
+    enum Targetting {
         CLOSEST,
         HEALTH,
         SMART

@@ -4,7 +4,8 @@ import me.austin.queer.module.IModule;
 
 public enum Category implements IModule {
     CLIENT("Client", "For managing the client"),
-    COMBAT("Combat", "For fighting other people");
+    COMBAT("Combat", "For fighting other people"),
+    MOVEMENT("Movement", "For movement hacks");
     
     private final String name, description;
     
