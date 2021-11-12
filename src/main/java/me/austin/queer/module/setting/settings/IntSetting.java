@@ -1,14 +1,14 @@
-package me.austin.queer.module.setting.settings;
+package me.austin.queer.modules.setting.settings;
 
-import me.austin.queer.module.IModule;
-import me.austin.queer.module.setting.Setting;
+import me.austin.queer.modules.Modulus;
 
-public class IntSetting extends Setting<Integer> {
-    public int maxValue, minValue;
+public class IntSetting extends NumberSetting<Integer> {
+    public IntSetting(String name, String description, int defaultValue, int min, int max, Modulus parent) {
+        super(name, description, defaultValue, min, max, parent);
+    }
 
-    public IntSetting(String name, String description, int defaultValue, int minValue, int maxValue, IModule parent) {
-        super(name, description, defaultValue, parent);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    @Override 
+    public void set(Integer value) {
+        this.value = value;
     }
 }

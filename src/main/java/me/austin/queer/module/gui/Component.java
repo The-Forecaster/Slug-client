@@ -1,34 +1,34 @@
-package me.austin.queer.module.gui;
+package me.austin.queer.modules.gui;
 
-import me.austin.queer.module.Module;
-import me.austin.queer.module.hacks.client.ClickGui;
-import me.austin.queer.util.render.ScreenHelper;
-import me.austin.queer.util.text.JColor;
+import me.austin.queer.modules.Modulus;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
-public abstract class Component extends Module implements ScreenHelper {
+public abstract class Component extends Modulus {
 	public int x, y, width, height;
-	
-	public Component(String name, String description, int x, int y, int width, int height) {
+	protected boolean shown;
+
+	public Component(String name, String description, int x, int y, int width, int height, boolean shown) {
 		super(name, description);
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.shown = shown;
 	}
-
-	public static final int red = ClickGui.backgroundRed.get();
-	public static final int green = ClickGui.backgroundGreen.get();
-	public static final int blue = ClickGui.backgroundBlue.get();
-
-	public static final int backGroundLow = new JColor(red, green, blue, 100).getRGB();
-	public static final int backGroundHigh = new JColor(red, green, blue, 195).getRGB();
 	
-	public abstract void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y);
-
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public abstract void render(MatrixStack matrices, TextRenderer textRenderer);
+	
+	public boolean isShown() {
+		return this.shown;
 	}
+
+	public void setShown(boolean shown) {
+		this.shown = shown;
+	}
+	
+	public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 }

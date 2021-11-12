@@ -1,14 +1,14 @@
-package me.austin.queer.module.setting.settings;
+package me.austin.queer.modules.setting.settings;
 
-import me.austin.queer.module.IModule;
-import me.austin.queer.module.setting.Setting;
+import me.austin.queer.modules.Modulus;
 
-public class DoubleSetting extends Setting<Double> {
-    public double minValue, maxValue;
+public class DoubleSetting extends NumberSetting<Double> {
+    public DoubleSetting(String name, String description, double defaultValue, double min, double max, Modulus parent) {
+        super(name, description, defaultValue, min, max, parent);
+    }
 
-    public DoubleSetting(String name, String description, double defaultValue, double minValue, double maxValue, IModule parent) {
-        super(name, description, defaultValue, parent);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    @Override
+    public void set(Double value) {
+        this.value = value;
     }
 }

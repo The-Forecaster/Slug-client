@@ -1,4 +1,4 @@
-package me.austin.queer.module.hacks;
+package me.austin.queer.modules.hacks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,39 +7,45 @@ import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
 
-import me.austin.queer.module.IModule;
-import me.austin.queer.module.Modules;
-import me.austin.queer.module.gui.clickgui.ClickGuiScreen;
-import me.austin.queer.module.hacks.client.ClickGui;
-import me.austin.queer.module.hacks.combat.KillAura;
-import me.austin.queer.module.hacks.movement.NoSlow;
+import me.austin.queer.modules.Modules;
+import me.austin.queer.modules.gui.clickgui.screens.ClickGuiScreen;
+import me.austin.queer.modules.hacks.client.ClickGui;
+import me.austin.queer.modules.hacks.client.RichPresence;
+import me.austin.queer.modules.hacks.combat.KillAura;
+import me.austin.queer.modules.hacks.movement.AntiKnockBack;
+import me.austin.queer.modules.hacks.movement.NoSlow;
+import me.austin.queer.modules.hacks.player.AutoTotem;
 import me.austin.queer.util.Util;
 import net.minecraft.network.Packet;
 
 public class Hacks extends Modules<Hack> implements Util {
-	public static List<Hack> HACKS;
+	private static Hacks INSTANCE;
 
 	public Hacks() {
-		HACKS = new ArrayList<>();
 
 		// client
-		HACKS.add(new ClickGui());
+		this.get().add(new ClickGui());
+		this.get().add(new RichPresence());
 
 		// combat
-		HACKS.add(new KillAura());
+		this.get().add(new KillAura());
 
 		// movement
-		HACKS.add(new NoSlow());
+		this.get().add(new AntiKnockBack());
+		this.get().add(new NoSlow());
 
-		Modules.managers.add(this);
+		// player
+		this.get().add(new AutoTotem());
+
+		INSTANCE = this;
 	}
 
-    public static List<Hack> getHacks() {
-		return HACKS;
+	public static Hacks getInstance() {
+		return INSTANCE;
 	}
 
-	public static Hack getHackByClass(Class<? extends Hack> clazz) {
-		for (Hack hack : HACKS) {
+	public Hack getHackByClass(Class<? extends Hack> clazz) {
+		for (Hack hack : this.get()) {
 			if (hack.getClass() == clazz) {
 				return hack;
 			}
@@ -47,10 +53,10 @@ public class Hacks extends Modules<Hack> implements Util {
 		return null;
 	}
 	
-	public static List<Hack> getHacksByCategory(Category c) {
+	public List<Hack> getHacksByCategory(Category c) {
 		List<Hack> hackz = new ArrayList<>();
 		
-		for (Hack hack : HACKS) {
+		for (Hack hack : this.get()) {
 			if (hack.getCategory() == c) {
 				hackz.add(hack);
 			}
@@ -58,16 +64,16 @@ public class Hacks extends Modules<Hack> implements Util {
         return hackz;
 	}
 	
-	public static void forEachEnabled(Consumer<Hack> action) {
+	public void forEachEnabled(Consumer<Hack> action) {
 		Objects.requireNonNull(action);
-        for (Hack hack : getHacks()) {
+        for (Hack hack : this.get()) {
             action.accept(hack);
         }
 	}
 
-	public static void onKeyPress(int key) {
-		HACKS.forEach(hack -> {
-			if (key == GLFW.GLFW_KEY_ESCAPE && ClickGuiScreen.shouldCloseOnEsc) {
+	public void onKeyPress(int key) {
+		this.get().forEach(hack -> {
+			if (key == GLFW.GLFW_KEY_ESCAPE && ClickGuiScreen.getInstance().shouldCloseOnEsc()) {
 				mc.openScreen(null);
 			}
 			if (hack.getBind().get() == key) {	
@@ -76,20 +82,17 @@ public class Hacks extends Modules<Hack> implements Util {
 		});
 	}
 
-	public static void onTickUpdate() {
-		forEachEnabled(hack -> {
-			hack.onUpdate();
-		});
+	public void onTickUpdate() {
+		forEachEnabled(Hack::onUpdate);
 	}
 
-	public static void onPacketRecieve(Packet<?> packet) {
-		forEachEnabled(hack -> {
-			hack.onPacketRecieve(packet);
-		});
+	public void onPacketRecieve(Packet<?> packet) {
+		forEachEnabled(hack -> hack.onPacketRecieve(packet));
 	}
 
 	@Override
-	public List<? extends IModule> get() {
-		return getHacks();
-	}
+    public void unload() {
+		INSTANCE = null;
+		super.unload();
+    }
 }

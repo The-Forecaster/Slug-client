@@ -1,22 +1,24 @@
-package me.austin.queer.module.hacks;
+package me.austin.queer.modules.hacks;
 
-import me.austin.queer.module.Module;
-import me.austin.queer.module.setting.Setting;
-import me.austin.queer.module.setting.Settings;
-import me.austin.queer.module.setting.settings.KeyBindSetting;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import me.austin.queer.modules.Modulus;
+import me.austin.queer.modules.setting.Setting;
+import me.austin.queer.modules.setting.Settings;
+import me.austin.queer.modules.setting.settings.KeyBindSetting;
 import me.austin.queer.util.Util;
 import net.minecraft.network.Packet;
 
-public abstract class Hack extends Module implements Util {
-	public static Hack INSTANCE;
+public abstract class Hack extends Modulus implements Util {
 	private boolean enabled = false;
-	private final KeyBindSetting bind;
-	private final Category category;
+	private final KeyBindSetting bind = new KeyBindSetting(getClass().getAnnotation(Register.class).bind(), this);
+	private final Category category = getClass().getAnnotation(Register.class).category();
 
-	public Hack(String name, String description, int bind, Category category) {
-		super(name, description);
-		this.bind = new KeyBindSetting(bind, this);
-		this.category = category;
+	public Hack(Register info) {
+		super(info.name(), info.description());
 	}
 	
 	public void onEnable() {
@@ -32,26 +34,21 @@ public abstract class Hack extends Module implements Util {
 	}
 	
 	public void enable() {
-		if (!this.enabled) {
-			this.enabled = true;
-			this.onEnable();
-		}
+		this.enabled = true;
+		this.onEnable();
 	}
 	
 	public void disable() {
-		if (this.enabled) {
-			this.enabled = false;
-			this.onDisable();
-		}
+		this.enabled = true;
+		this.onEnable();
 	}
 	
 	public void toggle() {
-		if (this.enabled) {
+		if (this.isEnabled()) {
 			this.disable();
 		} else {
-			this.onEnable();
+			this.enable();	
 		}
-		this.enabled = !this.enabled;
 	}
 	
 	public KeyBindSetting getBind() {
@@ -70,8 +67,23 @@ public abstract class Hack extends Module implements Util {
 		return this.category;
 	}
 
-	public static Setting<?> register(Setting<?> setting) {
-		Settings.add(setting);
-		return setting;
+	protected static <T extends Setting<?>> T register(T setting) {
+        Settings.getInstance().add(setting);
+        return setting;
+    }
+	
+	/**
+	 * @param name name of the hack
+	 * @param description description of the hack
+	 * @param bind optional, sets the bind of the hack, default for this is no bind or 0
+	 * @param category category of the client
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	protected static @interface Register {
+		String name();
+		String description();
+		int bind() default KeyBindSetting.NONE;
+		Category category();
 	}
 }

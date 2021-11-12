@@ -1,37 +1,36 @@
-package me.austin.queer.module.hacks.combat;
+package me.austin.queer.modules.hacks.combat;
 
 import java.util.ArrayList;
 
 import org.lwjgl.glfw.GLFW;
 
-import me.austin.queer.module.hacks.Category;
-import me.austin.queer.module.hacks.Hack;
-import me.austin.queer.module.setting.Setting;
-import me.austin.queer.module.setting.settings.DoubleSetting;
-import me.austin.queer.module.setting.settings.ModeSetting;
-import me.austin.queer.module.setting.settings.ToggleSetting;
+import me.austin.queer.modules.hacks.Category;
+import me.austin.queer.modules.hacks.Hack;
+import me.austin.queer.modules.setting.settings.DoubleSetting;
+import me.austin.queer.modules.setting.settings.ModeSetting;
+import me.austin.queer.modules.setting.settings.ToggleSetting;
 import me.austin.queer.util.entity.EntityHelper;
-import me.austin.queer.util.entity.PlayerUtil;
+import me.austin.queer.util.entity.player.PlayerUtil;
 import net.minecraft.entity.LivingEntity;
 
+@Hack.Register(name = "KillAura", description = "Attacks players near you", bind = GLFW.GLFW_KEY_G, category = Category.COMBAT)
 public final class KillAura extends Hack {
-    public static Setting<Enum<?>> targetting;
-    public static Setting<Double> range;
-    public static Setting<Boolean> rotate;
+    public ModeSetting targetting = register(new ModeSetting("Targetting", "How the client determines its target", Targetting.CLOSEST, Targetting.values(), this));
+    public DoubleSetting range = register(new DoubleSetting("Range", "How far you can hit your target", 5d, 0d, 18d, this));
+    public ToggleSetting rotate = register(new ToggleSetting("Rotate", "Rotate to hit the target", true, this));
+    public ToggleSetting targetFriends = register(new ToggleSetting("TargetFriends", "Target friends with the client", false, this));
 
     private static LivingEntity target;
     private static final ArrayList<LivingEntity> entities = new ArrayList<>();
 
     public KillAura() {
-        super("Killaura", "Attacks players near you", GLFW.GLFW_KEY_G, Category.COMBAT);
-        targetting = new ModeSetting("Targetting", "How the client determines its target", Targetting.CLOSEST, Targetting.values(), this);
-        range = new DoubleSetting("Range", "How far you can hit your target", 5d, 0d, 18d, this);
-        rotate = new ToggleSetting("Rotate", "Rotate to hit the target", true, this);
+        super(KillAura.class.getAnnotation(Hack.Register.class));
     }
 
     @Override
     public final void onUpdate() {
         float health = Integer.MAX_VALUE;
+        entities.clear();
 
         if (EntityHelper.getLivingEntities().size() == 0) {
             return;
@@ -40,6 +39,7 @@ public final class KillAura extends Hack {
         if (targetting.get() == Targetting.CLOSEST) {
             target = mc.world.getClosestPlayer(mc.player.getX(), mc.player.getY(), mc.player.getZ(), 255d, true);
         }
+
         if (targetting.get() == Targetting.HEALTH) {
             for (LivingEntity entity : EntityHelper.getLivingEntities()) {
                 if (entity.getHealth() < health) {
@@ -48,6 +48,7 @@ public final class KillAura extends Hack {
                 }
             }
         }
+
         else {
             mc.world.getPlayers().forEach(entity -> entities.add(entity));
 
@@ -73,7 +74,7 @@ public final class KillAura extends Hack {
         }
     }
 
-    enum Targetting {
+    public enum Targetting {
         CLOSEST,
         HEALTH,
         SMART

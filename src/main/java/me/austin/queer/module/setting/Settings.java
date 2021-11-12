@@ -1,42 +1,48 @@
-package me.austin.queer.module.setting;
+package me.austin.queer.modules.setting;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.austin.queer.module.*;
-import me.austin.queer.module.hacks.Hack;
+import me.austin.queer.modules.Modulus;
+import me.austin.queer.modules.Modules;
+import me.austin.queer.modules.hacks.Hack;
 
 public class Settings extends Modules<Setting<?>> {
-    public static final List<Setting<?>> SETTINGS = new ArrayList<>();
-    public static final Settings INSTANCE = new Settings();
+    protected static Settings INSTANCE;
 
     public Settings() {
-        Modules.managers.add(this);
+        INSTANCE = this;
     }
 
-    public static List<Setting<?>> getSettingsFromHack(Hack hack) {
+    public List<Setting<?>> getSettingsFromHack(Hack hack) {
         List<Setting<?>> settings = new ArrayList<>();
 
-        for (Setting<?> setting : settings) {
-            if (hack == setting.parent) {
+        for (Setting<?> setting : this.get()) {
+            if (hack == setting.getParent()) {
+                settings.add(setting);
+            }
+        }
+        return settings;
+    }
+
+    public List<Setting<?>> getSettingsFromModule(Modulus module) {
+        List<Setting<?>> settings = new ArrayList<>();
+
+        for (Setting<?> setting : this.get()) {
+            if (module == setting.getParent()) {
                 settings.add(setting);
             }
         }
         return settings;
     }
     
-    public static List<Setting<?>> getSettings() {
-        return SETTINGS;
+    public static Settings getInstance() {
+        return INSTANCE;
     }
-
-    public static void add(Setting<?>... settings) {
-        for (Setting<?> setting : settings) {
-            SETTINGS.add(setting);
-        }
-    }
-
+    
     @Override
-    public List<? extends IModule> get() {
-        return getSettings();
-    }    
+    public void unload() {
+        INSTANCE = null;
+        super.unload();
+    }
 }

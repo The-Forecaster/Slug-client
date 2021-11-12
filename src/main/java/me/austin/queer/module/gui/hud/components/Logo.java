@@ -1,16 +1,16 @@
-package me.austin.queer.module.gui.hud.components;
+package me.austin.queer.modules.gui.hud.components;
 
-import me.austin.queer.module.gui.hud.HudComponent;
+import me.austin.queer.modules.gui.hud.HudModule;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class Logo extends HudComponent {
+public class Logo extends HudModule {
     public Logo(int x, int y) {
-        super("Shows the client's logo", "shows the logo of the client", x, y, 1280, 760);
+        super("Logo", "", x, y, 1280, 760, true);
     }
 
     @Override
-    public void render(MatrixStack matrices, TextRenderer textRenderer, int x, int y) {
-        mc.inGameHud.drawTexture(matrices, x, y, 0, 2, 1280, 760);
+    public void render(MatrixStack matrices, TextRenderer textRenderer) {
+        mc.inGameHud.drawTexture(matrices, this.x, this.y, 0, 2, this.width, this.height);
     }
 }
