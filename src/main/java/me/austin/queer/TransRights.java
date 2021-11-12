@@ -1,74 +1,74 @@
 package me.austin.queer;
 
+import com.google.common.eventbus.EventBus;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import me.austin.queer.event.Events;
-import me.austin.queer.module.commands.Commands;
-import me.austin.queer.module.hacks.Hacks;
-import me.austin.queer.module.setting.Settings;
-import meteordevelopment.orbit.EventBus;
+import me.austin.queer.event.world.TickEvent;
+import me.austin.queer.modules.Modules;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.AutoInvokingEvent;
 
 public class TransRights implements ModInitializer {
-	public static final String modname = "Trans Rights";
-	public static final String modid = "transrights";
-	public static final String version = "0.0.1";
+	public static final String NAME = "Trans Rights";
+	public static final String VERSION = "0.0.1";
+	public static final Logger LOGGER = LogManager.getLogger(NAME);
 
-	public static Logger LOGGER = LogManager.getLogger(modname);
 	public static EventBus EVENTBUS;
-	public static Settings settings;
-	public static Commands commands;
-	public static Hacks hacks;
-	public static Events events;
-	public static TransRights INSTANCE;
+	public static Events EVENTS;
+	private static TransRights INSTANCE;
+	private static final Object sync = new Object();
 
 	public TransRights() {
 		INSTANCE = this;
-		load();
 	}
-
-	private static final Object sync = new Object();
 	
-	public static void printLog(String message) {
+	public static final void printLog(String message) {
 		synchronized(sync) {
 			LOGGER.log(Level.INFO, message);
 		}
 	}
 
-	public static void load() {
-		EVENTBUS = new EventBus();
-		settings = new Settings();
-		commands = new Commands();
-		hacks = new Hacks();
-		events = new Events();
-		
-		printLog(modname + " has been loaded");
+	public static TransRights getInstance() {
+		return INSTANCE;
 	}
 
-	public static void unload() {
+	public void load() {
+		EVENTBUS = new EventBus();
+		EVENTS = new Events();
+		Modules.loadManagers();
+
+		printLog(NAME + " has been loaded");
+	}
+
+	public void unload() {
 		EVENTBUS = null;
-		settings = null;
-		commands = null;
-		hacks = null;
-		events = null;
+		EVENTS = null;
+		Modules.unloadManagers();
 		
-		printLog(modname + " has been unloaded");
+		printLog(NAME + " has been unloaded");
 	}
 	
-	public static void reload() {
+	public void reload() {
 		unload();
 		load();
 
-		printLog(modname + " has been reloaded");
+		printLog(NAME + " has been reloaded");
+	}
+
+	@AutoInvokingEvent
+	public void onTickEvent(TickEvent event) {
+
 	}
 	
 	@Override
 	public void onInitialize() {
 		final long initStartTime = System.currentTimeMillis();
-		load();
-  
-		printLog(modname + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
+		INSTANCE = this;
+		this.load();
+		printLog(NAME + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
 	}
 }

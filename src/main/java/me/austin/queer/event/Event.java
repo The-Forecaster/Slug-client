@@ -1,8 +1,6 @@
 package me.austin.queer.event;
 
-import meteordevelopment.orbit.ICancellable;
-
-public class Event implements ICancellable {
+public abstract class Event {
 	private int priority;
 	private boolean cancelled;
 

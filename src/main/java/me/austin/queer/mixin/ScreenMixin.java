@@ -11,6 +11,6 @@ import net.minecraft.client.gui.screen.Screen;
 public abstract class ScreenMixin implements Util {
     @Inject(method = "renderBackground", at = @At("HEAD"))
     private void onRenderBackground(CallbackInfo info) {
-        return;
+        info.cancel();
     }
 }

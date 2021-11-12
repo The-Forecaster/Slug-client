@@ -11,9 +11,10 @@ import com.google.common.collect.Maps;
 
 import org.jetbrains.annotations.Nullable;
 
-/** 
- * completly stolen
-*/
+/**
+ * This is completly pasted from Bedroom, which is copied from Forge's own text stylization. 
+ * @author Forge
+ */
 
 public enum TextFormatting {
     BLACK("BLACK", '0', 0),

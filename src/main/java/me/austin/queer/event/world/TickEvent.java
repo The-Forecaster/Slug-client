@@ -1,21 +1,20 @@
 package me.austin.queer.event.world;
 
 import me.austin.queer.event.Event;
+import net.minecraft.client.MinecraftClient;
 
 public class TickEvent extends Event {
-    public static class Pre extends TickEvent {
-        private static Pre instance = new Pre();
+    private final float tickdelta;
 
-        public Pre getIntance() {
-            return instance;
-        }
+    public TickEvent(float tickdelta) {
+        this.tickdelta = tickdelta;
     }
 
-    public static class Post extends TickEvent {
-        private static Post instance = new Post();
+    public TickEvent() {
+        this.tickdelta = MinecraftClient.getInstance().getTickDelta();
+    }
 
-        public Post getInstance() {
-            return instance;
-        }
+    public float getTickDelta() {
+        return this.tickdelta;
     }
 }

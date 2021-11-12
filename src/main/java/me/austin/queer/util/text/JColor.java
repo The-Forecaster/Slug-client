@@ -5,7 +5,8 @@ import java.awt.Color;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 /** 
- * completly stolen
+ * This is an attempt to rework the base color class, just a little improvement nothing super special
+ * @author srgtmooomoo
 */
 
 public class JColor extends Color {

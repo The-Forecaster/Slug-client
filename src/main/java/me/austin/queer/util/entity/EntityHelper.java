@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.austin.queer.util.Util;
+import me.austin.queer.util.entity.player.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 

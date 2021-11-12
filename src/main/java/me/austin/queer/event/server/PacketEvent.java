@@ -7,7 +7,6 @@ public class PacketEvent extends Event {
     private final Packet<?> packet;
 
 	public PacketEvent(Packet<?> packet) {
-		super();
 		this.packet = packet;
 	}
 
