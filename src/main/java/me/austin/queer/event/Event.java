@@ -4,7 +4,7 @@ public abstract class Event {
 	private int priority;
 	private boolean cancelled;
 
-	public Event() {
+	protected Event() {
 		this(0);
 	}
 

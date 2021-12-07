@@ -11,19 +11,21 @@ public class Reload extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         String stage = args[0].toLowerCase();
-
+        
+        if (args.length > 1) return false;
         switch(stage) {
             case "full":
                 mc.reloadResources();
-                TransRights.getInstance().reload();
-            
+                TransRights.reload();
+
             case "client":
-                TransRights.getInstance().reload();
+                TransRights.reload();
 
             case "world":
                 mc.reloadResources();
-        }
+        } 
+        return true;
     }
 }

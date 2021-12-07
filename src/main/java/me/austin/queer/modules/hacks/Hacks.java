@@ -1,14 +1,13 @@
 package me.austin.queer.modules.hacks;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.lwjgl.glfw.GLFW;
-
-import me.austin.queer.modules.Modules;
-import me.austin.queer.modules.gui.clickgui.screens.ClickGuiScreen;
+import me.austin.queer.TransRights;
+import me.austin.queer.modules.Manager;
 import me.austin.queer.modules.hacks.client.ClickGui;
 import me.austin.queer.modules.hacks.client.RichPresence;
 import me.austin.queer.modules.hacks.combat.KillAura;
@@ -18,10 +17,11 @@ import me.austin.queer.modules.hacks.player.AutoTotem;
 import me.austin.queer.util.Util;
 import net.minecraft.network.Packet;
 
-public class Hacks extends Modules<Hack> implements Util {
+public class Hacks extends Manager<Hack> implements Util {
 	private static Hacks INSTANCE;
 
 	public Hacks() {
+		super(new File(TransRights.getDir(), "Hacks"));
 
 		// client
 		this.get().add(new ClickGui());
@@ -65,29 +65,30 @@ public class Hacks extends Modules<Hack> implements Util {
 	}
 	
 	public void forEachEnabled(Consumer<Hack> action) {
-		Objects.requireNonNull(action);
+		final Consumer<Hack> act = Objects.requireNonNull(action);
         for (Hack hack : this.get()) {
-            action.accept(hack);
+            act.accept(hack);
         }
 	}
 
 	public void onKeyPress(int key) {
-		this.get().forEach(hack -> {
-			if (key == GLFW.GLFW_KEY_ESCAPE && ClickGuiScreen.getInstance().shouldCloseOnEsc()) {
-				mc.openScreen(null);
-			}
-			if (hack.getBind().get() == key) {	
-				hack.toggle();
-			}
-		});
+		this.get().forEach(Hack::toggle);
 	}
 
 	public void onTickUpdate() {
-		forEachEnabled(Hack::onUpdate);
+		this.forEachEnabled(Hack::onUpdate);
 	}
 
 	public void onPacketRecieve(Packet<?> packet) {
 		forEachEnabled(hack -> hack.onPacketRecieve(packet));
+	}
+	
+	@Override
+	public void init() {
+		this.get().forEach(hack -> hack.getSettings().init());
+		this.get().forEach(hack -> {
+			if (hack.isEnabled()) hack.onEnable();
+		});
 	}
 
 	@Override

@@ -1,14 +1,16 @@
 package me.austin.queer.util.client;
 
-import club.minnced.discord.rpc.*;
+import club.minnced.discord.rpc.DiscordEventHandlers;
+import club.minnced.discord.rpc.DiscordRPC;
+import club.minnced.discord.rpc.DiscordRichPresence;
 import me.austin.queer.TransRights;
-import me.austin.queer.util.text.TextFormatting;
+import net.minecraft.util.Formatting;
 
-public interface DiscordPresence {
-    static final DiscordRichPresence richPresence = new DiscordRichPresence();
-    static final DiscordRPC rpc = DiscordRPC.INSTANCE;
+public abstract interface DiscordPresence {
+    DiscordRichPresence richPresence = new DiscordRichPresence();
+    DiscordRPC rpc = DiscordRPC.INSTANCE;
 
-    public static void start() {
+    static void start() {
         DiscordEventHandlers handlers = new DiscordEventHandlers();
         rpc.Discord_Initialize("835240968533049424", handlers, true, null);
 
@@ -16,10 +18,11 @@ public interface DiscordPresence {
 
         richPresence.largeImageKey = TransRights.NAME;
         richPresence.largeImageText = TransRights.NAME + "!";
-        richPresence.details = TransRights.VERSION + TextFormatting.ITALIC;
+        richPresence.details = TransRights.VERSION + Formatting.ITALIC;
+        richPresence.state = "Gaming with the power of " + TransRights.NAME + "!";
     }
 
-    public static void stop() {
+    static void stop() {
         rpc.Discord_Shutdown();
         rpc.Discord_ClearPresence();
     }

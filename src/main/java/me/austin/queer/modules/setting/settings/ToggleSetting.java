@@ -7,4 +7,8 @@ public class ToggleSetting extends Setting<Boolean> {
     public ToggleSetting(String name, String description, boolean defaultValue, Hack parent) {
         super(name, description, defaultValue, parent);
     }
+
+    public void toggle() {
+        this.set(!this.get());
+    }
 }

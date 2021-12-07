@@ -11,13 +11,12 @@ public class Prefix extends Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public boolean execute(String[] args) {
         if (args[1].length() == 1) {
             Commands.getInstance().setPrefix(args[1]);
             ChatHelper.addPreMessage("Changed the prefix to: " + args[1]);
+            return true;
         }
-        else {
-            ChatHelper.addErrorMessage("Only use 1 character when using this Command");
-        }
+        return false;
     }
 }

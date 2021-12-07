@@ -2,6 +2,7 @@ package me.austin.queer.util.entity.player;
 
 import me.austin.queer.util.entity.EntityHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.util.Hand;
 
@@ -15,6 +16,7 @@ public interface PlayerUtil extends EntityHelper {
     }
 
     public static void setRotation(double pitch, double yaw) {
+        mc.player.setPitch((float)pitch);
         mc.player.setYaw((float)yaw);
     }
 
@@ -35,8 +37,8 @@ public interface PlayerUtil extends EntityHelper {
     }
 
     public static int find(Item item) {
-        for (int i = 0; i < mc.player.inventory.size(); i ++) {
-            if (mc.player.inventory.getStack(i).getItem() == item) {
+        for (int i = 0; i < mc.player.getInventory().size(); i ++) {
+            if (mc.player.getInventory().getStack(i).getItem() == item) {
                 return i;
             }
         }
@@ -44,6 +46,7 @@ public interface PlayerUtil extends EntityHelper {
     }
 
     public static void setOffhand(int index) {
-        mc.player.inventory.offHand.set(index, mc.player.inventory.getStack(index));
+        mc.player.getInventory().offHand.set(index, mc.player.getInventory().getStack(index));
+        mc.player.getInventory().swapSlotWithHotbar(PlayerInventory.OFF_HAND_SLOT);
     }
 }

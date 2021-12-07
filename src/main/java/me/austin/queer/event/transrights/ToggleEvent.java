@@ -4,10 +4,20 @@ import me.austin.queer.event.Event;
 import me.austin.queer.modules.hacks.Hack;
 
 public class ToggleEvent extends Event {
-    private final Hack hack;
+    public static ToggleEvent INSTANCE = new ToggleEvent();
 
-    public ToggleEvent(Hack hack) {
-        this.hack = hack;
+    private Hack hack;
+
+    public static ToggleEvent get(Hack hack) {
+        if (INSTANCE == null) {
+            INSTANCE = new ToggleEvent();
+        }
+        else if (INSTANCE.isCancelled()) {
+            INSTANCE = new ToggleEvent();
+        }
+        INSTANCE.hack = hack;
+        
+        return INSTANCE;
     }
 
     public Hack getHack() {

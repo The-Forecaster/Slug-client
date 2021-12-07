@@ -9,17 +9,17 @@
     "Austin"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://github.com/the-forecaster/Trans-Rights",
     "sources": "https://github.com/the-forecaster",
     "discord": "Austin the Forecaster#0760"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/transrights/transpride.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.austin.queer.FiveGuys"
+      "me.austin.queer.TransRights"
     ]
   },
   "mixins": [
@@ -27,11 +27,12 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.12.0",
     "fabric": "*",
     "minecraft": "1.17.x"
   },
   "suggests": {
     "optifine probably ig": "optifine.net/"
-  }
+  },
+  "accessWidener": "transrights.accesswidener"
 }

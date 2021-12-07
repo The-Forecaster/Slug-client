@@ -7,21 +7,24 @@ import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.List;
 
-import me.austin.queer.modules.Modulus;
+import me.austin.queer.modules.Nameable;
 import me.austin.queer.util.Util;
-import me.austin.queer.util.text.TextFormatting;
+import net.minecraft.util.Formatting;
 
-public abstract class Command extends Modulus implements Util {
+public abstract class Command extends Nameable implements Util {
     private final List<String> aliases;
-    public static final String ARROW = "" + TextFormatting.GRAY + TextFormatting.BOLD + " ➜ ", USAGE = "" + TextFormatting.GRAY + TextFormatting.BOLD + "Usage: ";
+    public static final String ARROW = "" + Formatting.GRAY + Formatting.BOLD + " ➜ ", USAGE = "" + Formatting.GRAY + Formatting.BOLD + "Usage: ";
 
     public Command(Register info) {
-        super(info.name(), info.description());
-        
-        this.aliases = Arrays.asList(info.aliases());
+        this(info.name(), info.description(), info.aliases());
+    }
+
+    public Command(String name, String description, String[] aliases) {
+        super(name, description, null);
+        this.aliases = Arrays.asList(aliases);
     }
     
-    public abstract void execute(String[] args);
+    public abstract boolean execute(String[] args);
 
     public List<String> getAliases() {
         return aliases;
@@ -35,9 +38,10 @@ public abstract class Command extends Modulus implements Util {
      */
     @Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
-	protected static @interface Register {
+	public static @interface Register {
 		String name();
 		String description();
+        String usage() default "prefix <insert symbol>";
 		String[] aliases() default {};
 	}
 }

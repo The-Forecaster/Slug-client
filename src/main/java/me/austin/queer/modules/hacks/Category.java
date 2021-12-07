@@ -1,14 +1,17 @@
 package me.austin.queer.modules.hacks;
 
-import me.austin.queer.modules.IModulus;
+import java.io.File;
 
-public enum Category implements IModulus {
+import me.austin.queer.modules.INameable;
+
+public enum Category implements INameable {
     CLIENT("Client", "For managing the client"),
     COMBAT("Combat", "For fighting other people"),
     MOVEMENT("Movement", "For movement hacks"),
     PLAYER("Player", "For managing the player");
     
     private final String name, description;
+    private File file;
     
     private Category(final String name, final String description) {
         this.name = name;
@@ -21,5 +24,9 @@ public enum Category implements IModulus {
 
     public final String getDescription() {
         return this.description;
+    }
+
+    public final File getFile() {
+        return this.file;
     }
 }

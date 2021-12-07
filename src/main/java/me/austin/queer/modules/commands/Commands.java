@@ -1,13 +1,17 @@
 package me.austin.queer.modules.commands;
 
-import me.austin.queer.modules.Modules;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+
+import me.austin.queer.TransRights;
+import me.austin.queer.modules.Manager;
 import me.austin.queer.modules.commands.client.Prefix;
 import me.austin.queer.modules.commands.client.Reload;
 import me.austin.queer.modules.commands.hack.Set;
-import me.austin.queer.util.text.TextFormatting;
+import me.austin.queer.util.chat.ChatHelper;
 
-public class Commands extends Modules<Command> {
-    public static String ARROW = "" + TextFormatting.GRAY + TextFormatting.BOLD + " ➜ ", USAGE = "" + TextFormatting.GRAY + TextFormatting.BOLD + "Usage: ";
+public class Commands extends Manager<Command> {
     private static Commands INSTANCE;
     private String prefix;
 
@@ -16,13 +20,15 @@ public class Commands extends Modules<Command> {
     }
 
     public Commands(String prefix) {
+        super(new File(TransRights.getDir(), "Command-config"));
+
         this.prefix = prefix;
 
         this.add(new Prefix());
         this.add(new Reload());
         this.add(new Set());
 
-        this.setInstance();
+        INSTANCE = this;
     }
 
     public String getPrefix() {
@@ -35,23 +41,29 @@ public class Commands extends Modules<Command> {
 
     public void onChatMessage(String message) {
         String[] args = message.split(" ");
+        boolean commandFound = false;
 
         for (Command command : this.get()) {
             for (String alias : command.getAliases()) {
                 if (args[0] == this.prefix + alias) {
-                    command.execute(args.toString().substring(args[0].length()).split(" "));
+                    if (command.execute(args.toString().substring(args[0].length()).split(" "))) commandFound = true;
                 }
             }
         }
+
+        if (!commandFound) ChatHelper.addErrorMessage("Incorrect Usage");
     }
 
     public static Commands getInstance() {
-        if (INSTANCE == null) INSTANCE = new Commands();
-
         return INSTANCE;
     }
 
-    public void setInstance() {
-        INSTANCE = this;
+    @Override
+    public void init() {
+        try (Writer writer = new FileWriter(TransRights.getDir())) {
+            writer.write("prefix : " + this.prefix);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

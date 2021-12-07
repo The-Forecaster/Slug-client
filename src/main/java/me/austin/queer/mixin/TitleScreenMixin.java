@@ -7,21 +7,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.austin.queer.TransRights;
 import me.austin.queer.util.Util;
-import me.austin.queer.util.text.TextFormatting;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 @Mixin(TitleScreen.class)
-public class TitleScreenMixin extends Screen {
-	protected TitleScreenMixin(Text text) {
-		super(text);
-	}
-
-	@Inject(method = "init()V", at = @At("HEAD"))
+public class TitleScreenMixin {
+	@Inject(method = "render", at = @At("TAIL"))
 	private void init(MatrixStack stack, CallbackInfo info) {
-		Util.mc.textRenderer.draw(stack, Text.of(TransRights.NAME), 0f, 0f, TextFormatting.AQUA.getColorIndex());
-		super.init();
+		Util.mc.textRenderer.draw(stack, Text.of(TransRights.NAME), 0f, 0f, Formatting.AQUA.getColorIndex());
 	}
 }

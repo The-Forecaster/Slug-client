@@ -4,10 +4,20 @@ import me.austin.queer.event.Event;
 import me.austin.queer.modules.commands.Command;
 
 public class CommandEvent extends Event {
-    private final Command command;
+    private static CommandEvent INSTANCE = new CommandEvent();
 
-    public CommandEvent(Command command) {
-        this.command = command;
+    private Command command;
+
+    public static CommandEvent get(Command command) {
+        if (INSTANCE == null) {
+            INSTANCE = new CommandEvent();
+        }
+        else if (INSTANCE.isCancelled()) {
+            INSTANCE = new CommandEvent();
+        }
+        INSTANCE.command = command;
+
+        return INSTANCE;
     }
 
     public Command getCommand() {

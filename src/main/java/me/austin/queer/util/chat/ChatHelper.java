@@ -2,8 +2,8 @@ package me.austin.queer.util.chat;
 
 import me.austin.queer.TransRights;
 import me.austin.queer.util.Util;
-import me.austin.queer.util.text.TextFormatting;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public interface ChatHelper extends Util {
     public static void addMessage(String message) {
@@ -11,13 +11,10 @@ public interface ChatHelper extends Util {
     }
 
     public static void addPreMessage(String message) {
-        addMessage(TextFormatting.BOLD + "[" + TransRights.NAME + TextFormatting.AQUA + "]" + message + TextFormatting.WHITE);
+        addMessage(Formatting.BOLD + "[" + TransRights.NAME + Formatting.AQUA + "]" + message + Formatting.WHITE);
     }
 
     public static void addErrorMessage(String message) {
-        addMessage(TextFormatting.BOLD + "[ERROR]"  + TextFormatting.RED + message + TextFormatting.WHITE);
-    }
-
-    public static void add() {
+        addMessage(Formatting.BOLD + "[ERROR]"  + Formatting.RED + message + Formatting.WHITE);
     }
 }

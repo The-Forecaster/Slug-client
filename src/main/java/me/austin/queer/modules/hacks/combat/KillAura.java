@@ -6,14 +6,14 @@ import org.lwjgl.glfw.GLFW;
 
 import me.austin.queer.modules.hacks.Category;
 import me.austin.queer.modules.hacks.Hack;
-import me.austin.queer.modules.setting.settings.DoubleSetting;
 import me.austin.queer.modules.setting.settings.ModeSetting;
 import me.austin.queer.modules.setting.settings.ToggleSetting;
+import me.austin.queer.modules.setting.settings.numbersettings.DoubleSetting;
 import me.austin.queer.util.entity.EntityHelper;
 import me.austin.queer.util.entity.player.PlayerUtil;
 import net.minecraft.entity.LivingEntity;
 
-@Hack.Register(name = "KillAura", description = "Attacks players near you", bind = GLFW.GLFW_KEY_G, category = Category.COMBAT)
+@Hack.Register(name = "Kill-Aura", description = "Attacks players near you", bind = GLFW.GLFW_KEY_G, category = Category.COMBAT)
 public final class KillAura extends Hack {
     public ModeSetting targetting = register(new ModeSetting("Targetting", "How the client determines its target", Targetting.CLOSEST, Targetting.values(), this));
     public DoubleSetting range = register(new DoubleSetting("Range", "How far you can hit your target", 5d, 0d, 18d, this));
@@ -74,7 +74,7 @@ public final class KillAura extends Hack {
         }
     }
 
-    public enum Targetting {
+    private static enum Targetting {
         CLOSEST,
         HEALTH,
         SMART

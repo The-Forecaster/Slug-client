@@ -2,8 +2,6 @@ package me.austin.queer.util.text;
 
 import java.awt.Color;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-
 /** 
  * This is an attempt to rework the base color class, just a little improvement nothing super special
  * @author srgtmooomoo
@@ -50,9 +48,5 @@ public class JColor extends Color {
 	
 	public float getBrightness() {
 		return RGBtoHSB(getRed(),getGreen(),getBlue(),null)[2];
-	}
-	
-	public void glColor() {
-		GlStateManager.color4f(getRed() / 255.0f, getGreen() / 255.0f, getBlue() / 255.0f, getAlpha() / 255.0f);
 	}
 }

@@ -7,12 +7,16 @@ import me.austin.queer.modules.hacks.Hack;
 import me.austin.queer.modules.setting.Setting;
 
 public class ModeSetting extends Setting<Enum<?>> {
-    public List<Enum<?>> values;
+    protected List<Enum<?>> values;
 
     public ModeSetting(String name, String description, Enum<?> defaultValue, Enum<?>[] values, Hack parent) {
         super(name, description, defaultValue, parent);
 
         this.values = Arrays.asList(values);
+    }
+
+    public List<Enum<?>> getModes() {
+        return this.values;
     }
     
     public void cycle() {
