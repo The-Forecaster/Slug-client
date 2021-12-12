@@ -1,14 +1,16 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "me.austin.queer.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [
-    "InventoryScreenMixin",
+    "accessors.AccessorMinecraftClient",
+    "ClientPlayNetworkHandlerMixin",
+    "GameRendererMixin",
     "KeyBoardMixin",
     "MinecraftClientMixin",
-    "ScreenMixin",
     "TitleScreenMixin"
   ],
   "injectors": {

@@ -15,6 +15,15 @@ public class ClassUtil {
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);
         List<File> dirs = new ArrayList<>();
+        for (URL resource = null; resources.hasMoreElements(); resource = resources.nextElement()) {
+            try {
+                dirs.add(new File(resource.toURI()));
+            } 
+            catch (IllegalArgumentException e) {
+                dirs.add(new File(resource.getFile()));
+            }
+        }
+
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
             try {

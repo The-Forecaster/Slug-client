@@ -1,12 +1,12 @@
 package me.austin.queer.util.render;
 
 import me.austin.queer.gui.Component;
-import me.austin.queer.util.Util;
+import me.austin.queer.util.Globals;
 import me.austin.queer.util.client.ColorHelper;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class ScreenHelper extends DrawableHelper implements Util {
+public class ScreenHelper extends DrawableHelper implements Globals {
 	private static ScreenHelper INSTANCE;
 
 	private static ScreenHelper getInstance() {

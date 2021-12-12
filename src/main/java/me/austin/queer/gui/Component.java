@@ -1,9 +1,9 @@
 package me.austin.queer.gui;
 
-import me.austin.queer.util.Util;
+import me.austin.queer.util.Globals;
 import net.minecraft.client.util.math.MatrixStack;
 
-public abstract class Component implements Util {
+public abstract class Component implements Globals {
     protected int x, y;
     protected int width, height;
     protected boolean shown;

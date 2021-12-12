@@ -14,14 +14,14 @@ import me.austin.queer.modules.hacks.combat.KillAura;
 import me.austin.queer.modules.hacks.movement.AntiKnockBack;
 import me.austin.queer.modules.hacks.movement.NoSlow;
 import me.austin.queer.modules.hacks.player.AutoTotem;
-import me.austin.queer.util.Util;
+import me.austin.queer.util.Globals;
 import net.minecraft.network.Packet;
 
-public class Hacks extends Manager<Hack> implements Util {
+public class Hacks extends Manager<Hack> implements Globals {
 	private static Hacks INSTANCE;
 
 	public Hacks() {
-		super(new File(TransRights.getDir(), "Hacks"));
+		super(new File(TransRights.getDir().getAbsolutePath()));
 
 		// client
 		this.get().add(new ClickGui());
@@ -46,10 +46,15 @@ public class Hacks extends Manager<Hack> implements Util {
 
 	public Hack getHackByClass(Class<? extends Hack> clazz) {
 		for (Hack hack : this.get()) {
-			if (hack.getClass() == clazz) {
-				return hack;
-			}
+			if (hack.getClass() == clazz) return hack;
 		} 
+		return null;
+	}
+
+	public Hack getHack(String name) {
+		for (Hack hack : this.get()) {
+			if (hack.getName().toLowerCase().equals(name.toLowerCase())) return hack;
+		}
 		return null;
 	}
 	
@@ -80,14 +85,14 @@ public class Hacks extends Manager<Hack> implements Util {
 	}
 
 	public void onPacketRecieve(Packet<?> packet) {
-		forEachEnabled(hack -> hack.onPacketRecieve(packet));
+		this.forEachEnabled(hack -> hack.onPacketRecieve(packet));
 	}
 	
 	@Override
 	public void init() {
 		this.get().forEach(hack -> hack.getSettings().init());
 		this.get().forEach(hack -> {
-			if (hack.isEnabled()) hack.onEnable();
+			if (mc.world != null && hack.isEnabled()) hack.onEnable();
 		});
 	}
 

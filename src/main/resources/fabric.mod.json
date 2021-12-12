@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "transrights",
-  "version": "${version}",
+  "id": "name",
+  "version": "version",
 
   "name": "Trans Rights!",
   "description": "trans people are valid uwu",
@@ -10,7 +10,7 @@
   ],
   "contact": {
     "homepage": "https://github.com/the-forecaster/Trans-Rights",
-    "sources": "https://github.com/the-forecaster",
+    "github": "https://github.com/the-forecaster",
     "discord": "Austin the Forecaster#0760"
   },
 
@@ -19,20 +19,19 @@
   "environment": "*",
   "entrypoints": {
     "main": [
+      "me.austin.queer.Main"
+    ],
+    "client": [
       "me.austin.queer.TransRights"
     ]
   },
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
   "mixins": [
     "transrights.mixins.json"
-  ],
-
-  "depends": {
-    "fabricloader": ">=0.12.0",
-    "fabric": "*",
-    "minecraft": "1.17.x"
-  },
-  "suggests": {
-    "optifine probably ig": "optifine.net/"
-  },
-  "accessWidener": "transrights.accesswidener"
+  ]
 }

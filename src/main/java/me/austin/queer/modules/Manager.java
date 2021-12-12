@@ -1,8 +1,9 @@
 package me.austin.queer.modules;
 
+import static me.austin.queer.util.Globals.EVENTBUS;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import me.austin.queer.gui.ClientScreens;
@@ -13,7 +14,7 @@ import me.austin.queer.modules.hacks.Hacks;
  * This is meant to be the base for a manager class
  * @author Austin
  */
-public abstract class Manager<T extends INameable> implements Iterable<T> {
+public abstract class Manager<T extends INameable> {
     public static final List<Manager<? extends INameable>> managers = new ArrayList<>();
 
     private List<T> modules = new ArrayList<>();
@@ -21,6 +22,7 @@ public abstract class Manager<T extends INameable> implements Iterable<T> {
 
     protected Manager(File file) {
         this.file = file;
+        EVENTBUS.register(this);
     }
 
     public abstract void init();
@@ -46,18 +48,18 @@ public abstract class Manager<T extends INameable> implements Iterable<T> {
     public static INameable getModuleByClass(Class<?> clazz) {
         for (Manager<? extends INameable> manager : managers) {
             for (INameable module : manager.get()) {
-                if (module.getClass() == clazz) {
+                if (module.getClass().equals(clazz)) {
                     return module;
                 }
             }
-        } 
+        }
         return null;
     }
 
     public static INameable getModuleByName(String name) {
         for (Manager<? extends INameable> manager : managers) {
             for (INameable module : manager.get()) {
-                if (module.getName().toLowerCase().equals(name)) {
+                if (module.getName().toLowerCase().equals(name.toLowerCase())) {
                     return module;
                 }
             }
@@ -84,10 +86,5 @@ public abstract class Manager<T extends INameable> implements Iterable<T> {
     public void unload() {
         this.modules.forEach(mod -> mod = null);
         this.modules = null;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return this.get().iterator();
     }
 }

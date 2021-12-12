@@ -3,44 +3,63 @@ plugins {
 	id 'org.jetbrains.kotlin.jvm' version '1.5.32'
 }
  
-sourceCompatibility = targetCompatibility = 16
+sourceCompatibility = targetCompatibility =  JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
 dependencies {
-	def dependency = { id ->
-		include id
-		modImplementation id
+	Set<String> apiModules = [
+		"fabric-api-base",
+		"fabric-lifecycle-events-v1",
+		"fabric-resource-loader-v0"
+	]
+
+	Set<String> libraries = [
+		"club.minnced:discord-webhooks:${project.discord_webhooks_version}"
+	]
+
+	def includeImpl = { id ->
+		include(implementation(id))
+	}
+
+	def includeModImpl = { id -> 
+		include(modImplementation(fabricApi.module(id, "${project.fabric_version}")))
 	}
 
 	// fabric dependencies
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	// optional dependency, kinda sketch to not use it but i fucked up the gradle so woopee
-	// modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// api dependencies
+	apiModules.forEach {
+		includeModImpl(it)
+	}
 	// TR dependencies
-	dependency "club.minnced:java-discord-rpc:${project.discordrpc_version}"
-	dependency "org.reflections:reflections:${project.reflections_version}"
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+	libraries.forEach {
+		includeImpl(it)
 	}
 }
 
-repositories {
-	jcenter()
-	mavenCentral()
+processResources {
+	inputs.property "version", project.mod_version
+
+	filesMatching("fabric.mod.json") {
+		expand "name": project.archives_base_name
+		expand "version": project.mod_version
+	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release.set(16)	
+task {
+	withType(JavaCompile).configureEach {
+		it.options.release.set(17)
+    }
+
+    withType(KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = 17
+        }
+    }
 }

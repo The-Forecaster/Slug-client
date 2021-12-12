@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 
+import com.google.common.eventbus.Subscribe;
+
+import org.lwjgl.glfw.GLFW;
+
 import me.austin.queer.TransRights;
+import me.austin.queer.event.system.KeyEvent;
+import me.austin.queer.mixin.accessors.AccessorMinecraftClient;
 import me.austin.queer.modules.Manager;
 import me.austin.queer.modules.commands.client.Prefix;
 import me.austin.queer.modules.commands.client.Reload;
 import me.austin.queer.modules.commands.hack.Set;
-import me.austin.queer.util.chat.ChatHelper;
+import me.austin.queer.util.Globals;
 
-public class Commands extends Manager<Command> {
+public class Commands extends Manager<Command> implements Globals {
     private static Commands INSTANCE;
     private String prefix;
 
@@ -41,17 +47,19 @@ public class Commands extends Manager<Command> {
 
     public void onChatMessage(String message) {
         String[] args = message.split(" ");
-        boolean commandFound = false;
 
         for (Command command : this.get()) {
             for (String alias : command.getAliases()) {
                 if (args[0] == this.prefix + alias) {
-                    if (command.execute(args.toString().substring(args[0].length()).split(" "))) commandFound = true;
+                    try {
+                        command.execute(args.toString().substring(args[0].length()).split(" "));
+                    }
+                    catch (CommandException e) {
+                        e.addtoChat();
+                    }
                 }
             }
         }
-
-        if (!commandFound) ChatHelper.addErrorMessage("Incorrect Usage");
     }
 
     public static Commands getInstance() {
@@ -62,8 +70,16 @@ public class Commands extends Manager<Command> {
     public void init() {
         try (Writer writer = new FileWriter(TransRights.getDir())) {
             writer.write("prefix : " + this.prefix);
-        } catch(Exception e) {
+        } 
+        catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onKeyPress(KeyEvent event) {
+        if (GLFW.glfwGetKeyName(event.getKey(), GLFW.glfwGetKeyScancode(event.getKey())).equals(prefix)) {
+            ((AccessorMinecraftClient) mc).openChatScreen(mc.inGameHud.getChatHud().getMessageHistory().toString());
         }
     }
 }

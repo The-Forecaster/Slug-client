@@ -19,8 +19,8 @@ public class TickEvent extends Event {
         private static Post INSTANCE = new Post();
 
         public static Post get() {
-            if (INSTANCE == null || INSTANCE.isCancelled()) {
-                INSTANCE = new TickEvent.Post();
+            if (INSTANCE.isCancelled()) {
+                INSTANCE.setCancelled(false);
             }
 
             return INSTANCE;

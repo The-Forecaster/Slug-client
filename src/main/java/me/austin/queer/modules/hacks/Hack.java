@@ -13,23 +13,22 @@ import me.austin.queer.modules.setting.Setting;
 import me.austin.queer.modules.setting.Settings;
 import me.austin.queer.modules.setting.settings.KeyBindSetting;
 import me.austin.queer.modules.setting.settings.ToggleSetting;
-import me.austin.queer.util.Util;
+import me.austin.queer.util.Globals;
 import net.minecraft.network.Packet;
 
-public abstract class Hack extends Nameable implements Util {
+public abstract class Hack extends Nameable implements Globals {
 	private final Category category;
 	private final Settings settings;
-	private final KeyBindSetting bind;
-	private final ToggleSetting enabled = new ToggleSetting("Enabled", "Controls whether the hack is enabled or not", false, this);
+	private final KeyBindSetting bind = register(new KeyBindSetting(0));
+	private final ToggleSetting enabled = register(new ToggleSetting("Enabled", "Controls whether the hack is enabled or not", false));
 
-	public Hack(Register info) {
-		this(info.name(), info.description(), info.category(), info.bind());
+	protected Hack(Register info) {
+		this(info.name(), info.description(), info.category());
 	}
 
-	public Hack(String name, String description, Category category, int bind) {
+	public Hack(String name, String description, Category category) {
 		super(name, description, new File(TransRights.getDir(), name));
 		this.category = category;
-		this.bind = new KeyBindSetting(bind, this);
 		this.settings = new Settings(this);
 	}
 	
@@ -58,12 +57,12 @@ public abstract class Hack extends Nameable implements Util {
 	public final void toggle() {
 		if (this.isEnabled()) {
 			this.disable();
-			TransRights.EVENTBUS.register(this);
-			TransRights.EVENTBUS.post(ToggleEvent.get(this));
+			EVENTBUS.register(this);
+			EVENTBUS.post(ToggleEvent.get(this));
 		} else {
 			this.enable();
-			TransRights.EVENTBUS.unregister(this);
-			TransRights.EVENTBUS.post(ToggleEvent.get(this));
+			EVENTBUS.unregister(this);
+			EVENTBUS.post(ToggleEvent.get(this));
 		}
 	}
 	
@@ -95,7 +94,6 @@ public abstract class Hack extends Nameable implements Util {
 	/**
 	 * @param name name of the hack
 	 * @param description description of the hack
-	 * @param bind optional, sets the bind of the hack, default for this is no bind or 0
 	 * @param category category of the client
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
@@ -103,7 +101,6 @@ public abstract class Hack extends Nameable implements Util {
 	public static @interface Register {
 		String name();
 		String description();
-		int bind() default KeyBindSetting.NONE;
 		Category category();
 	}
 }
