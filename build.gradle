@@ -2,7 +2,7 @@ plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'org.jetbrains.kotlin.jvm' version '1.5.32'
 }
- 
+
 sourceCompatibility = targetCompatibility =  JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
@@ -11,9 +11,7 @@ group = project.maven_group
 
 dependencies {
 	Set<String> apiModules = [
-		"fabric-api-base",
-		"fabric-lifecycle-events-v1",
-		"fabric-resource-loader-v0"
+		"fabric-api-base"
 	]
 
 	Set<String> libraries = [
@@ -43,6 +41,16 @@ dependencies {
 	}
 }
 
+jar {
+	manifest {
+		attributes(
+			'Main-Class': 'me.austin.queer.Main',
+			'Implementation-Title': project.archives_base_name,
+            'Implementation-Version': project.version
+		)
+	}
+}
+
 processResources {
 	inputs.property "version", project.mod_version
 
@@ -52,12 +60,17 @@ processResources {
 	}
 }
 
+java {
+	withSourcesJar()
+}
+
 task {
 	withType(JavaCompile).configureEach {
 		it.options.release.set(17)
     }
 
     withType(KotlinCompile).configureEach {
+		it.options.release.set(17)
         kotlinOptions {
             jvmTarget = 17
         }
