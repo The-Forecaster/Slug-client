@@ -1,73 +1,51 @@
 package me.austin.queer;
 
 import java.io.File;
+import java.nio.file.Paths;
 
-import com.google.common.eventbus.EventBus;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import me.austin.queer.event.Events;
-import me.austin.queer.modules.Manager;
+import me.austin.queer.util.Globals;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 
-public class TransRights implements ModInitializer {
-	public static final String NAME = "Trans-Rights", VERSION = "0.0.1";
-	public static final Logger LOGGER = LogManager.getLogger(NAME);
-
-	public static EventBus EVENTBUS;
-	public static Events EVENTS;
-	private static TransRights INSTANCE;
+public class TransRights implements ModInitializer, Globals {
+	public static final String NAME = "Trans-Rights", VERSION = "v0.1.0";
+	
+	private static TransRights instance;
 	private static File maindir;
-	private static final Object sync = new Object();
-	
-	static {
-		INSTANCE = new TransRights();
+
+	public TransRights() {
+		maindir = Paths.get(mc.runDirectory.getPath(), NAME + "/").toFile();
+		if (!maindir.exists()) maindir.mkdirs();
 	}
 
-	public static final void printLog(String message) {
-		synchronized (sync) {
-			LOGGER.log(Level.INFO, message);
-		}
-	}
-
-	public static final TransRights getInstance() {
-		return INSTANCE;
-	}
-
-	private static final void load() {
-		EVENTBUS = new EventBus();
-		EVENTS = new Events();
-		maindir = new File(FabricLoader.getInstance().getGameDir().toFile(), NAME);
-		maindir.mkdir();
-		Manager.loadManagers();
-		printLog(NAME + " has been loaded");
-	}
-
-	private static final void unload() {
-		EVENTBUS = null;
-		EVENTS = null;
-		Manager.unloadManagers();
-		printLog(NAME + " has been unloaded");
-	}
-	
-	public static final void reload() {
-		unload();
-		load();
-		printLog(NAME + " has been reloaded");
-	}
-
-	public static final File getDir() {
+	public static File getDir() {
 		return maindir;
 	}
-	
+
+	public static TransRights getInstance() {
+		return instance;
+	}
+
+	public static void load() {
+		
+	}
+
+	public static void unload() {
+		// put loader stuff in here
+	}
+
+	private static Runnable save = () -> {
+		LOGGER.info(NAME + "has successfully saved.");
+	};
+
 	@Override
 	public final void onInitialize() {
-		long initStartTime = System.currentTimeMillis();
+		var initStartTime = System.currentTimeMillis();
+
+		Runtime.getRuntime().addShutdownHook(new Thread(save));
 		load();
-		printLog(NAME + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
+
+		// init stuff here
+		LOGGER.info(NAME + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
 	}
 }
 

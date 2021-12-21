@@ -1,18 +1,22 @@
 package me.austin.queer.util;
 
-import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import me.austin.queer.TransRights;
+import me.zero.alpine.bus.EventManager;
 import net.minecraft.client.MinecraftClient;
 
+/**
+ * This interface contains the global variables for the client
+ * @author Austin 
+ */
 public interface Globals {
-	static final MinecraftClient mc = MinecraftClient.getInstance();
-	static final Random rand = new Random();
-	
-	static boolean nullCheck() {
-		return mc.world == null;
-	}
+	MinecraftClient mc = MinecraftClient.getInstance();
+	Logger LOGGER = LogManager.getLogger(TransRights.NAME);
+	EventManager EVENTBUS = new EventManager();
 
-	static boolean fullNullCheck() {
-		return mc.world == null || mc.player == null;
+	default MinecraftClient getMinecraft() {
+		return MinecraftClient.getInstance();
 	}
 }
