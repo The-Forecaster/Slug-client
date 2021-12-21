@@ -3,60 +3,51 @@ package me.austin.queer;
 import static me.austin.queer.util.Globals.LOGGER;
 
 import java.io.File;
+import java.nio.file.Paths;
 
-import com.google.common.eventbus.EventBus;
-
-import org.apache.logging.log4j.Level;
-
-import me.austin.queer.modules.Manager;
+import me.austin.queer.util.Globals;
 import net.fabricmc.api.ModInitializer;
 
-public class TransRights implements ModInitializer {
-	public static final String NAME = "Trans-Rights", VERSION = "0.0.1";
-	public static final EventBus EVENT_BUS = new EventBus();
-
-	private static TransRights INSTANCE;
+public class TransRights implements ModInitializer, Globals {
+	public static final String NAME = "Trans-Rights", VERSION = "v0.1.0";
+	
+	private static TransRights instance;
 	private static File maindir;
-	
+
 	public TransRights() {
-		INSTANCE = this;
-	}
-
-	public static void printLog(String message) {
-		LOGGER.log(Level.INFO, message);
-	}
-
-	public static TransRights getInstance() {
-		return INSTANCE;
-	}
-
-	private static void load() {
-		maindir = new File(getInstance().toString(), NAME);
-		maindir.mkdir();
-		Manager.loadManagers();
-		printLog(NAME + " has been loaded");
-	}
-
-	private static void unload() {
-		Manager.unloadManagers();
-		printLog(NAME + " has been unloaded");
-	}
-	
-	public static void reload() {
-		unload();
-		load();
-		printLog(NAME + " has been reloaded");
+		maindir = Paths.get(mc.runDirectory.getPath(), NAME + "/").toFile();
+		if (!maindir.exists()) maindir.mkdirs();
 	}
 
 	public static File getDir() {
 		return maindir;
 	}
-	
+
+	public static TransRights getInstance() {
+		return instance;
+	}
+
+	public static void load() {
+		
+	}
+
+	public static void unload() {
+		// put loader stuff in here
+	}
+
+	private static Runnable save = () -> {
+		LOGGER.info(NAME + "has successfully saved.");
+	};
+
 	@Override
 	public final void onInitialize() {
 		var initStartTime = System.currentTimeMillis();
+
+		Runtime.getRuntime().addShutdownHook(new Thread(save));
 		load();
-		printLog(NAME + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
+
+		// init stuff here
+		LOGGER.info(NAME + " initialized in " + (System.currentTimeMillis() - initStartTime) + " ms.");
 	}
 }
 

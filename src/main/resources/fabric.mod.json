@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "name",
-  "version": "version",
+  "id": "trans-rights",
+  "version": "${version}",
 
   "name": "Trans Rights!",
   "description": "trans people are valid uwu",
@@ -26,12 +26,11 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"
   },
   "mixins": [
     "transrights.mixins.json"
-  ]
+  ],
+  "accessWidener": "transrights.accesswidener"
 }

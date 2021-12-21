@@ -1,25 +1,22 @@
 package me.austin.queer.util;
 
-import com.google.common.eventbus.EventBus;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import me.austin.queer.TransRights;
+import me.zero.alpine.bus.EventManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 
+/**
+ * This interface contains the global variables for the client
+ * @author Austin 
+ */
 public interface Globals {
 	MinecraftClient mc = MinecraftClient.getInstance();
-	ClientPlayerEntity player = mc.player;
-	EventBus EVENTBUS = new EventBus();
 	Logger LOGGER = LogManager.getLogger(TransRights.NAME);
-	
-	static boolean nullCheck() {
-		return mc.world == null;
-	}
+	EventManager EVENTBUS = new EventManager();
 
-	static boolean fullNullCheck() {
-        return mc != null && mc.world != null && mc.player != null;
-    }
+	default MinecraftClient getMinecraft() {
+		return MinecraftClient.getInstance();
+	}
 }

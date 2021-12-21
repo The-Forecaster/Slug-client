@@ -1,29 +1,49 @@
 plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
-	id 'org.jetbrains.kotlin.jvm' version '1.5.32'
+	id 'org.jetbrains.kotlin.jvm' version '1.6.0'
+	id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
-sourceCompatibility = targetCompatibility =  JavaVersion.VERSION_17
-
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+loom {
+ 	accessWidenerPath = file("src/main/resources/transrights.accesswidener")
+}
+
+repositories {
+	jcenter()
+	maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+    maven {
+        name = 'impactdevelopment-repo'
+        url = 'https://impactdevelopment.github.io/maven/'
+    }
+	maven {
+        name = 'jitpack.io'
+        url =  'https://jitpack.io'
+    }
+}
+
 dependencies {
 	Set<String> apiModules = [
-		"fabric-api-base"
+		"fabric-api-base",
+		"fabric-resource-loader-v0",
+		"fabric-command-api-v1"
 	]
 
 	Set<String> libraries = [
-		"club.minnced:discord-webhooks:${project.discord_webhooks_version}"
+		"com.github.ZeroMemes:Alpine:${project.alpine_version}",
+		"club.minnced:java-discord-rpc:${project.discord_rpc_version}",
+		"org.reflections:reflections:${reflections_version}"
 	]
 
-	def includeImpl = { id ->
-		include(implementation(id))
-	}
-
-	def includeModImpl = { id -> 
-		include(modImplementation(fabricApi.module(id, "${project.fabric_version}")))
+	def shadowimpl = {id ->
+		shadow(implementation(id))
 	}
 
 	// fabric dependencies
@@ -33,46 +53,54 @@ dependencies {
 
 	// api dependencies
 	apiModules.forEach {
-		includeModImpl(it)
+		include(modImplementation(fabricApi.module(it, "${project.fabric_version}")))
 	}
+  
 	// TR dependencies
 	libraries.forEach {
-		includeImpl(it)
+		shadowimpl(it)
 	}
 }
 
 jar {
+	from("LICENSE")
+
 	manifest {
 		attributes(
-			'Main-Class': 'me.austin.queer.Main',
-			'Implementation-Title': project.archives_base_name,
-            'Implementation-Version': project.version
+			'Main-Class': 'me.austin.queer.Main.java',
 		)
 	}
 }
 
-processResources {
-	inputs.property "version", project.mod_version
-
-	filesMatching("fabric.mod.json") {
-		expand "name": project.archives_base_name
-		expand "version": project.mod_version
-	}
+shadowJar {
+	configurations = [ project.configurations.shadow ]
 }
 
-java {
-	withSourcesJar()
+remapJar {
+	dependsOn shadowJar
+	input.set(shadowJar.archiveFile)
 }
 
 task {
 	withType(JavaCompile).configureEach {
+		options.encoding = "UTF-8"
 		it.options.release.set(17)
-    }
+	}
 
-    withType(KotlinCompile).configureEach {
-		it.options.release.set(17)
-        kotlinOptions {
-            jvmTarget = 17
-        }
-    }
+	withType(KotlinCompile).configureEach {
+		sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+		
+		kotlinOptions {
+			jvmTarget = "17"
+			
+		}
+	}
+
+	processResources {
+		inputs.property "version", project.mod_version
+
+		filesMatching("fabric.mod.json") {
+			expand "version": project.mod_version
+		}
+	}
 }
