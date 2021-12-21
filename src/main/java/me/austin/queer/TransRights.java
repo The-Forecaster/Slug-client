@@ -1,5 +1,7 @@
 package me.austin.queer;
 
+import static me.austin.queer.util.Globals.LOGGER;
+
 import java.io.File;
 import java.nio.file.Paths;
 

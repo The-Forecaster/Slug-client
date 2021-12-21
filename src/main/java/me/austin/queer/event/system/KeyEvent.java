@@ -9,9 +9,7 @@ public class KeyEvent extends Event {
     private int scanCode;
 
     public static KeyEvent get(int key, int scanCode) {
-        if (INSTANCE == null) {
-            INSTANCE = new KeyEvent();
-        } else if (INSTANCE.isCancelled()) {
+        if (INSTANCE.isCancelled()) {
             INSTANCE = new KeyEvent();
         }
         INSTANCE.key = key;

@@ -9,7 +9,7 @@ public class Set extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
-        return false;
+    public void execute(String[] args) {
+        return;
     }
 }

@@ -11,6 +11,13 @@ public class Settings extends Manager<Setting<?>> {
         super(parent.getFile());
     }
 
+    public Setting<?> getSetting(String name) {
+        for (Setting<?> setting : this.get()) {
+            if (setting.getName().toLowerCase().equals(name.toLowerCase())) return setting;
+        }
+        return null;
+    }
+
     @Override
     public void init() {
         try {

@@ -1,6 +1,7 @@
 package me.austin.queer.modules.commands.client;
 
 import me.austin.queer.modules.commands.Command;
+import me.austin.queer.modules.commands.CommandException;
 import me.austin.queer.modules.commands.Commands;
 import me.austin.queer.util.chat.ChatHelper;
 
@@ -11,12 +12,13 @@ public class Prefix extends Command {
     }
 
     @Override
-    public boolean execute(String[] args) {
+    public void execute(String[] args) {
         if (args[1].length() == 1) {
             Commands.getInstance().setPrefix(args[1]);
             ChatHelper.addPreMessage("Changed the prefix to: " + args[1]);
-            return true;
         }
-        return false;
+        else {
+            throw new CommandException("prefix <symbol>", CommandException.Type.USAGE);
+        }
     }
 }

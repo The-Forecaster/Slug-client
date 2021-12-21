@@ -8,23 +8,23 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.austin.queer.modules.Nameable;
-import me.austin.queer.util.Util;
+import me.austin.queer.util.Globals;
 import net.minecraft.util.Formatting;
 
-public abstract class Command extends Nameable implements Util {
+public abstract class Command extends Nameable implements Globals {
     private final List<String> aliases;
     public static final String ARROW = "" + Formatting.GRAY + Formatting.BOLD + " ➜ ", USAGE = "" + Formatting.GRAY + Formatting.BOLD + "Usage: ";
 
-    public Command(Register info) {
+    protected Command(Register info) {
         this(info.name(), info.description(), info.aliases());
     }
 
-    public Command(String name, String description, String[] aliases) {
+    private Command(String name, String description, String[] aliases) {
         super(name, description, null);
         this.aliases = Arrays.asList(aliases);
     }
     
-    public abstract boolean execute(String[] args);
+    public abstract void execute(String[] args) throws CommandException;
 
     public List<String> getAliases() {
         return aliases;
