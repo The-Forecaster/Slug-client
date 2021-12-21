@@ -19,9 +19,6 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.austin.queer.Main"
-    ],
-    "client": [
       "me.austin.queer.TransRights"
     ]
   },

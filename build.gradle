@@ -55,7 +55,6 @@ dependencies {
 	apiModules.forEach {
 		include(modImplementation(fabricApi.module(it, "${project.fabric_version}")))
 	}
-  
 	// TR dependencies
 	libraries.forEach {
 		shadowimpl(it)
