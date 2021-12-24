@@ -15,32 +15,44 @@ import me.austin.queer.events.*;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.Packet;
+import net.minecraft.network.listener.PacketListener;
 
 
 // If ur using vscode, this file is gonna produce errors, don't worry about it
 // All of this works in a build environment and in the application
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin implements Globals {
-    @Shadow @Final private NetworkSide side;
 
     @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
-    private void onChannelRead(ChannelHandlerContext context, Packet<?> packet, CallbackInfo info) {
-        if (this.side != NetworkSide.CLIENTBOUND) return;
-
+    private void beforeRead(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo info) {
         var event = new PacketEvent.Recieve(packet);
 
         EVENTBUS.post(event);
         if (event.isCancelled()) info.cancel();
     }
 
-    @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
-    private void beforeSend(Packet<?> packet, CallbackInfo info) {
-        if (this.side != NetworkSide.CLIENTBOUND) return;
+    @Inject(method = "channelRead0", at = @At("TAIL"), cancellable = true)
+    private void afterRead(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo info) {
+        var event = new PacketEvent.PostRecieve(packet);
 
+        EVENTBUS.post(event);
+        if (event.isCancelled()) info.cancel();
+    }
+
+    @Inject(at = @At("HEAD"), method = "send", cancellable = true)
+    private void beforeSend(Packet<?> packet, CallbackInfo info) {;
         var event = new PacketEvent.Send(packet);
 
         EVENTBUS.post(event);
         if (event.isCancelled()) info.cancel();
+    }
+
+    @Inject(at = @At("TAIL"), method = "send", cancellable = true)
+    private void afterSend(Packet<?> packet, CallbackInfo info) {
+        var event = new PacketEvent.Send(packet);
+
+        EVENTBUS.post(event);
+        if (event.isCancelled()) info.cancel(); 
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
