@@ -1,4 +1,4 @@
-<h1 align="center">" Queer Client
+<h1 align="center"> Queer Client
 <p> Minecraft Hack client/Utility Mod
   Don't take this too seriously
   
