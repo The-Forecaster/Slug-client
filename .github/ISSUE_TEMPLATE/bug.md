@@ -1,7 +1,7 @@
 ---
 name:  Bug
 about: File a bug/issue
-title: '[BUG]'
+title: '[BUG] <title>'
 labels: [Bug]
 assignees: ''
 
