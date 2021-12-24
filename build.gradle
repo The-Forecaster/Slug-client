@@ -1,10 +1,10 @@
 plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
-	id 'org.jetbrains.kotlin.jvm' version '1.6.0'
-	id 'com.github.johnrengelman.shadow' version '7.1.0'
+	id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+	id 'com.github.johnrengelman.shadow' version '7.1.1'
 }
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = targetCompatibility = project.java_version as int
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
@@ -15,25 +15,22 @@ loom {
 
 repositories {
 	jcenter()
-	maven {
-        name = 'Fabric'
-        url = 'https://maven.fabricmc.net/'
-    }
-    maven {
-        name = 'impactdevelopment-repo'
-        url = 'https://impactdevelopment.github.io/maven/'
-    }
+
 	maven {
         name = 'jitpack.io'
         url =  'https://jitpack.io'
     }
+	
+	maven {
+		name = 'impactdevelopment-repo'
+		url = 'https://impactdevelopment.github.io/maven/'
+	}
 }
 
 dependencies {
 	Set<String> apiModules = [
 		"fabric-api-base",
-		"fabric-resource-loader-v0",
-		"fabric-command-api-v1"
+		"fabric-resource-loader-v0"
 	]
 
 	Set<String> libraries = [
@@ -42,32 +39,37 @@ dependencies {
 		"org.reflections:reflections:${reflections_version}"
 	]
 
-	def shadowimpl = {id ->
-		shadow(implementation(id))
-	}
-
 	// fabric dependencies
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	include(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"))
 
 	// api dependencies
 	apiModules.forEach {
 		include(modImplementation(fabricApi.module(it, "${project.fabric_version}")))
 	}
+
 	// TR dependencies
 	libraries.forEach {
-		shadowimpl(it)
+		shadow(implementation(it))
 	}
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = "sources"
+	from sourceSets.main.allSource
+}
+
 jar {
-	from("LICENSE")
+	from("LICENSE") {
+		rename { 
+			"${ it }-${ project.archivesBaseName }" 
+		}
+	}
 
 	manifest {
-		attributes(
-			'Main-Class': 'me.austin.queer.Main.java',
-		)
+		attributes("Main-Class" : "me.austin.queer.Main")
 	}
 }
 
@@ -80,26 +82,21 @@ remapJar {
 	input.set(shadowJar.archiveFile)
 }
 
-task {
-	withType(JavaCompile).configureEach {
-		options.encoding = "UTF-8"
-		it.options.release.set(17)
-	}
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release.set(project.java_version as int)
+}
 
-	withType(KotlinCompile).configureEach {
-		sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
-		
-		kotlinOptions {
-			jvmTarget = "17"
-			
-		}
-	}
+compileKotlin {
+	kotlinOptions {
+        jvmTarget = project.java_version as String
+    }
+}
 
-	processResources {
-		inputs.property "version", project.mod_version
+processResources {
+	inputs.property "version", project.mod_version
 
-		filesMatching("fabric.mod.json") {
-			expand "version": project.mod_version
-		}
+	filesMatching("fabric.mod.json") {
+		expand "version": project.mod_version
 	}
 }

@@ -3,7 +3,7 @@ package me.austin.queer;
 import java.io.File;
 import java.nio.file.Paths;
 
-import me.austin.queer.util.Globals;
+import me.austin.queer.misc.Globals;
 import net.fabricmc.api.ModInitializer;
 
 public class TransRights implements ModInitializer, Globals {
@@ -26,7 +26,7 @@ public class TransRights implements ModInitializer, Globals {
 	}
 
 	public static void load() {
-		
+		// loader stuff here
 	}
 
 	public static void unload() {
