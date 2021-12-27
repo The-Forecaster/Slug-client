@@ -34,9 +34,7 @@ dependencies {
 	]
 
 	Set<String> libraries = [
-		"com.github.ZeroMemes:Alpine:${project.alpine_version}",
-		"club.minnced:java-discord-rpc:${project.discord_rpc_version}",
-		"org.reflections:reflections:${reflections_version}"
+		"com.github.ZeroMemes:Alpine:${project.alpine_version}"
 	]
 
 	// fabric dependencies

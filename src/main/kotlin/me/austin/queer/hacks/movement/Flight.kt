@@ -4,8 +4,8 @@ import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.Listener
 
 import me.austin.queer.misc.Globals.mc
-import me.austin.queer.feature.hack.Hack
-import me.austin.queer.events.TickEvent
+import me.austin.queer.hacks.Hack
+import me.austin.queer.event.events.TickEvent
 import me.austin.queer.event.events.PacketEvent
 
 import net.minecraft.entity.player.PlayerAbilities
