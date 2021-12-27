@@ -7,7 +7,7 @@ import me.austin.queer.misc.Globals;
 import net.fabricmc.api.ModInitializer;
 
 public class TransRights implements ModInitializer, Globals {
-	public static final String NAME = "Trans-Rights", VERSION = "v0.1.0";
+	public static final String NAME = "Trans-Rights", VERSION = "v0.2.0";
 	
 	private static TransRights instance;
 	private static File maindir;
