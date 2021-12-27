@@ -3,7 +3,7 @@ package me.austin.queer.event;
 import me.zero.alpine.event.EventState;
 import me.zero.alpine.event.type.ICancellable;
 
-public class Event implements ICancellable {
+public abstract class Event implements ICancellable {
     protected final EventState stage;
     private final Priority priority;
     private boolean cancelled = false;
@@ -12,7 +12,7 @@ public class Event implements ICancellable {
         this(stage, Priority.getPriority(priority));
     }
 
-    public Event(EventState stage, Priority priority) {
+    protected Event(EventState stage, Priority priority) {
         this.stage = stage;
         this.priority = priority;
     }

@@ -6,7 +6,7 @@ import me.zero.alpine.listener.Listener
 import me.austin.queer.misc.Globals.mc
 import me.austin.queer.feature.hack.Hack
 import me.austin.queer.events.TickEvent
-import me.austin.queer.events.PacketEvent
+import me.austin.queer.event.events.PacketEvent
 
 import net.minecraft.entity.player.PlayerAbilities
 import net.minecraft.entity.EntityPose
@@ -30,38 +30,15 @@ private fun setAbilities(speed: Float) {
 }
 
 private fun setVelocity(speed: Float) {
-    var forward = mc.options.keyForward.isPressed
-    var left = mc.options.keyLeft.isPressed
-    var right = mc.options.keyRight.isPressed
-    var back = mc.options.keyBack.isPressed
-    var jump = mc.options.keyJump.isPressed
-    var crouch = mc.options.keySneak.isPressed
+    mc.player?.setVelocity(0.0, 0.0, 0.0)
 
-    var forwardspeed = when (forward and back) {
-        true -> 0
-        false -> {
-            if (forward) speed
-            else -speed
-        }
-    }
+    var initialVelocity = mc.player?.getVelocity()
+    var sped = speed.toDouble()
 
-    val leftspeed = when (left and right) {
-        true -> 0
-        false -> {
-            if (left) speed
-            else -speed
-        }
-    }
+    if (mc.options.keyJump.isPressed()) mc.player?.setVelocity(initialVelocity?.add(0.0, 5.0, 0.0))
+    if (mc.options.keySneak.isPressed()) mc.player?.setVelocity(initialVelocity?.subtract(0.0, 5.0, 0.0))
 
-    val upspeed = when (jump and crouch) {
-        true -> 0
-        false -> {
-            if (jump) speed
-            else -speed
-        }
-    }
-
-    mc.player?.setVelocity(forwardspeed.toDouble(), leftspeed.toDouble(), upspeed.toDouble())
+    mc.player?.setVelocity(sped, sped, sped);
 }
 
 private fun setAbilities(packet: Packet<*>) {
@@ -101,23 +78,24 @@ public object Flight : Hack("Flight") {
 
     @EventHandler
     private val packetlistener = Listener<PacketEvent.Recieve> ({
-        if (it.packet !is PlayerAbilitiesS2CPacket) return@Listener
+        if (it.PACKET !is PlayerAbilitiesS2CPacket) return@Listener
 
         when (mode) {
             FlightMode.VANILLA -> {
-                setAbilities(it.packet)
+                setAbilities(it.PACKET)
             }
             FlightMode.VELOCITY -> {
-                setVelocity(it.packet)
+                setVelocity(it.PACKET)
             }
             FlightMode.BOTH -> {
-                setAbilities(it.packet)
-                setVelocity(it.packet)
+                setAbilities(it.PACKET)
+                setVelocity(it.PACKET)
             }
         }
     })
 
     override fun onDisable() {
         mc.player?.abilities?.allowFlying = false
+        mc.player?.abilities?.flySpeed = 0.05f
     } 
 }

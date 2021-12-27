@@ -34,6 +34,8 @@ public class TransRights implements ModInitializer, Globals {
 	}
 
 	private static Runnable save = () -> {
+		// put save stuff here
+
 		LOGGER.info(NAME + "has successfully saved.");
 	};
 
