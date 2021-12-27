@@ -2,20 +2,16 @@ package me.austin.queer.mixin;
 
 import java.io.IOException;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.netty.channel.ChannelHandlerContext;
+import me.austin.queer.event.events.PacketEvent;
 import me.austin.queer.misc.Globals;
-import me.austin.queer.events.*;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
 import net.minecraft.network.Packet;
-import net.minecraft.network.listener.PacketListener;
 
 
 // If ur using vscode, this file is gonna produce errors, don't worry about it

@@ -6,10 +6,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javassist.tools.Callback;
-import me.austin.queer.events.*;
+import me.austin.queer.event.events.TickEvent;
 import me.austin.queer.misc.Globals;
-import me.austin.queer.TransRights;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 
@@ -30,9 +28,6 @@ public class MinecraftClientMixin implements Globals{
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void onTick(CallbackInfo info) {
-        profiler.push(TransRights.NAME + "tick");
-        profiler.pop();
-
         var event = new TickEvent.Post(mc.player != null && mc.world != null);
 
         EVENTBUS.post(event);
