@@ -5,6 +5,7 @@ import me.zero.alpine.listener.Listener
 
 import me.austin.queer.misc.Globals.mc
 import me.austin.queer.hacks.Hack
+import me.austin.queer.hacks.Category
 import me.austin.queer.event.events.TickEvent
 import me.austin.queer.event.events.PacketEvent
 
@@ -46,14 +47,16 @@ private fun setAbilities(packet: Packet<*>) {
 }
 
 private fun setVelocity(packet: Packet<*>) {
+    if (packet is EntityVelocityUpdateS2CPacket)
+
     mc.networkHandler?.sendPacket(packet)
 }
 
-public object Flight : Hack("Flight") {
+public object Flight : Hack("Flight", Category.MOVEMENT) {
     private var mode = FlightMode.VANILLA
     private var speed = 10.0f
 
-    fun Flight() {
+    init {
         settings.put("Mode", mode)
         settings.put("Flight-speed", speed)
     }

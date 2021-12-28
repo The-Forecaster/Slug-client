@@ -20,11 +20,6 @@ repositories {
         name = 'jitpack.io'
         url =  'https://jitpack.io'
     }
-	
-	maven {
-		name = 'impactdevelopment-repo'
-		url = 'https://impactdevelopment.github.io/maven/'
-	}
 }
 
 dependencies {
@@ -41,6 +36,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation("net.fabricmc:fabric-language-kotlin:1.7.1+kotlin.1.6.10")
 	include(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"))
 
 	// api dependencies

@@ -1,12 +1,11 @@
 <h1 align="center"> Queer Client
 <p> Minecraft Hack client/Utility Mod
-  Don't take this too seriously
-
+<p>  Don't take this too seriously
 
   ## Credits
   - Bailey, or the person who made the original Queer Client and is my inspiration for creating this
   - Travis, https://github.com/TrvsF, really cool dude who let me work on Wurst+3 with him and others, gave me a start into coding
-  - Everyone I've met in anarchy
+  - Everyone not named here that I've met in anarchy
 
   ## Usage
   ### General usage
