@@ -25,11 +25,11 @@ import me.austin.queer.manager.managers.*;
 // This will produce errors in some IDEs, it builds and works in theory
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
-    @Shadow private CommandDispatcher<CommandSource> dispatcher;
+    @Shadow private CommandDispatcher<CommandSource> commandDispatcher;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
-        CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) dispatcher);
+        CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
     }
 
     @Inject(method = "onExplosion", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/thread/ThreadExecutor;)V", shift = At.Shift.AFTER))

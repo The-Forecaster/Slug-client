@@ -25,8 +25,6 @@ repositories {
 
 dependencies {
 	Set<String> apiModules = [
-		"fabric-api-base",
-		"fabric-resource-loader-v0"
 	]
 
 	Set<String> libraries = [
@@ -49,8 +47,9 @@ dependencies {
 	}
 }
 
-java {
-	withSourcesJar()
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = "sources"
+	from sourceSets.main.allSource
 }
 
 jar {
