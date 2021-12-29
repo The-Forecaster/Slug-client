@@ -19,5 +19,5 @@ public class ClientPlayNetworkHandlerMixin {
 
         EVENTBUS.post(event);
         if (event.isCancelled()) info.cancel();
-    }
+    } 
 }
