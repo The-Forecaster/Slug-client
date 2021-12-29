@@ -1,13 +1,14 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
-	id 'org.jetbrains.kotlin.jvm' version '1.6.10'
-	id 'com.github.johnrengelman.shadow' version '7.1.1'
+	id "fabric-loom" version "0.10-SNAPSHOT"
+	id "org.jetbrains.kotlin.jvm" version "1.6.10"
+	id "com.github.johnrengelman.shadow" version "7.1.1"
 }
 
 sourceCompatibility = targetCompatibility = project.java_version as int
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+
+archivesBaseName = project.archivesBaseName
+version = project.version
+group = project.group
 
 loom {
  	accessWidenerPath = file("src/main/resources/transrights.accesswidener")
@@ -17,7 +18,7 @@ repositories {
 	jcenter()
 
 	maven {
-        name = 'jitpack.io'
+        name = 'jitpack.io'	
         url =  'https://jitpack.io'
     }
 }
@@ -36,8 +37,6 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation("net.fabricmc:fabric-language-kotlin:1.7.1+kotlin.1.6.10")
-	include(implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"))
 
 	// api dependencies
 	apiModules.forEach {
@@ -50,15 +49,14 @@ dependencies {
 	}
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = "sources"
-	from sourceSets.main.allSource
+java {
+	withSourcesJar()
 }
 
 jar {
 	from("LICENSE") {
 		rename { 
-			"${ it }-${ project.archivesBaseName }" 
+			"${it}-${project.archivesBaseName}" 
 		}
 	}
 
@@ -88,9 +86,9 @@ compileKotlin {
 }
 
 processResources {
-	inputs.property "version", project.mod_version
+	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.mod_version
+		expand "version": project.version
 	}
 }
