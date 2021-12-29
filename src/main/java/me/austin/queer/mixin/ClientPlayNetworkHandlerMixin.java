@@ -22,6 +22,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import me.austin.queer.event.events.PacketEvent;
 import me.austin.queer.manager.managers.*;
 
+// This will produce errors in some IDEs, it builds and works in theory
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
     @Shadow private CommandDispatcher<CommandSource> dispatcher;

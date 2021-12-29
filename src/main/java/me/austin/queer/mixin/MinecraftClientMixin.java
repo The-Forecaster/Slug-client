@@ -11,8 +11,6 @@ import me.austin.queer.misc.Globals;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 
-// If ur using vscode, this file is gonna produce errors, don't worry about it
-// All of this works in a build environment and in the application
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin implements Globals{
 

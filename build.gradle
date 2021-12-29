@@ -18,9 +18,9 @@ repositories {
 	jcenter()
 
 	maven {
-        name = 'jitpack.io'	
-        url =  'https://jitpack.io'
-    }
+		name = 'jitpack'
+		url = 'https://jitpack.io'
+	}
 }
 
 dependencies {
