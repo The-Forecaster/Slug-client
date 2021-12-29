@@ -3,6 +3,7 @@ package me.austin.queer;
 import java.io.File;
 import java.nio.file.Paths;
 
+import me.austin.queer.manager.*;
 import me.austin.queer.misc.Globals;
 import net.fabricmc.api.ModInitializer;
 
@@ -26,11 +27,11 @@ public class TransRights implements ModInitializer, Globals {
 	}
 
 	public static void load() {
-		// loader stuff here
+		Manager.loadManagers();
 	}
 
 	public static void unload() {
-		// put loader stuff in here
+		// unload stuff here
 	}
 
 	private static Runnable save = () -> {

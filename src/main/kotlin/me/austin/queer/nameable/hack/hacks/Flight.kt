@@ -56,8 +56,6 @@ public object Flight : Hack("Flight", Category.MOVEMENT) {
         if (it.PACKET !is PlayerMoveC2SPacket) return@Listener
 
         val packet = it.PACKET
-
-        
     })
 
     override fun onDisable() {

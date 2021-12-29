@@ -9,7 +9,7 @@ import net.minecraft.client.network.ClientPlayerEntity
 
 object PlayerUtil {
     @JvmStatic
-    public fun setPlayerSpeed(speed: Float) {
+    fun setPlayerSpeed(speed: Float) {
         if (mc.player!!.isSpectator) return
 
         mc.player?.abilities?.allowFlying = true
@@ -18,7 +18,7 @@ object PlayerUtil {
     }
 
     @JvmStatic
-    public fun setVelocity(speed: Float) {
+    fun setVelocity(speed: Float) {
         mc.player!!.setVelocity(0.0, 0.0, 0.0)
 
         val player = mc.player as ClientPlayerEntity

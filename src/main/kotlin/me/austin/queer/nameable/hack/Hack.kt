@@ -1,7 +1,7 @@
 package me.austin.queer.nameable.hack
 
 import me.austin.queer.misc.Globals
-import me.austin.queer.feature.Nameable
+import me.austin.queer.nameable.Nameable
 import me.zero.alpine.listener.Listenable
 
 abstract class Hack(name: String, val category: Category) : Nameable(name), Listenable {

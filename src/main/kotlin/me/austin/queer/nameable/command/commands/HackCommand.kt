@@ -1,19 +1,16 @@
-package me.austin.queer.commands
+package me.austin.queer.nameable.command.commands
 
-import java.util.stream.IntStream
-
+import me.austin.queer.nameable.command.Command
 import me.austin.queer.nameable.hack.Hack
-import me.austin.queer.commands.Command
 
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.exceptions.*
 import com.mojang.brigadier.arguments.StringArgumentType.*
+import com.mojang.brigadier.CommandDispatcher
 
 import net.minecraft.server.command.CommandManager.*;
-
 import net.minecraft.server.command.ServerCommandSource
 
-class HackCommand(val hack: Hack, syntax: String) : Command(hack.name, syntax) {
+class HackCommand(val hack: Hack) : Command(hack.name) {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(literal(this.hack.name).executes({this.toggleHack()}))
 
@@ -37,7 +34,7 @@ class HackCommand(val hack: Hack, syntax: String) : Command(hack.name, syntax) {
             hack.settings.set(key, input)
         }
         catch (e: Exception) {
-            throw BuiltInExceptions().dispatcherUnknownArgument().create()
+            throw builtins.dispatcherUnknownArgument().create()
         }
 
         return 0
