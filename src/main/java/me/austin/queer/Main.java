@@ -23,7 +23,7 @@ public class Main {
                 default -> throw new IllegalStateException("Unknown OS: " + getOS());
             };
 
-            if (modsFile.exists()) modsFile.mkdirs();
+            if (!modsFile.exists()) modsFile.mkdirs();
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }
     }
@@ -42,7 +42,7 @@ public class Main {
             string = string.replace("file:", "file://");
         }
 
-        return new String[]{"xdg-open", string};
+        return new String[] {"xdg-open", string};
     }
 
     private enum OS {

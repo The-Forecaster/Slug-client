@@ -14,12 +14,12 @@
     "discord": "Austin the Forecaster#0760"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/transrights/transpride.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.austin.queer.TransRights"
+      "me.austin.queer.TransRightsMod"
     ]
   },
   "depends": {

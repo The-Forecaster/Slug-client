@@ -1,16 +1,22 @@
 package me.austin.queer.nameable.hack
 
+import me.austin.queer.manager.managers.HackManager
 import me.austin.queer.misc.Globals
+import me.austin.queer.util.file.FileHelper
 import me.austin.queer.nameable.Nameable
 import me.zero.alpine.listener.Listenable
 
+import java.io.File
+
 abstract class Hack(name: String, val category: Category) : Nameable(name), Listenable {
-    
-    public val settings: HashMap<String, Any> = HashMap()
-    private var enabled: Boolean = false
+    val settings = mutableMapOf<String, Any>()
+    val file: File
+    protected var enabled: Boolean = false
 
     init {
         this.settings.put("enabled", enabled);
+
+        file = File(HackManager.dir.toString() + "/" + this.name + ".json")
     }
 
     fun enable() {
@@ -26,19 +32,26 @@ abstract class Hack(name: String, val category: Category) : Nameable(name), List
     }
 
     fun toggle() {
-        if (this.enabled) disable()
-        else enable()
+        if (this.enabled) disable() else enable()
     }
 
     open fun onEnable() {
-        Globals.LOGGER.info(this.name + " enabled")
     } 
 
     open fun onDisable() {
-        Globals.LOGGER.info(this.name + " disabled")
+    }
+
+    fun save() {
+        try {
+            FileHelper.createFile(file)
+        }
+        catch (e: Exception) {
+            Globals.LOGGER.error("Couldn't save $name", this.name)
+        }
     }
 }
 
 public enum class Category {
-    MOVEMENT
+    MOVEMENT,
+    COMBAT
 }
