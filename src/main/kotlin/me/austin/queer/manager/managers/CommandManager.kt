@@ -15,6 +15,12 @@ object CommandManager: Manager<Command>() {
         }
     }
 
+    override fun save() {
+    }
+
+    override fun unload() {
+    }
+
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
         this.values.forEach({it.register(dispatcher)})

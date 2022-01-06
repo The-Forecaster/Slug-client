@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.netty.channel.ChannelHandlerContext;
+import me.austin.queer.Globals;
 import me.austin.queer.event.events.PacketEvent;
-import me.austin.queer.misc.Globals;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 

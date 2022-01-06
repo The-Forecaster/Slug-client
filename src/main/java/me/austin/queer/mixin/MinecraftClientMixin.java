@@ -6,13 +6,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import me.austin.queer.Globals;
 import me.austin.queer.event.events.TickEvent;
-import me.austin.queer.misc.Globals;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 
 @Mixin(MinecraftClient.class)
-public class MinecraftClientMixin implements Globals{
+public class MinecraftClientMixin implements Globals {
 
     @Shadow private Profiler profiler;
 
