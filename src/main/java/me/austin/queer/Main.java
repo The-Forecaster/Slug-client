@@ -11,8 +11,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
-    public static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
+    private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
+    public static final void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         if (JOptionPane.showConfirmDialog(null, "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?", "ERROR", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
@@ -28,7 +28,7 @@ public class Main {
         }
     }
 
-    private static OS getOS() {
+    private static final OS getOS() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("nux") || osName.contains("nix")) return OS.NIX;
         else if (osName.contains("darwin") || osName.contains("mac")) return OS.OSX;
@@ -36,7 +36,7 @@ public class Main {
         else return OS.UNKNOWN;
     }
 
-    private static String[] getURLOpenCommand(URL url) {
+    private static final String[] getURLOpenCommand(URL url) {
         String string = url.toString();
         if ("file".equals(url.getProtocol())) {
             string = string.replace("file:", "file://");
@@ -45,7 +45,7 @@ public class Main {
         return new String[] {"xdg-open", string};
     }
 
-    private enum OS {
+    private static enum OS {
         WINDOWS, OSX, NIX, UNKNOWN
     }
 }

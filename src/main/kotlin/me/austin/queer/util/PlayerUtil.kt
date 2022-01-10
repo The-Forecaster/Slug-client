@@ -1,6 +1,6 @@
 package me.austin.queer.util
 
-import me.austin.queer.misc.Globals.mc
+import me.austin.queer.Globals.*
 
 import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket
@@ -9,26 +9,32 @@ import net.minecraft.client.network.ClientPlayerEntity
 
 object PlayerUtil {
     @JvmStatic
-    fun setPlayerSpeed(speed: Float) {
-        if (mc.player!!.isSpectator) return
+    fun setFlySpeed(speed: Float, cancelSpeed : Boolean) {
+        val player = mc.player as ClientPlayerEntity
 
-        mc.player?.abilities?.allowFlying = true
-        mc.player?.setVelocity(Vec3d.ZERO)
-        mc.player?.abilities?.flySpeed = speed
+        if (playerCheck(player)) return
+        if (cancelSpeed) player.setVelocity(Vec3d.ZERO)
+
+        player.abilities.allowFlying = true
+        player.abilities.flySpeed = speed
     }
 
     @JvmStatic
-    fun setVelocity(speed: Float) {
-        mc.player!!.setVelocity(0.0, 0.0, 0.0)
-
+    fun setVelocity(speed: Float, cancelSpeed : Boolean) {
         val player = mc.player as ClientPlayerEntity
-
         val initialVelocity = player.getVelocity()
-        val sped = speed.toDouble()
+
+        if (playerCheck(player)) return
+        if (cancelSpeed) player.setVelocity(Vec3d.ZERO)
 
         if (mc.options.keyJump.isPressed()) player.setVelocity(initialVelocity?.add(0.0, 5.0, 0.0))
         if (mc.options.keySneak.isPressed()) player.setVelocity(initialVelocity?.subtract(0.0, 5.0, 0.0))
 
-        mc.player?.setVelocity(sped, sped, sped);
+        player.setVelocity(initialVelocity.add(speed.toDouble(), 0.0, 0.0))
+    }
+    
+    @JvmStatic
+    private fun playerCheck(player : ClientPlayerEntity) : Boolean {
+        return mc.world != null && player.isSpectator
     }
 }

@@ -7,28 +7,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.austin.queer.Globals;
-import me.austin.queer.event.events.TickEvent;
+import me.austin.queer.event.events.TickEvent.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin implements Globals {
-
-    @Shadow private Profiler profiler;
+    @Shadow
+    private Profiler profiler;
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void beforeTick(CallbackInfo info) {
-        var event = new TickEvent.Pre(mc.player != null && mc.world != null);
+    private final void beforeTick(CallbackInfo info) {
+        var event = PreTick.get(mc.player != null && mc.world != null);
 
         EVENTBUS.post(event);
-        if (event.isCancelled()) info.cancel();
+        if (event.isCancelled())
+            info.cancel();
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
-    private void onTick(CallbackInfo info) {
-        var event = new TickEvent.Post(mc.player != null && mc.world != null);
+    private final void onTick(CallbackInfo info) {
+        var event = PostTick.get(mc.player != null && mc.world != null);
 
         EVENTBUS.post(event);
-        if (event.isCancelled()) info.cancel();
+        if (event.isCancelled())
+            info.cancel();
     }
 }

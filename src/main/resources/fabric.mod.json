@@ -18,8 +18,8 @@
   "icon": "assets/transrights/transpride.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "me.austin.queer.TransRightsMod"
+    "client": [
+      "me.austin.queer.TransRights"
     ]
   },
   "depends": {

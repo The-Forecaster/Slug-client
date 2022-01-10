@@ -4,7 +4,7 @@ import me.austin.queer.manager.managers.CommandManager
 import me.austin.queer.manager.managers.HackManager
 import me.austin.queer.nameable.Nameable
 
-abstract class Manager<T : Nameable> {
+abstract class Manager<T : Nameable>(val values : MutableList<T> = mutableListOf()) {
     companion object {
         @JvmStatic
         private val managers = mutableListOf<Manager<*>>()
@@ -18,29 +18,14 @@ abstract class Manager<T : Nameable> {
         }
 
         @JvmStatic
-        fun add(manager: Manager<*>) {
-            managers.add(manager)
-        }
-        
-        @JvmStatic
-        fun saveManagers() {
-            managers.forEach({it.save()})
-        }
-        
-        @JvmStatic
-        fun unloadManagers() {
-            managers.forEach({it.unload()})
+        fun unloadManagers() : List<Manager<*>> {
             managers.clear()
+
+            return managers
         }
     }
 
-    val values = mutableListOf<T>()
-
-    
-    abstract fun save()
-    abstract fun unload()
-
-    operator fun plus(value: T): Manager<T> {
+    operator fun plus(value : T): Manager<T> {
         this += value
 
         return this

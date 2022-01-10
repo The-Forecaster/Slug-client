@@ -1,51 +1,57 @@
 package me.austin.queer.util.file
 
-import com.google.gson.JsonObject
 import com.google.gson.GsonBuilder
-
-import java.io.File
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.File
+import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.nio.file.Files;
+import java.nio.file.Files
 import java.nio.file.Path
-
 import kotlin.io.path.exists
-
 import me.austin.queer.Globals.*
 
 object FileHelper {
     private val gson = GsonBuilder().setPrettyPrinting().create()
-    val mainpath = File(mc.runDirectory.absolutePath + "/"+ NAME)
+    val mainpath = File(mc.runDirectory.absolutePath + "/" + NAME)
 
     @JvmStatic
-    fun createFile(file: File) {
-        try {
-            file.createNewFile()
+    fun readJson(path: Path): JsonObject {
+        val jsonReader = gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
+        val obj = JsonObject()
+
+        while (jsonReader.hasNext()) {
+            val name = jsonReader.peek().name
+            val value = jsonReader.nextString()
+
+            obj.add(name, JsonPrimitive(value))
         }
-        catch (e: Exception) {
-            e.printStackTrace()
-        }
+
+        jsonReader.close()
+        return obj
     }
 
     @JvmStatic
-    fun writeToJson(element : JsonObject, path: Path) {
-        try {
-            val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
+    fun writeToJson(element: JsonObject, path: Path) {
+        val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
 
-            writer.write(gson.toJson(element))
-            writer.close()
-        }
-        catch (e : Exception) {
-            e.printStackTrace()
-        }
+        writer.write(gson.toJson(element))
+        writer.close()
     }
 
     @JvmStatic
-    private fun fileExists(path: String) : Boolean {
+    fun clearJson(path: Path) {
+        writeToJson(JsonObject(), path)
+    }
+
+    @JvmStatic
+    private fun fileExists(path: String): Boolean {
         try {
             return mainpath.resolve(path).exists()
         } 
-        catch(e: Exception) {
+        catch (e: Exception) {
             return false
         }
     }

@@ -1,11 +1,10 @@
 package me.austin.queer.event;
 
 import me.zero.alpine.event.EventState;
-import me.zero.alpine.event.type.ICancellable;
 
-public abstract class Event implements ICancellable {
-    protected final EventState stage;
-    private final Priority priority;
+public abstract class Event {
+    private EventState stage;
+    private Priority priority;
     private boolean cancelled = false;
 
     protected Event(EventState stage, int priority) {
@@ -17,21 +16,19 @@ public abstract class Event implements ICancellable {
         this.priority = priority;
     }
 
-    public EventState stage() {
+    public final EventState getStage() {
         return this.stage;
     }
 
-    public Priority priority() {
+    public final Priority getPrio() {
         return this.priority;
     }
 
-    @Override
-    public void cancel() {
-        this.cancelled = true;
+    public final boolean isCancelled() {
+        return this.cancelled;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
+    public final void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
