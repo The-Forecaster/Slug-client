@@ -5,35 +5,78 @@ import me.austin.queer.event.Priority;
 import me.zero.alpine.event.EventState;
 import net.minecraft.network.Packet;
 
-public class PacketEvent extends Event {
-    public final Packet<?> PACKET;
+public abstract class PacketEvent extends Event {
+    private Packet<?> packet;
 
-    protected PacketEvent(EventState state, Packet<?> packet) {
+    protected PacketEvent(EventState state) {
         super(state, Priority.HIGH);
-        this.PACKET = packet;
     }
 
-    public static class Send extends PacketEvent {
-        public Send(Packet<?> packet) {
-            super(EventState.PRE, packet);
+    public Packet<?> getPacket() {
+        return this.packet;
+    }
+
+    public void setPacket(Packet<?> packet) {
+        this.packet = packet;
+    }
+
+    public static final class PreSend extends PacketEvent {
+        private static final PreSend INSTANCE = new PreSend();
+
+        private PreSend() {
+            super(EventState.PRE);
+        }
+
+        public static final PreSend get(Packet<?> packet) {
+            INSTANCE.setCancelled(false);
+            INSTANCE.setPacket(packet);
+
+            return INSTANCE;
         }
     }
 
-    public static class Recieve extends PacketEvent {
-        public Recieve(Packet<?> packet) {
-            super(EventState.PRE, packet);
+    public static final class PreReceive extends PacketEvent {
+        private static final PreReceive INSTANCE = new PreReceive();
+
+        private PreReceive() {
+            super(EventState.PRE);
+        }
+
+        public static final PreReceive get(Packet<?> packet) {
+            INSTANCE.setCancelled(false);
+            INSTANCE.setPacket(packet);
+
+            return INSTANCE;
         }
     }
 
-    public static class PostSend extends PacketEvent {
-        public PostSend(Packet<?> packet) {
-            super(EventState.POST, packet);
+    public static final class PostSend extends PacketEvent {
+        private static final PostSend INSTANCE = new PostSend();
+
+        private PostSend() {
+            super(EventState.POST);
+        }
+
+        public static final PostSend get(Packet<?> packet) {
+            INSTANCE.setCancelled(false);
+            INSTANCE.setPacket(packet);
+
+            return INSTANCE;
         }
     }
 
-    public static class PostRecieve extends PacketEvent {
-        public PostRecieve(Packet<?> packet) {
-            super(EventState.POST, packet);
+    public static final class PostReceive extends PacketEvent {
+        private static final PostReceive INSTANCE = new PostReceive();
+
+        private PostReceive() {
+            super(EventState.POST);
+        }
+
+        public static final PostReceive get(Packet<?> packet) {
+            INSTANCE.setCancelled(false);
+            INSTANCE.setPacket(packet);
+
+            return INSTANCE;
         }
     }
 }
