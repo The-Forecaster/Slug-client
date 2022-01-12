@@ -10,7 +10,7 @@ import me.zero.alpine.listener.Listener
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 
-public object FlightHack : Hack("Flight", Category.MOVEMENT) {
+object FlightHack : Hack("Flight", Category.MOVEMENT) {
     private var mode = FlightMode.VANILLA
     private var speed = 10.0f
     private var withElytra = false
