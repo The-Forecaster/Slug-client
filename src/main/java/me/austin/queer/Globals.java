@@ -15,7 +15,7 @@ public final class Globals {
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 	public static final EventManager EVENTBUS = new EventManager();
-	
+
 	private Globals() {}
 
 	public static final MinecraftClient getMinecraft() {

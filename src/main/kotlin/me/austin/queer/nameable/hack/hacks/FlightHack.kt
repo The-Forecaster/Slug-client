@@ -4,7 +4,7 @@ import me.austin.queer.Globals.mc
 import me.austin.queer.event.events.PacketEvent
 import me.austin.queer.event.events.TickEvent
 import me.austin.queer.nameable.hack.*
-import me.austin.queer.util.PlayerUtil
+import me.austin.queer.util.player.PlayerUtil
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.Listener
 import net.minecraft.client.network.ClientPlayerEntity

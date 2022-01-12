@@ -10,7 +10,7 @@ import me.austin.queer.util.file.FileHelper
 import me.zero.alpine.listener.Listenable
 
 abstract class Hack(name: String, val category: Category) : Nameable(name), Listenable {
-    protected val settings = mutableMapOf<String, Any>()
+    val settings = mutableMapOf<String, Any>()
     private val file: File
     private var enabled: Boolean = false
 

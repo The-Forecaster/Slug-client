@@ -2,34 +2,52 @@ package me.austin.queer.nameable.command.commands
 
 import me.austin.queer.nameable.command.Command
 import me.austin.queer.nameable.hack.Hack
+import me.austin.queer.manager.managers.HackManager
 
-import com.mojang.brigadier.exceptions.*
 import com.mojang.brigadier.arguments.StringArgumentType.*
 import com.mojang.brigadier.CommandDispatcher
 
 import net.minecraft.server.command.CommandManager.*;
 import net.minecraft.server.command.ServerCommandSource
 
-class HackCommand(val hack: Hack) : Command(hack.name) {
+object HackCommand: Command("hack-command") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(literal(this.hack.name).executes({this.toggleHack()}))
-
-        for (setting in this.hack.settings) {
-            dispatcher.register(literal(this.hack.name)
-                .then(argument(setting.key, string())
-                    .executes({this.takeInput(it, setting.key)})
-                )
+        dispatcher.register(literal("").then(argument("hackname", string())).executes({ ctx ->
+            toggleHack(getHack(ctx.toString()))
+        }).then(argument("settingname", string())).then(argument("value", string())).executes({ ctx ->
+            takeInput(
+                ctx.getArgument("value", string().javaClass).toString(), 
+                getSetting(
+                    ctx.getArgument("settingname", string().javaClass).toString(), 
+                    getHack(ctx.getArgument("hackname", string().javaClass).toString())
+                ),
+                getHack(ctx.getArgument("hackname", string().javaClass).toString())
             )
-        }
+        }))
     }
 
-    fun toggleHack() : Int {
-        this.hack.toggle()
+    private fun getHack(name: String): Hack {
+        for (hack in HackManager.values) {
+            if (hack.name.lowercase().equals(name.lowercase())) return hack
+        }
+
+        throw builtins.dispatcherUnknownArgument().create()
+    }
+
+    private fun getSetting(name: String, hack: Hack) : String {
+        for (setting in hack.settings) {
+            if (setting.key.lowercase().equals(name.lowercase())) return setting.key
+        }
+
+        throw builtins.dispatcherUnknownArgument().create()
+    }
+
+    fun toggleHack(hack: Hack): Int {
+        hack.toggle()
         return 0
     }
 
-
-    fun takeInput(input: Any, key: String) : Int {
+    fun takeInput(input: String, key: String, hack: Hack): Int {
         try {
             hack.settings.set(key, input)
         }
