@@ -1,13 +1,17 @@
 package me.austin.queer.mixin;
 
+import static me.austin.queer.Globals.EVENTBUS;
+import static me.austin.queer.Globals.NAME;
+import static me.austin.queer.Globals.mc;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.austin.queer.Globals.*;
-import me.austin.queer.event.events.TickEvent.*;
+import me.austin.queer.event.events.TickEvent.PostTick;
+import me.austin.queer.event.events.TickEvent.PreTick;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 
