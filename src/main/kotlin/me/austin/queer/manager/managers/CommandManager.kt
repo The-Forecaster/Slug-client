@@ -1,6 +1,7 @@
 package me.austin.queer.manager.managers
 
 import me.austin.queer.nameable.command.commands.HackCommand
+import me.austin.queer.nameable.command.commands.ReloadCommand
 import me.austin.queer.nameable.command.Command
 import me.austin.queer.manager.Manager
 
@@ -10,13 +11,14 @@ import com.mojang.brigadier.CommandDispatcher
 
 object CommandManager: Manager<Command>() {
     init {
-        for (hack in HackManager.values) {
-            this.values.add(HackCommand(hack))
-        }
+        this.values.add(HackCommand)
+        this.values.add(ReloadCommand)
     }
 
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        this.values.forEach({it.register(dispatcher)})
+        this.values.forEach({ command ->
+            command.register(dispatcher)
+        })
     }
 }

@@ -11,11 +11,11 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.exists
-import me.austin.queer.Globals.*
+import me.austin.queer.TransRights
 
 object FileHelper {
     private val gson = GsonBuilder().setPrettyPrinting().create()
-    val mainpath = File(mc.runDirectory.absolutePath + "/" + NAME)
+    val mainpath = TransRights.maindir
 
     @JvmStatic
     fun readJson(path: Path): JsonObject {

@@ -7,7 +7,14 @@ import me.austin.queer.manager.managers.*
 import net.fabricmc.api.ClientModInitializer
 
 class TransRights : ClientModInitializer {
-    val maindir = File(mc.runDirectory.absolutePath + "/" + NAME)
+    companion object {
+        @JvmStatic
+        val maindir = File(mc.runDirectory.absolutePath + "/" + NAME)
+    }
+
+    init {
+        if (!maindir.exists()) maindir.mkdirs()
+    }
     
     var hackManager = HackManager
     var commandManager = CommandManager
