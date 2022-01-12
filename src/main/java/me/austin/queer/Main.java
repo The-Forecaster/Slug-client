@@ -11,6 +11,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
+	
+	/**
+	 * This opens a new Panel when you run the jar so idiots know what to do
+	 * @author Austin, Toxic
+	 */
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
     public static final void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

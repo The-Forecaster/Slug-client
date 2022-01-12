@@ -39,7 +39,7 @@ dependencies {
 
 	// api dependencies
 	apiModules.forEach {
-		include(modImplementation(fabricApi.module(it, "0.45.0+1.18")))
+		include(modImplementation(fabricApi.module(it, "0.45.2+1.18")))
 	}
 
 	// TR dependencies
