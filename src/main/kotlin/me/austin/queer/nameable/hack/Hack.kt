@@ -9,8 +9,7 @@ import me.austin.queer.nameable.Nameable
 import me.austin.queer.util.file.FileHelper
 import me.zero.alpine.listener.Listenable
 
-abstract class Hack(name: String, val category: Category) : Nameable(name), Listenable {
-    val settings = mutableMapOf<String, Any>()
+abstract class Hack(name: String, val category: Category, val settings : MutableMap<String, Any> = mutableMapOf()): Nameable(name), Listenable {
     private val file: File
     private var enabled: Boolean = false
 
@@ -36,7 +35,7 @@ abstract class Hack(name: String, val category: Category) : Nameable(name), List
         if (this.enabled) disable() else enable()
     }
 
-    fun isEnabled() : Boolean {
+    fun isEnabled(): Boolean {
         return enabled;
     }
 

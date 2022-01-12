@@ -15,7 +15,6 @@ import me.austin.queer.TransRights
 
 object FileHelper {
     private val gson = GsonBuilder().setPrettyPrinting().create()
-    val mainpath = TransRights.maindir
 
     @JvmStatic
     fun readJson(path: Path): JsonObject {
@@ -44,15 +43,5 @@ object FileHelper {
     @JvmStatic
     fun clearJson(path: Path) {
         writeToJson(JsonObject(), path)
-    }
-
-    @JvmStatic
-    private fun fileExists(path: String): Boolean {
-        try {
-            return mainpath.resolve(path).exists()
-        } 
-        catch (e: Exception) {
-            return false
-        }
     }
 }

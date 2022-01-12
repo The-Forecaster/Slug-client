@@ -26,8 +26,12 @@ object PlayerUtil {
 
         if (playerCheck(player)) return
         if (cancelSpeed) player.setVelocity(Vec3d.ZERO)
-        if (mc.options.keyJump.isPressed()) player.setVelocity(initialVelocity?.add(0.0, 5.0, 0.0))
-        if (mc.options.keySneak.isPressed()) player.setVelocity(initialVelocity?.subtract(0.0, 5.0, 0.0))
+        if (mc.options.keyJump.isPressed) player.setVelocity(initialVelocity?.add(0.0, 5.0, 0.0))
+        if (mc.options.keySneak.isPressed) player.setVelocity(initialVelocity?.subtract(0.0, 5.0, 0.0))
+        if (mc.options.keyForward.isPressed) player.addVelocity(speed.toDouble(), 0.0, 0.0)
+        if (mc.options.keyBack.isPressed) player.addVelocity(-speed.toDouble(), 0.0, 0.0)
+        if (mc.options.keyLeft.isPressed) player.addVelocity(0.0, 0.0, speed.toDouble())
+        if (mc.options.keyRight.isPressed) player.addVelocity(0.0, 0.0, -speed.toDouble())
 
         player.setVelocity(initialVelocity.add(speed.toDouble(), 0.0, 0.0))
     }
