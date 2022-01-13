@@ -15,7 +15,7 @@ class TransRights : ClientModInitializer {
         @JvmStatic val maindir = File(mc.runDirectory.absolutePath + "/" + NAME)
 
         @JvmStatic
-        fun getModContainer = FabricLoader.getInstance().getModContainer(NAME).orElse(null)
+        fun getModContainer() = FabricLoader.getInstance().getModContainer(NAME).orElse(null)
     }
 
     init {
