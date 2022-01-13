@@ -9,7 +9,7 @@ import me.austin.queer.nameable.Nameable
 import me.austin.queer.util.file.FileHelper
 import me.zero.alpine.listener.Listenable
 
-abstract class Hack(name: String, val category: Category, val settings : MutableMap<String, Any> = mutableMapOf()): Nameable(name), Listenable {
+abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutableMapOf()): Nameable(name), Listenable {
     private val file: File
     private var enabled: Boolean = false
 
@@ -43,7 +43,7 @@ abstract class Hack(name: String, val category: Category, val settings : Mutable
 
     open fun onDisable() {}
 
-    fun load() {
+    async fun load() = run {
         try {
             if (!this.file.exists()) this.file.createNewFile()
 
@@ -65,9 +65,7 @@ abstract class Hack(name: String, val category: Category, val settings : Mutable
                         else this.settings.set(entry.key, value)
                     }
                     catch (e : Exception) {
-                        if (entry.value is Enum<*>) {
-                            (entry.value as Enum<*>)
-                        }
+                        
                     }
                 }
             }
@@ -93,9 +91,4 @@ abstract class Hack(name: String, val category: Category, val settings : Mutable
             e.printStackTrace()
         }
     }
-}
-
-public enum class Category {
-    MOVEMENT,
-    COMBAT
 }

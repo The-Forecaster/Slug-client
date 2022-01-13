@@ -7,7 +7,7 @@ import me.zero.alpine.bus.EventManager;
 import net.minecraft.client.MinecraftClient;
 
 /**
- * This interface contains the global variables for the client
+ * This class contains the global variables for the client
  * @author Austin 
  */
 public final class Globals {

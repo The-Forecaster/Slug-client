@@ -15,9 +15,7 @@ class TransRights : ClientModInitializer {
         @JvmStatic val maindir = File(mc.runDirectory.absolutePath + "/" + NAME)
 
         @JvmStatic
-        fun getModContainer(): ModContainer {
-            return FabricLoader.getInstance().getModContainer(NAME).orElse(null)
-        }
+        fun getModContainer = FabricLoader.getInstance().getModContainer(NAME).orElse(null)
     }
 
     init {
@@ -31,6 +29,6 @@ class TransRights : ClientModInitializer {
 
         Runtime.getRuntime().addShutdownHook(Thread({ HackManager.save() }))
 
-        LOGGER.info(NAME + " has been started in " + (System.currentTimeMillis() - starttime) + "ms!")
+        LOGGER.info("$NAME has been started in " + (System.currentTimeMillis() - starttime) + " ms!")
     }
 }

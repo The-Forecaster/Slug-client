@@ -10,13 +10,11 @@ import me.zero.alpine.listener.Listener
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 
-object FlightHack : Hack("Flight", Category.MOVEMENT) {
+object FlightHack : Hack("Flight") {
     private var mode = FlightMode.VANILLA
     private var speed = 10.0f
     private var withElytra = false
     private var cancelSpeed = false
-
-    private var player = mc.player as ClientPlayerEntity
 
     @EventHandler
     val updateListener = Listener<TickEvent.PostTick>({
@@ -53,16 +51,20 @@ object FlightHack : Hack("Flight", Category.MOVEMENT) {
     }
 
     private fun doVanillaFlight() {
-        PlayerUtil.setFlySpeed(speed, cancelSpeed)
+        PlayerUtil.setFlySpeed(trueSpeed(), cancelSpeed)
     }
 
     private fun doVelocity() {
-        PlayerUtil.setVelocity(speed, cancelSpeed)
+        PlayerUtil.setVelocity(trueSpeed(), cancelSpeed)
+    }
+
+    private fun trueSpeed(): Float {
+        return speed / 10
     }
 
     override fun onDisable() {
-        player.abilities.allowFlying = false
-        player.abilities.flySpeed = 0.05f
+        mc.player!!.abilities.allowFlying = false
+        mc.player!!.abilities.flySpeed = 0.05f
     }
 
     private enum class FlightMode {
