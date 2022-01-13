@@ -43,7 +43,7 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
 
     open fun onDisable() {}
 
-    async fun load() = run {
+    fun load() {
         try {
             if (!this.file.exists()) this.file.createNewFile()
 
