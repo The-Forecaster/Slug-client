@@ -1,7 +1,6 @@
 package me.austin.queer.manager.managers
 
-import me.austin.queer.nameable.command.commands.HackCommand
-import me.austin.queer.nameable.command.commands.ReloadCommand
+import me.austin.queer.nameable.command.commands.*
 import me.austin.queer.nameable.command.Command
 import me.austin.queer.manager.Manager
 
@@ -17,7 +16,7 @@ object CommandManager: Manager<Command>() {
 
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        this.values.forEach({ command ->
+        this.values.forEach({command ->
             command.register(dispatcher)
         })
     }

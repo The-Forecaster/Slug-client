@@ -1,17 +1,12 @@
 package me.austin.queer.manager.managers
 
-import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
 import java.io.File
 import me.austin.queer.Globals.EVENTBUS
-import me.austin.queer.Globals
 import me.austin.queer.TransRights
 import me.austin.queer.manager.Manager
 import me.austin.queer.nameable.hack.Hack
 import me.austin.queer.nameable.hack.hacks.*
-import me.austin.queer.util.file.FileHelper
 import me.zero.alpine.listener.Listenable
-import me.zero.alpine.listener.Listener
 
 object HackManager : Manager<Hack>(), Listenable {
     val dir = File(TransRights.maindir.absolutePath + "/hacks")
@@ -28,7 +23,7 @@ object HackManager : Manager<Hack>(), Listenable {
     }
 
     fun save() {
-        this.values.forEach(Hack::save)
+        Thread({ this.values.forEach(Hack::save) })
     }
 
     fun unload() {
