@@ -5,43 +5,39 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.BufferedReader
 import java.io.BufferedWriter
-import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.exists
-import me.austin.queer.TransRights
+import net.fabricmc.loader.api.FabricLoader
 
-object FileHelper {
-    private val gson = GsonBuilder().setPrettyPrinting().create()
+public val maindir = FabricLoader.getInstance().getConfigDir()
 
-    @JvmStatic
-    fun readJson(path: Path): JsonObject {
-        val jsonReader = gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
-        val obj = JsonObject()
+private val gson = GsonBuilder().create()
 
-        while (jsonReader.hasNext()) {
-            val name = jsonReader.peek().name
-            val value = jsonReader.nextString()
+fun readJson(path: Path): JsonObject {
+    val jsonReader =
+            gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
+    val obj = JsonObject()
 
-            obj.add(name, JsonPrimitive(value))
-        }
+    while (jsonReader.hasNext()) {
+        val name = jsonReader.peek().name
+        val value = jsonReader.nextString()
 
-        jsonReader.close()
-        return obj
+        obj.add(name, JsonPrimitive(value))
     }
 
-    @JvmStatic
-    fun writeToJson(element: JsonObject, path: Path) {
-        val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
+    jsonReader.close()
+    return obj
+}
 
-        writer.write(gson.toJson(element))
-        writer.close()
-    }
+fun writeToJson(element: JsonObject, path: Path) {
+    val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
 
-    @JvmStatic
-    fun clearJson(path: Path) {
-        writeToJson(JsonObject(), path)
-    }
+    writer.write(gson.toJson(element))
+    writer.close()
+}
+
+fun clearJson(path: Path) {
+    writeToJson(JsonObject(), path)
 }

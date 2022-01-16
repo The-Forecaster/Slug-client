@@ -17,7 +17,6 @@ import net.minecraft.network.listener.PacketListener;
 
 @Mixin(ClientConnection.class)
 public final class ClientConnectionMixin {
-
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private final void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         final var event = PreReceive.get(packet);

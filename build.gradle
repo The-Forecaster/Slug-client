@@ -29,12 +29,13 @@ dependencies {
 
 	Set<String> libraries = [
 		"com.github.ZeroMemes:Alpine:1.9",
-		"net.jodah:typetools:0.6.3"
+		"net.jodah:typetools:0.6.3",
+		"org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 	]
 
 	// fabric dependencies
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.minecraft_version}+${project.yarn_mappings}:v2"
+	minecraft "com.mojang:minecraft:$project.minecraft_version"
+	mappings "net.fabricmc:yarn:$project.minecraft_version+$project.yarn_mappings:v2"
 	modImplementation "net.fabricmc:fabric-loader:0.12.12"
 
 	// api dependencies
@@ -51,7 +52,7 @@ dependencies {
 jar {
 	from("LICENSE") {
 		rename { 
-			"${it}-${project.mod_name}" 
+			"$it-$project.mod_name" 
 		}
 	}
 

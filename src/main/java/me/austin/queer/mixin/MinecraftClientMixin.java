@@ -13,12 +13,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import me.austin.queer.event.events.TickEvent.PostTick;
 import me.austin.queer.event.events.TickEvent.PreTick;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.RunArgs;
 import net.minecraft.util.profiler.Profiler;
 
 @Mixin(MinecraftClient.class)
-public class MinecraftClientMixin {
+public final class MinecraftClientMixin extends MinecraftClient {
     @Shadow
     private Profiler profiler;
+
+    private MinecraftClientMixin(RunArgs args) {
+        super(args);
+    }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private final void beforeTick(CallbackInfo info) {
