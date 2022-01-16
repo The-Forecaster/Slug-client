@@ -11,8 +11,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class Main {
-	
-	
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
 
     private Main() {}

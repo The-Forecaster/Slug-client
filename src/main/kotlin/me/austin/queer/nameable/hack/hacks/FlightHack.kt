@@ -1,14 +1,11 @@
 package me.austin.queer.nameable.hack.hacks
 
 import me.austin.queer.Globals.mc
-import me.austin.queer.event.events.PacketEvent
 import me.austin.queer.event.events.TickEvent
-import me.austin.queer.nameable.hack.*
-import me.austin.queer.util.player.PlayerUtil
+import me.austin.queer.nameable.hack.Hack
+import me.austin.queer.util.player.*
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.Listener
-import net.minecraft.client.network.ClientPlayerEntity
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 
 object FlightHack : Hack("Flight") {
     private var mode = FlightMode.VANILLA
@@ -17,31 +14,20 @@ object FlightHack : Hack("Flight") {
     private var cancelSpeed = false
 
     @EventHandler
-    val updateListener = Listener<TickEvent.PostTick>({
-        if (mc.player == null || mc.world == null) return@Listener
-        if (mc.player!!.isFallFlying() && withElytra) return@Listener
+    val updateListener =
+            Listener<TickEvent.PostTick>({
+                if (mc.player == null || mc.world == null) return@Listener
+                if (mc.player!!.isFallFlying() && withElytra) return@Listener
 
-        when (mode) {
-            FlightMode.VANILLA -> {
-                doVanillaFlight()
-            }
-            FlightMode.VELOCITY -> {
-                doVelocity()
-            }
-            FlightMode.BOTH -> {
-                doVanillaFlight()
-                doVelocity()
-            }
-        }
-    })
-
-    @EventHandler
-    val sendListener = Listener<PacketEvent.PreSend>({
-        if (it.getPacket() !is PlayerMoveC2SPacket) return@Listener
-
-        val packet = it.getPacket() as PlayerMoveC2SPacket
-        packet.onGround = false
-    })
+                when (mode) {
+                    FlightMode.VANILLA -> {
+                        doVanillaFlight()
+                    }
+                    FlightMode.VELOCITY -> {
+                        doVelocity()
+                    }
+                }
+            })
 
     init {
         settings.put("Mode", mode)
@@ -51,11 +37,11 @@ object FlightHack : Hack("Flight") {
     }
 
     private fun doVanillaFlight() {
-        PlayerUtil.setFlySpeed(trueSpeed(), cancelSpeed)
+        setFlySpeed(trueSpeed(), cancelSpeed)
     }
 
     private fun doVelocity() {
-        PlayerUtil.setVelocity(trueSpeed(), cancelSpeed)
+        setVelocity(trueSpeed(), cancelSpeed)
     }
 
     private fun trueSpeed(): Float {
@@ -69,7 +55,6 @@ object FlightHack : Hack("Flight") {
 
     private enum class FlightMode {
         VANILLA,
-        VELOCITY,
-        BOTH
+        VELOCITY
     }
 }

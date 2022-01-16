@@ -6,8 +6,9 @@ import com.google.gson.JsonPrimitive
 import me.austin.queer.manager.managers.HackManager
 import me.austin.queer.Globals.*
 import me.austin.queer.nameable.Nameable
-import me.austin.queer.util.file.FileHelper
+import me.austin.queer.util.file.*
 import me.zero.alpine.listener.Listenable
+import kotlinx.coroutines.runBlocking
 
 abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutableMapOf()): Nameable(name), Listenable {
     private val file: File
@@ -45,24 +46,24 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
 
     fun load() {
         try {
-            if (!this.file.exists()) this.file.createNewFile()
+            if (!file.exists()) file.createNewFile()
 
-            val hackobj = FileHelper.readJson(this.file.toPath())
+            val hackobj = readJson(file.toPath())
 
-            for (entry in this.settings) {
+            for (entry in settings) {
                 val rawval = hackobj.get(entry.key).asString
                 try {
                     val value = rawval.toBoolean()
 
-                    this.settings.set(entry.key, value)
+                    settings.set(entry.key, value)
                 }
                 catch (e : Exception) {
                     try {
                         val value = rawval.toDouble()
                         
-                        if (entry.value is Int) this.settings.set(entry.key, value.toInt())
-                        else if (entry.value is Float) this.settings.set(entry.key, value.toFloat())
-                        else this.settings.set(entry.key, value)
+                        if (entry.value is Int) settings.set(entry.key, value.toInt())
+                        else if (entry.value is Float) settings.set(entry.key, value.toFloat())
+                        else settings.set(entry.key, value)
                     }
                     catch (e : Exception) {
                         
@@ -71,7 +72,7 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
             }
         }
         catch (e : Exception) {
-            FileHelper.clearJson(this.file.toPath())
+            clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
 
@@ -82,12 +83,12 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
     fun save() {
         try {
             val json = JsonObject()
-            for (setting in this.settings) {
+            for (setting in settings) {
                 json.add(setting.key, JsonPrimitive(setting.value.toString()))
             }
-            FileHelper.writeToJson(json, this.file.toPath())
+            writeToJson(json, file.toPath())
         } catch (e: Exception) {
-            LOGGER.error("Couldn't save $name", this.name)
+            LOGGER.error("Couldn't save $name", name)
             e.printStackTrace()
         }
     }
