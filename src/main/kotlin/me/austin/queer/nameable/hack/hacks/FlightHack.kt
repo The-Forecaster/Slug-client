@@ -14,20 +14,19 @@ object FlightHack : Hack("Flight") {
     private var cancelSpeed = false
 
     @EventHandler
-    val updateListener =
-            Listener<TickEvent.PostTick>({
-                if (mc.player == null || mc.world == null) return@Listener
-                if (mc.player!!.isFallFlying() && withElytra) return@Listener
+    val updateListener = Listener<TickEvent.PostTick>({
+        if (mc.player == null || mc.world == null) return@Listener
+        if (mc.player!!.isFallFlying() && withElytra) return@Listener
 
-                when (mode) {
-                    FlightMode.VANILLA -> {
-                        doVanillaFlight()
-                    }
-                    FlightMode.VELOCITY -> {
-                        doVelocity()
-                    }
-                }
-            })
+        when (mode) {
+            FlightMode.VANILLA -> {
+                doVanillaFlight()
+            }
+            FlightMode.VELOCITY -> {
+                doVelocity()
+            }
+        }
+    })
 
     init {
         settings.put("Mode", mode)

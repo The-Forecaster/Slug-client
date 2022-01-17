@@ -16,8 +16,7 @@ public val maindir = FabricLoader.getInstance().getConfigDir()
 private val gson = GsonBuilder().create()
 
 fun readJson(path: Path): JsonObject {
-    val jsonReader =
-            gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
+    val jsonReader = gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
     val obj = JsonObject()
 
     while (jsonReader.hasNext()) {
@@ -31,13 +30,13 @@ fun readJson(path: Path): JsonObject {
     return obj
 }
 
-fun writeToJson(element: JsonObject, path: Path) {
+fun writeToJson(element: JsonObject, path: Path) = {
     val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
 
     writer.write(gson.toJson(element))
     writer.close()
 }
 
-fun clearJson(path: Path) {
+fun clearJson(path: Path) = {
     writeToJson(JsonObject(), path)
 }

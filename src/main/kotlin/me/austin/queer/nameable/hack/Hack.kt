@@ -9,8 +9,7 @@ import me.austin.queer.nameable.Nameable
 import me.austin.queer.util.file.*
 import me.zero.alpine.listener.Listenable
 
-abstract class Hack(name: String, val settings: MutableMap<String, Any> = mutableMapOf()) :
-        Nameable(name), Listenable {
+abstract class Hack(name: String, val settings: MutableMap<String, Any> = mutableMapOf()) : Nameable(name), Listenable {
     private val file: File
     private var enabled: Boolean = false
 
@@ -56,17 +55,22 @@ abstract class Hack(name: String, val settings: MutableMap<String, Any> = mutabl
                     val value = rawval.toBoolean()
 
                     settings.set(entry.key, value)
-                } catch (e: Exception) {
+                } 
+                catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
 
                         if (entry.value is Int) settings.set(entry.key, value.toInt())
                         else if (entry.value is Float) settings.set(entry.key, value.toFloat())
                         else settings.set(entry.key, value)
-                    } catch (e: Exception) {}
+                    } 
+                    catch (e: Exception) {
+
+                    }
                 }
             }
-        } catch (e: Exception) {
+        } 
+        catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -82,7 +86,8 @@ abstract class Hack(name: String, val settings: MutableMap<String, Any> = mutabl
                 json.add(setting.key, JsonPrimitive(setting.value.toString()))
             }
             writeToJson(json, file.toPath())
-        } catch (e: Exception) {
+        } 
+        catch (e: Exception) {
             LOGGER.error("Couldn't save $name", name)
             e.printStackTrace()
         }

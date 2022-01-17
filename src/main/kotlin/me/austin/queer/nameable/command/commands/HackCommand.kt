@@ -11,28 +11,28 @@ import net.minecraft.server.command.ServerCommandSource
 object HackCommand : Command("hack-command") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(
-                literal("")
-                        .then(argument("hackname", string()))
-                        .executes({ ctx -> toggleHack(getHack(ctx.toString())) })
-                        .then(argument("settingname", string()))
-                        .then(argument("value", string()))
-                        .executes({ ctx ->
-                            takeInput(
-                                    ctx.getArgument("value", string().javaClass).toString(),
-                                    getSetting(
-                                            ctx.getArgument("settingname", string().javaClass)
-                                                    .toString(),
-                                            getHack(
-                                                    ctx.getArgument("hackname", string().javaClass)
-                                                            .toString()
-                                            )
-                                    ),
-                                    getHack(
-                                            ctx.getArgument("hackname", string().javaClass)
-                                                    .toString()
-                                    )
-                            )
-                        })
+            literal("")
+            .then(argument("hackname", string()))
+            .executes({ ctx -> toggleHack(getHack(ctx.toString())) })
+            .then(argument("settingname", string()))
+            .then(argument("value", string()))
+            .executes({ ctx ->
+                takeInput(
+                    ctx.getArgument("value", string().javaClass).toString(),
+                    getSetting(
+                        ctx.getArgument("settingname", string().javaClass)
+                                .toString(),
+                        getHack(
+                                ctx.getArgument("hackname", string().javaClass)
+                                        .toString()
+                        )
+                    ),
+                    getHack(
+                        ctx.getArgument("hackname", string().javaClass)
+                                .toString()
+                    )
+                )
+            })
         )
     }
 
@@ -60,7 +60,8 @@ object HackCommand : Command("hack-command") {
     fun takeInput(input: String, key: String, hack: Hack): Int {
         try {
             hack.settings.set(key, input)
-        } catch (e: Exception) {
+        } 
+        catch (e: Exception) {
             throw builtins.dispatcherUnknownArgument().create()
         }
 
