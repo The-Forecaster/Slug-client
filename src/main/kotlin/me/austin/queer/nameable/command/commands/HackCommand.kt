@@ -1,29 +1,39 @@
 package me.austin.queer.nameable.command.commands
 
+import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.StringArgumentType.*
+import me.austin.queer.manager.managers.HackManager
 import me.austin.queer.nameable.command.Command
 import me.austin.queer.nameable.hack.Hack
-import me.austin.queer.manager.managers.HackManager
-
-import com.mojang.brigadier.arguments.StringArgumentType.*
-import com.mojang.brigadier.CommandDispatcher
-
-import net.minecraft.server.command.CommandManager.*;
+import net.minecraft.server.command.CommandManager.*
 import net.minecraft.server.command.ServerCommandSource
 
-object HackCommand: Command("hack-command") {
+object HackCommand : Command("hack-command") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(literal("").then(argument("hackname", string())).executes({ ctx ->
-            toggleHack(getHack(ctx.toString()))
-        }).then(argument("settingname", string())).then(argument("value", string())).executes({ ctx ->
-            takeInput(
-                ctx.getArgument("value", string().javaClass).toString(), 
-                getSetting(
-                    ctx.getArgument("settingname", string().javaClass).toString(), 
-                    getHack(ctx.getArgument("hackname", string().javaClass).toString())
-                ),
-                getHack(ctx.getArgument("hackname", string().javaClass).toString())
-            )
-        }))
+        dispatcher.register(
+                literal("")
+                        .then(argument("hackname", string()))
+                        .executes({ ctx -> toggleHack(getHack(ctx.toString())) })
+                        .then(argument("settingname", string()))
+                        .then(argument("value", string()))
+                        .executes({ ctx ->
+                            takeInput(
+                                    ctx.getArgument("value", string().javaClass).toString(),
+                                    getSetting(
+                                            ctx.getArgument("settingname", string().javaClass)
+                                                    .toString(),
+                                            getHack(
+                                                    ctx.getArgument("hackname", string().javaClass)
+                                                            .toString()
+                                            )
+                                    ),
+                                    getHack(
+                                            ctx.getArgument("hackname", string().javaClass)
+                                                    .toString()
+                                    )
+                            )
+                        })
+        )
     }
 
     private fun getHack(name: String): Hack {
@@ -34,7 +44,7 @@ object HackCommand: Command("hack-command") {
         throw builtins.dispatcherUnknownArgument().create()
     }
 
-    private fun getSetting(name: String, hack: Hack) : String {
+    private fun getSetting(name: String, hack: Hack): String {
         for (setting in hack.settings) {
             if (setting.key.lowercase().equals(name.lowercase())) return setting.key
         }
@@ -50,8 +60,7 @@ object HackCommand: Command("hack-command") {
     fun takeInput(input: String, key: String, hack: Hack): Int {
         try {
             hack.settings.set(key, input)
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw builtins.dispatcherUnknownArgument().create()
         }
 

@@ -1,16 +1,16 @@
 package me.austin.queer.nameable.hack
 
-import java.io.File
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
-import me.austin.queer.manager.managers.HackManager
+import java.io.File
 import me.austin.queer.Globals.*
+import me.austin.queer.manager.managers.HackManager
 import me.austin.queer.nameable.Nameable
 import me.austin.queer.util.file.*
 import me.zero.alpine.listener.Listenable
-import kotlinx.coroutines.runBlocking
 
-abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutableMapOf()): Nameable(name), Listenable {
+abstract class Hack(name: String, val settings: MutableMap<String, Any> = mutableMapOf()) :
+        Nameable(name), Listenable {
     private val file: File
     private var enabled: Boolean = false
 
@@ -37,7 +37,7 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
     }
 
     fun isEnabled(): Boolean {
-        return enabled;
+        return enabled
     }
 
     open fun onEnable() {}
@@ -56,22 +56,17 @@ abstract class Hack(name: String, val settings : MutableMap<String, Any> = mutab
                     val value = rawval.toBoolean()
 
                     settings.set(entry.key, value)
-                }
-                catch (e : Exception) {
+                } catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
-                        
+
                         if (entry.value is Int) settings.set(entry.key, value.toInt())
                         else if (entry.value is Float) settings.set(entry.key, value.toFloat())
                         else settings.set(entry.key, value)
-                    }
-                    catch (e : Exception) {
-                        
-                    }
+                    } catch (e: Exception) {}
                 }
             }
-        }
-        catch (e : Exception) {
+        } catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
