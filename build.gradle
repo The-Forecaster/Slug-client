@@ -39,7 +39,7 @@ dependencies {
 
     // api dependencies
     apiModules.forEach {
-	    include(modImplementation(fabricApi.module(it, "0.45.2+1.18")))
+	    include(modImplementation(fabricApi.module(it, "0.46.2+1.18")))
     }
 
     // TR dependencies
@@ -50,7 +50,7 @@ dependencies {
 
 jar {
     from("LICENSE") {
-        rename { 
+        rename {
             "$it-$project.mod_name" 
         }
     }

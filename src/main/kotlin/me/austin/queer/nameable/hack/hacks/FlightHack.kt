@@ -1,6 +1,7 @@
 package me.austin.queer.nameable.hack.hacks
 
 import me.austin.queer.Globals.mc
+import me.austin.queer.Globals.nullCheck
 import me.austin.queer.event.events.TickEvent
 import me.austin.queer.nameable.hack.Hack
 import me.austin.queer.util.player.*
@@ -14,10 +15,7 @@ object FlightHack : Hack("Flight") {
     private var cancelSpeed = false
 
     @EventHandler
-    val updateListener = Listener<TickEvent.PostTick>({
-        if (mc.player == null || mc.world == null) return@Listener
-        if (mc.player!!.isFallFlying() && withElytra) return@Listener
-
+    private val updateListener = Listener<TickEvent.PostTick>({
         when (mode) {
             FlightMode.VANILLA -> {
                 doVanillaFlight()
@@ -26,6 +24,10 @@ object FlightHack : Hack("Flight") {
                 doVelocity()
             }
         }
+    }, {
+        !nullCheck() &&
+        mc.player!!.isFallFlying() && withElytra ||
+        it.isInWorld()
     })
 
     init {
@@ -35,11 +37,11 @@ object FlightHack : Hack("Flight") {
         settings.put("Canel-speed", cancelSpeed)
     }
 
-    private fun doVanillaFlight() {
+    internal fun doVanillaFlight() {
         setFlySpeed(trueSpeed(), cancelSpeed)
     }
 
-    private fun doVelocity() {
+    internal fun doVelocity() {
         setVelocity(trueSpeed(), cancelSpeed)
     }
 
