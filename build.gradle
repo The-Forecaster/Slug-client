@@ -18,8 +18,8 @@ repositories {
     mavenCentral()
 
     maven {
-	name = 'jitpack'
-	url = 'https://jitpack.io'
+	    name = 'jitpack'
+	    url = 'https://jitpack.io'
     }
 }
 
@@ -28,8 +28,8 @@ dependencies {
     ]
 
     Set<String> libraries = [
-	"com.github.ZeroMemes:Alpine:1.9",
-	"net.jodah:typetools:0.6.3"
+        "com.github.ZeroMemes:Alpine:1.9",
+        "net.jodah:typetools:0.6.3"
     ]
 
     // fabric dependencies
@@ -39,24 +39,24 @@ dependencies {
 
     // api dependencies
     apiModules.forEach {
-	include(modImplementation(fabricApi.module(it, "0.45.2+1.18")))
+	    include(modImplementation(fabricApi.module(it, "0.45.2+1.18")))
     }
 
     // TR dependencies
     libraries.forEach {
-	include(modImplementation(it))
+	    include(modImplementation(it))
     }
 }
 
 jar {
     from("LICENSE") {
-	rename { 
-	    "$it-$project.mod_name" 
-	}
+        rename { 
+            "$it-$project.mod_name" 
+        }
     }
 
     manifest {
-	attributes("Main-Class" : "me.austin.queer.Main")
+	    attributes("Main-Class" : "me.austin.queer.Main")
     }
 }
 
