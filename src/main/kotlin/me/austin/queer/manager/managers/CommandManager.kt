@@ -12,6 +12,7 @@ object CommandManager : Manager<Command>() {
         this.values.add(ReloadCommand)
     }
 
+    @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
         this.values.forEach { command -> command.register(dispatcher) }
     }
