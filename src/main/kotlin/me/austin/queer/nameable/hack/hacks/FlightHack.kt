@@ -26,7 +26,8 @@ object FlightHack : Hack("Flight") {
         }
     }, {
         !nullCheck() &&
-        mc.player!!.isFallFlying() && withElytra ||
+        mc.player!!.isFallFlying() && 
+        withElytra ||
         it.isInWorld()
     })
 
