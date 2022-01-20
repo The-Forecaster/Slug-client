@@ -11,7 +11,7 @@ import net.minecraft.client.MinecraftClient;
  * @author Austin 
  */
 public final class Globals {
-	public static final String NAME = "Trans-Rights", VERSION = "v0.5.1";
+	public static final String NAME = "Trans-Rights", VERSION = "0.5.2";
 	public static final MinecraftClient mc = MinecraftClient.getInstance();
 	public static final Logger LOGGER = LogManager.getLogger(NAME);
 	public static final EventManager EVENTBUS = new EventManager();
