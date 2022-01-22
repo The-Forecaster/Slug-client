@@ -35,7 +35,7 @@ public final class ClientConnectionMixin {
             info.cancel();
     }
 
-    @Inject(at = @At("HEAD"), method = "send", cancellable = true)
+    @Inject(method = "send", at = @At("HEAD"), cancellable = true)
     private final void beforeSend(Packet<?> packet, CallbackInfo info) {
         final var event = PreSend.get(packet);
 

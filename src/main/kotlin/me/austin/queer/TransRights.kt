@@ -1,12 +1,16 @@
 package me.austin.queer
 
 import me.austin.queer.Globals.LOGGER
-import me.austin.queer.Globals.NAME
 import me.austin.queer.modules.Manager
 import me.austin.queer.modules.hack.HackManager
 import net.fabricmc.api.ClientModInitializer
 
 class TransRights : ClientModInitializer {
+    companion object {
+        const val NAME = "trans-rights"
+        const val VERSION = "0.5.2"
+    }
+
     override fun onInitializeClient() {
         val starttime = System.currentTimeMillis()
 

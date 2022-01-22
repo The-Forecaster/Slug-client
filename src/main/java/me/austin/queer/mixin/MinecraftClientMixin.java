@@ -1,7 +1,6 @@
 package me.austin.queer.mixin;
 
 import static me.austin.queer.Globals.EVENTBUS;
-import static me.austin.queer.Globals.NAME;
 import static me.austin.queer.Globals.mc;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,14 +27,10 @@ public final class MinecraftClientMixin extends MinecraftClient {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private final void beforeTick(CallbackInfo info) {
         var event = PreTick.get(mc.player != null && mc.world != null);
-        
-        profiler.push(NAME);
 
         EVENTBUS.post(event);
         if (event.isCancelled())
             info.cancel();
-        
-        profiler.pop();
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)

@@ -11,14 +11,13 @@ import net.minecraft.client.MinecraftClient;
  * @author Austin 
  */
 public final class Globals {
-	public static final String NAME = "Trans-Rights", VERSION = "0.5.2";
-	public static final MinecraftClient mc = MinecraftClient.getInstance();
-	public static final Logger LOGGER = LogManager.getLogger(NAME);
-	public static final EventManager EVENTBUS = new EventManager();
+    public static final MinecraftClient mc = MinecraftClient.getInstance();
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static final EventManager EVENTBUS = new EventManager();
 
-	private Globals() {}
+    private Globals() {}
 
-	public static final boolean nullCheck() {
-		return mc.player == null && mc.world == null; 
-	}
+    public static final boolean nullCheck() {
+        return mc.player == null && mc.world == null; 
+    }
 }

@@ -16,8 +16,7 @@ public val maindir = FabricLoader.getInstance().getConfigDir()
 private val gson = GsonBuilder().create()
 
 fun readJson(path: Path): JsonObject {
-    val jsonReader =
-            gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
+    val jsonReader = gson.newJsonReader(BufferedReader(InputStreamReader(Files.newInputStream(path))))
     val obj = JsonObject()
 
     while (jsonReader.hasNext()) {

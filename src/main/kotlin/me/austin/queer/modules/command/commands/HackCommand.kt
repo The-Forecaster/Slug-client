@@ -2,6 +2,7 @@ package me.austin.queer.modules.command.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.*
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import me.austin.queer.modules.hack.HackManager
 import me.austin.queer.modules.command.Command
 import me.austin.queer.modules.hack.Hack

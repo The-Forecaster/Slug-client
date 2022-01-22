@@ -3,7 +3,6 @@ package me.austin.queer.modules.command.commands
 import com.mojang.brigadier.CommandDispatcher
 import me.austin.queer.Globals.*
 import me.austin.queer.modules.*
-
 import me.austin.queer.modules.command.Command
 import net.minecraft.server.command.CommandManager.*
 import net.minecraft.server.command.ServerCommandSource
@@ -14,8 +13,8 @@ object ReloadCommand : Command("Reload", "Reload parts of the client or mc") {
     }
 
     private fun reload(): Int {
-        Managers.unload()
-        Managers.load()
+        Manager.unload()
+        Manager.load()
 
         return 0
     }
