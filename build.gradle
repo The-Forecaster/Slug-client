@@ -15,11 +15,10 @@ loom {
 
 repositories {
     jcenter()
-    mavenCentral()
 
     maven {
-	    name = 'jitpack'
-	    url = 'https://jitpack.io'
+        name = 'jitpack'
+        url = 'https://jitpack.io'
     }
 }
 
@@ -39,12 +38,12 @@ dependencies {
 
     // api dependencies
     apiModules.forEach {
-	    include(modImplementation(fabricApi.module(it, "0.46.2+1.18")))
+        include(modImplementation(fabricApi.module(it, "0.46.2+1.18")))
     }
 
     // TR dependencies
     libraries.forEach {
-	    include(modImplementation(it))
+        include(modImplementation(it))
     }
 }
 
@@ -61,8 +60,14 @@ jar {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
+    archiveClassifier.set("sources")
     from sourceSets.main.allSource
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set(17)
+
+    it.options.encoding = "UTF-8"
 }
 
 compileKotlin {
@@ -72,8 +77,6 @@ compileKotlin {
 }
 
 processResources {
-    inputs.property "version", project.mod_version
-
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version
     }
