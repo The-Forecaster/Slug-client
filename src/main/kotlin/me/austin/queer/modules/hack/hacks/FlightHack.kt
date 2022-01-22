@@ -9,25 +9,21 @@ import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.Listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
-    private var mode = FlightMode.VANILLA
+    private var vanilla = true
     private var speed = 10.0f
     private var withElytra = false
     private var cancelSpeed = false
 
     @EventHandler
     private val updateListener = Listener<TickEvent.PostTick>({
-        when (mode) {
-            FlightMode.VANILLA -> {
-                doVanillaFlight()
-            }
-            FlightMode.VELOCITY -> {
-                doVelocity()
-            }
+        when (vanilla) {
+            true -> doVanillaFlight()
+            false -> doVelocity()
         }
     }, { event -> !nullCheck() && mc.player!!.isFallFlying() && withElytra || event.isInWorld() })
 
     init {
-        settings.put("Mode", mode)
+        settings.put("Vanilla", vanilla)
         settings.put("Flight-speed", speed)
         settings.put("With-elytra", withElytra)
         settings.put("Canel-speed", cancelSpeed)
@@ -48,10 +44,5 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     override fun onDisable() {
         mc.player!!.abilities.allowFlying = false
         mc.player!!.abilities.flySpeed = 0.05f
-    }
-
-    private enum class FlightMode {
-        VANILLA,
-        VELOCITY
     }
 }
