@@ -7,7 +7,7 @@ import net.minecraft.server.command.ServerCommandSource
 import me.austin.queer.modules.Module
 
 abstract class Command(name: String, description: String) : Module(name, description) {
-    default val builtins = BuiltInExceptions()
+    val builtins = BuiltInExceptions()
 
     abstract fun register(dispatcher: CommandDispatcher<ServerCommandSource>)
 }

@@ -4,7 +4,7 @@ import me.austin.queer.modules.command.CommandManager
 import me.austin.queer.modules.hack.HackManager
 
 import me.austin.queer.Globals.LOGGER
-import me.austin.queer.TransRights.NAME
+import me.austin.queer.TransRights.Companion.NAME
 
 abstract class Manager<T : Module>(val values: MutableList<T> = mutableListOf()) : Module("", "") {
     companion object : Manager<Manager<*>>() {
@@ -18,13 +18,9 @@ abstract class Manager<T : Module>(val values: MutableList<T> = mutableListOf())
         override fun load() {
             this.add(HackManager)
             this.add(CommandManager)
-
-            HackManager.save()
         }
 
         override fun unload() {
-            HackManager.save()
-
             this.values.clear()
         }
     }
