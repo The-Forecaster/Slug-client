@@ -3,7 +3,7 @@ package trans.rights.client.modules.hack
 import java.io.File
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.hacks.*
-import trans.rights.util.file.maindir
+import trans.rights.client.util.file.maindir
 
 object HackManager : Manager<Hack>() {
     val dir = File(maindir.toString() + "/hacks")

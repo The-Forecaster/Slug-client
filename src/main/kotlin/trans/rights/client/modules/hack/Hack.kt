@@ -3,10 +3,10 @@ package trans.rights.client.modules.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
+import me.zero.alpine.listener.Listenable
 import trans.rights.client.Globals.*
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
-import me.zero.alpine.listener.Listenable
 
 abstract class Hack(
         name: String,

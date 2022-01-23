@@ -2,7 +2,7 @@ package trans.rights.client
 
 import trans.rights.client.Globals.LOGGER
 import trans.rights.client.modules.Manager
-import trans.rights.modules.hack.HackManager
+import trans.rights.client.modules.hack.HackManager
 import net.fabricmc.api.ClientModInitializer
 
 class TransRights : ClientModInitializer {
