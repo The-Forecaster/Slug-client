@@ -28,7 +28,8 @@ dependencies {
 
     Set<String> libraries = [
         "com.github.ZeroMemes:Alpine:1.9",
-        "net.jodah:typetools:0.6.3"
+        "net.jodah:typetools:0.6.3",
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
     ]
 
     // fabric dependencies

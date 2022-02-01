@@ -1,54 +1,62 @@
-package trans.rights.event.bus;
+package trans.rights.event.bus
 
-import trans.rights.event.type.ICancellable;
+import trans.rights.event.listener.Listener
+import trans.rights.event.type.ICancellable
 
 /**
  * Basic structure for an event dispatcher
- * 
+ *
  * @author Austin
  */
-public interface EventBus {
+interface EventBus {
+
+    /**
+     * map for listeners and their target events
+     *
+     * <Event, Set<Listener>>
+     */
+    val subscribers: MutableMap<Class<*>, MutableSet<Listener<*>>>
 
     /**
      * Adds the Subscriber to the registry
-     * 
+     *
      * @param subscriber event Subscriber instance
      */
-    void register(Object subscriber);
+    fun register(subscriber: Any?)
 
     /**
      * Removes the Subscriber from the registry
-     * 
+     *
      * @param subscriber event subscriber instance
      */
-    void unregister(Object subscriber);
+    fun unregister(subscriber: Any?)
 
     /**
      * Check if an object is currently in the registry
-     * 
+     *
      * @param subscriber object to check
      * @return if the object is in the registry
      */
-    boolean isRegistered(Object subscriber);
+    fun isRegistered(subscriber: Any?): Boolean
 
     /**
      * Post an event to be processed by the subscribed methods or listener objects
-     * 
+     *
      * @param <T> event type
      * @param event object to post
-     * 
+     *
      * @return the event you passed
      */
-    <T> T dispatch(T event);
+    fun <T> dispatch(event: T): T
 
     /**
-     * Posts a cancellable event to be processed by the subscribed methods or listener objects, 
+     * Posts a cancellable event to be processed by the subscribed methods or listener objects,
      * if an event is cancelled then lower priority events will not be invoked
-     * 
+     *
      * @param <T>
      * @param event cancellable event to post
-     * 
+     *
      * @return the event you passed
      */
-    <T extends ICancellable> T dispatch(T event);
+    fun <T : ICancellable?> dispatch(event: T): T
 }

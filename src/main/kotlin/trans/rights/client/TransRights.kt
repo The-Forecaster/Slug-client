@@ -5,12 +5,16 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.HackManager
+import trans.rights.event.bus.EventBus
 import java.lang.StringBuilder
 
 class TransRights : ClientModInitializer {
     companion object {
         @JvmField
         var LOGGER: Logger = LogManager.getLogger()
+
+        @JvmField
+        var EVENTBUS: EventBus? = null
     }
 
     override fun onInitializeClient() {

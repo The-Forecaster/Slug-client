@@ -2,8 +2,8 @@ package trans.rights.client.modules.hack.hacks
 
 import me.zero.alpine.listener.EventHandler
 import me.zero.alpine.listener.Listener
-import trans.rights.client.Globals.mc
-import trans.rights.client.Globals.nullCheck
+import trans.rights.client.misc.Globals.mc
+import trans.rights.client.misc.Globals.nullCheck
 import trans.rights.client.events.TickEvent
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.util.player.*

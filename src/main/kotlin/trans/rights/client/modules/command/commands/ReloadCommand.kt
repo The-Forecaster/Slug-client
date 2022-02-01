@@ -3,7 +3,6 @@ package trans.rights.client.modules.command.commands
 import com.mojang.brigadier.CommandDispatcher
 import net.minecraft.server.command.CommandManager.*
 import net.minecraft.server.command.ServerCommandSource
-import trans.rights.client.Globals.*
 import trans.rights.client.modules.*
 import trans.rights.client.modules.command.Command
 

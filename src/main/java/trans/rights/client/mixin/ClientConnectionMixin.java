@@ -1,6 +1,6 @@
 package trans.rights.client.mixin;
 
-import static trans.rights.client.Globals.EVENTBUS;
+import trans.rights.client.TransRights;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public final class ClientConnectionMixin {
     private void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         final var event = PreReceive.get(packet);
 
-        EVENTBUS.post(event);
+        TransRights.EVENTBUS.dispatch(event);
         if (event.isCancelled())
             info.cancel();
     }
@@ -30,7 +30,7 @@ public final class ClientConnectionMixin {
     private void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         final var event = PostReceive.get(packet);
 
-        EVENTBUS.post(event);
+        TransRights.EVENTBUS.dispatch(event);
         if (event.isCancelled())
             info.cancel();
     }
@@ -39,7 +39,7 @@ public final class ClientConnectionMixin {
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
         final var event = PreSend.get(packet);
 
-        EVENTBUS.post(event);
+        TransRights.EVENTBUS.dispatch(event);
         if (event.isCancelled())
             info.cancel();
     }
@@ -48,7 +48,7 @@ public final class ClientConnectionMixin {
     private void afterSend(Packet<?> packet, CallbackInfo info) {
         final var event = PostSend.get(packet);
 
-        EVENTBUS.post(event);
+        TransRights.EVENTBUS.dispatch(event);
         if (event.isCancelled())
             info.cancel();
     }
