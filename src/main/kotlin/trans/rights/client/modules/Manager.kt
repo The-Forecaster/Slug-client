@@ -5,11 +5,6 @@ import trans.rights.client.modules.hack.HackManager
 
 abstract class Manager<T : Module>(val values: MutableList<T> = mutableListOf()) : Module("", "") {
     companion object : Manager<Manager<*>>() {
-        fun reload() {
-            this.load()
-            this.unload()
-        }
-
         override fun load() {
             this.add(HackManager)
             this.add(CommandManager)

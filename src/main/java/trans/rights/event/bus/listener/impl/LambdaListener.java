@@ -7,19 +7,27 @@ import trans.rights.event.bus.listener.Listener;
 
 public final class LambdaListener<T> implements Listener<T> {
     private final Class<T> target;
+
+    private final Object parent;
     
-    private Consumer<T> action;
+    private final Consumer<T> action;
 
     private final int priority;
 
-    public LambdaListener(Class<T> target, Consumer<T> action, int priority) {
+    public LambdaListener(final Class<T> target, final Object parent, final Consumer<T> action, final int priority) {
         this.target = target;
+        this.parent = parent;
         this.action = action;
         this.priority = priority;
     }
 
     public Class<?> getTarget() {
         return this.target;
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override

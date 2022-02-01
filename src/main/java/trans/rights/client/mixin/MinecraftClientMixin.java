@@ -25,12 +25,12 @@ public final class MinecraftClientMixin extends MinecraftClient {
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private final void beforeTick(CallbackInfo info) {
+    private void beforeTick(CallbackInfo info) {
         EVENTBUS.post(PreTick.get(mc.player != null && mc.world != null));
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
-    private final void onTick(CallbackInfo info) {
+    private void onTick(CallbackInfo info) {
         EVENTBUS.post(PostTick.get(mc.player != null && mc.world != null));
     }
 }

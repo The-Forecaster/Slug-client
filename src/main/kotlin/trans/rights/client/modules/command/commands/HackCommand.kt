@@ -13,10 +13,12 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
         dispatcher.register(
             literal("").
             then(argument("hackname", string())).
-            executes({ ctx -> toggleHack(getHack(ctx.toString())) }).
+            executes { ctx ->
+                toggleHack(getHack(ctx.toString()))
+            }.
             then(argument("settingname", string())).
             then(argument("value", string())).
-            executes({ ctx -> takeInput(
+            executes { ctx -> takeInput(
                 ctx.getArgument(
                     "value", 
                     string().javaClass).toString(),
@@ -25,13 +27,13 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                     getHack(ctx.getArgument("hackname", string().javaClass).toString())
                 ), 
                 getHack(ctx.getArgument("hackname", string().javaClass).toString())
-            )})
+            )}
         )
     }
 
     private fun getHack(name: String): Hack {
         for (hack in HackManager.values) {
-            if (hack.name.lowercase().equals(name.lowercase())) return hack
+            if (hack.name.lowercase() == name.lowercase()) return hack
         }
 
         throw builtins.dispatcherUnknownArgument().create()
@@ -39,20 +41,20 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
 
     private fun getSetting(name: String, hack: Hack): String {
         for (setting in hack.settings) {
-            if (setting.key.lowercase().equals(name.lowercase())) return setting.key
+            if (setting.key.lowercase() == name.lowercase()) return setting.key
         }
 
         throw builtins.dispatcherUnknownArgument().create()
     }
 
-    fun toggleHack(hack: Hack): Int {
+    private fun toggleHack(hack: Hack): Int {
         hack.toggle()
         return 0
     }
 
-    fun takeInput(input: String, key: String, hack: Hack): Int {
+    private fun takeInput(input: String, key: String, hack: Hack): Int {
         try {
-            hack.settings.set(key, input)
+            hack.settings[key] = input
         } catch (e: Exception) {
             throw builtins.dispatcherUnknownArgument().create()
         }

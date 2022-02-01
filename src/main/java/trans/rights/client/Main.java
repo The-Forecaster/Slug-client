@@ -19,7 +19,7 @@ public final class Main {
 	 * This opens a new Panel when you run the jar so idiots know what to do
 	 * @author Austin, Toxic
 	 */
-    public static final void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         if (JOptionPane.showConfirmDialog(null, "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?", "ERROR", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
@@ -35,16 +35,16 @@ public final class Main {
         }
     }
 
-    private static final OS getOS() {
-        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+    private static OS getOS() {
+        var osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("nux") || osName.contains("nix")) return OS.NIX;
         else if (osName.contains("darwin") || osName.contains("mac")) return OS.OSX;
         else if (osName.contains("win")) return OS.WINDOWS;
         else return OS.UNKNOWN;
     }
 
-    private static final String[] getURLOpenCommand(URL url) {
-        String string = url.toString();
+    private static String[] getURLOpenCommand(URL url) {
+        var string = url.toString();
         if ("file".equals(url.getProtocol())) {
             string = string.replace("file:", "file://");
         }
@@ -52,7 +52,7 @@ public final class Main {
         return new String[] {"xdg-open", string};
     }
 
-    private static enum OS {
+    private enum OS {
         WINDOWS, OSX, NIX, UNKNOWN
     }
 }

@@ -15,6 +15,8 @@ object CommandManager : Manager<Command>() {
 
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        this.values.forEach { command -> command.register(dispatcher) }
+        this.values.forEach { command ->
+            command.register(dispatcher)
+        }
     }
 }

@@ -1,7 +1,8 @@
 package trans.rights.event.type;
 
 /**
- * Basic event structure
+ * Event structure for a cancellable event
+ * by default the event should be uncancelled and be cancelled by calling setCancelled(true)
  * 
  * @author Austin
  */

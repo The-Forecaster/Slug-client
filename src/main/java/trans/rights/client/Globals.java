@@ -12,12 +12,11 @@ import net.minecraft.client.MinecraftClient;
  */
 public final class Globals {
     public static final MinecraftClient mc = MinecraftClient.getInstance();
-    public static final Logger LOGGER = LogManager.getLogger();
     public static final EventManager EVENTBUS = new EventManager();
 
     private Globals() {}
 
-    public static final boolean nullCheck() {
+    public static boolean nullCheck() {
         return mc.player == null && mc.world == null; 
     }
 }

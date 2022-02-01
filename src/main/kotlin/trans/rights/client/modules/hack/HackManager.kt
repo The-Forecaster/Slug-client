@@ -6,7 +6,7 @@ import trans.rights.client.modules.hack.hacks.*
 import trans.rights.client.util.file.maindir
 
 object HackManager : Manager<Hack>() {
-    val dir = File(maindir.toString() + "/hacks")
+    val dir = File("$maindir/hacks")
 
     init {
         if (!dir.exists()) dir.mkdirs()

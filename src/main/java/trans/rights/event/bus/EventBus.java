@@ -7,26 +7,26 @@ import trans.rights.event.type.ICancellable;
  * 
  * @author Austin
  */
-public abstract interface EventBus {
+public interface EventBus {
 
     /**
      * Adds the Subscriber to the registry
      * 
-     * @param Subscriber event Subscriber instance
+     * @param subscriber event Subscriber instance
      */
     void register(Object subscriber);
 
     /**
      * Removes the Subscriber from the registry
      * 
-     * @param Subscriber
+     * @param subscriber event subscriber instance
      */
     void unregister(Object subscriber);
 
     /**
      * Check if an object is currently in the registry
      * 
-     * @param Subscriber object to check
+     * @param subscriber object to check
      * @return if the object is in the registry
      */
     boolean isRegistered(Object subscriber);

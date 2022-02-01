@@ -8,12 +8,12 @@ import trans.rights.event.bus.EventBus;
 import trans.rights.event.bus.listener.Listener;
 import trans.rights.event.type.ICancellable;
 
-public final class EventManager implements EventBus {
+public final class EventProcessor implements EventBus {
     private final Map<Class<?>, List<Listener<?>>> SUBSCRIBTION_MAP = new ConcurrentHashMap<>();
 
     @Override
     public void register(Object subscriber) {
-        this.SUBSCRIBTION_MAP.get(subscriber.getClass());
+
     }
 
     @Override

@@ -15,30 +15,30 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     private var cancelSpeed = false
 
     @EventHandler
-    private val updateListener = Listener<TickEvent.PostTick>({
+    val updateListener = Listener<TickEvent.PostTick>({
         when (vanilla) {
             true -> this.doVanillaFlight()
             false -> this.doVelocity()
         }
     }, { event ->
         !nullCheck() && 
-        mc.player!!.isFallFlying() && 
+        mc.player!!.isFallFlying &&
         withElytra || 
-        event.isInWorld()
+        event.isInWorld
     })
 
     init {
-        settings.put("Vanilla", vanilla)
-        settings.put("Flight-speed", speed)
-        settings.put("With-elytra", withElytra)
-        settings.put("Canel-speed", cancelSpeed)
+        settings["Vanilla"] = vanilla
+        settings["Flight-speed"] = speed
+        settings["With-elytra"] = withElytra
+        settings["Cancel-speed"] = cancelSpeed
     }
 
-    internal fun doVanillaFlight() {
+    private fun doVanillaFlight() {
         setFlySpeed(trueSpeed(), cancelSpeed)
     }
 
-    internal fun doVelocity() {
+    private fun doVelocity() {
         setVelocity(trueSpeed(), cancelSpeed)
     }
 

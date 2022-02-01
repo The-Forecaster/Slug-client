@@ -5,6 +5,7 @@ import com.google.gson.JsonPrimitive
 import java.io.File
 import me.zero.alpine.listener.Listenable
 import trans.rights.client.Globals.*
+import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
 
@@ -17,7 +18,7 @@ abstract class Hack(
     private var enabled: Boolean = false
 
     init {
-        this.settings.put("Enabled", enabled)
+        this.settings["Enabled"] = enabled
 
         file = File(HackManager.dir.absolutePath + this.name + ".json")
     }
@@ -59,15 +60,19 @@ abstract class Hack(
                 try {
                     val value = rawval.toBoolean()
 
-                    settings.set(entry.key, value)
+                    settings[entry.key] = value
                 } catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
 
-                        if (entry.value is Int) settings.set(entry.key, value.toInt())
-                        else if (entry.value is Float) settings.set(entry.key, value.toFloat())
-                        else settings.set(entry.key, value)
-                    } catch (e: Exception) {}
+                        settings[entry.key] = when (entry.value) {
+                            is Int -> value.toInt()
+                            is Float -> value.toFloat()
+                            else -> value
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         } catch (e: Exception) {

@@ -6,6 +6,10 @@ package trans.rights.event.type;
  * @author Austin
  */
 public abstract class Cancellable implements ICancellable {
+
+    /**
+     * This stores whether the event is cancelled or not
+     */
     private boolean cancelled;
 
     @Override

@@ -19,5 +19,5 @@ public @interface EventHandler {
      * 
      * @return int value of the Priority, default is -50
      */
-    int priority() default Priority.DEFALUT;
+    int priority() default Priority.DEFAULT;
 }

@@ -1,27 +1,29 @@
 package trans.rights.client.misc;
 
 import java.awt.Color;
+import java.io.Serial;
 
-public class JColor extends Color {
+public final class JColor extends Color {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	public JColor (Color color) {
 		super(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	}
 	
-	public static final JColor fromHSB (float hue, float saturation, float brightness) {
+	public static JColor fromHSB (float hue, float saturation, float brightness) {
 		return new JColor(Color.getHSBColor(hue, saturation, brightness));
 	}
 	
-	public final float getHue() {
+	public float getHue() {
 		return RGBtoHSB(getRed(), getGreen(), getBlue(),null)[0];
 	}
 	
-	public final float getSaturation() {
+	public float getSaturation() {
 		return RGBtoHSB(getRed(), getGreen(), getBlue(),null)[1];
 	}
 	
-	public final float getBrightness() {
+	public float getBrightness() {
 		return RGBtoHSB(getRed(), getGreen(), getBlue(),null)[2];
 	}
 }

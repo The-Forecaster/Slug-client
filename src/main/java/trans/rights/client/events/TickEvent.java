@@ -24,7 +24,7 @@ public abstract class TickEvent {
     public static final class PostTick extends TickEvent {
         private static final PostTick INSTANCE = new PostTick();
 
-        public static final PostTick get(boolean inworld) {
+        public static PostTick get(boolean inworld) {
             INSTANCE.setInworld(inworld);
 
             return INSTANCE;
