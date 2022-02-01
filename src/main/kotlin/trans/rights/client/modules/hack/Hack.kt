@@ -46,9 +46,11 @@ abstract class Hack(
 
     open fun onDisable() {}
 
+    // This is dumb: find a better way to do this
     fun load() {
         try {
             if (!file.exists()) file.createNewFile()
+            this.save()
 
             val hackobj = readJson(file.toPath())
 

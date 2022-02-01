@@ -1,9 +1,9 @@
 package trans.rights.client.modules.command
 
 import com.mojang.brigadier.CommandDispatcher
+import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.command.commands.*
-import net.minecraft.server.command.ServerCommandSource
 
 object CommandManager : Manager<Command>() {
     init {

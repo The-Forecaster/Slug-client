@@ -1,9 +1,9 @@
 package trans.rights.client.util.player
 
-import trans.rights.client.Globals.mc
-import trans.rights.client.Globals.nullCheck
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.util.math.Vec3d
+import trans.rights.client.Globals.mc
+import trans.rights.client.Globals.nullCheck
 
 fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     val player = mc.player as ClientPlayerEntity

@@ -3,8 +3,6 @@ package trans.rights.client.modules
 import trans.rights.client.modules.command.CommandManager
 import trans.rights.client.modules.hack.HackManager
 
-import trans.rights.client.Globals.LOGGER
-
 abstract class Manager<T : Module>(val values: MutableList<T> = mutableListOf()) : Module("", "") {
     companion object : Manager<Manager<*>>() {
         fun reload() {

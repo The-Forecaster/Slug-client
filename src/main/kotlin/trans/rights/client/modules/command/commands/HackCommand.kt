@@ -2,38 +2,30 @@ package trans.rights.client.modules.command.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.*
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import trans.rights.client.modules.hack.HackManager
-import trans.rights.client.modules.command.Command
-import trans.rights.client.modules.hack.Hack
 import net.minecraft.server.command.CommandManager.*
 import net.minecraft.server.command.ServerCommandSource
+import trans.rights.client.modules.command.Command
+import trans.rights.client.modules.hack.Hack
+import trans.rights.client.modules.hack.HackManager
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(
-            literal("")
-            .then(argument("hackname", string()))
-            .executes({ ctx -> toggleHack(getHack(ctx.toString())) })
-            .then(argument("settingname", string()))
-            .then(argument("value", string()))
-            .executes({ ctx ->
-                takeInput(
-                    ctx.getArgument("value", string().javaClass).toString(),
-                    getSetting(
-                        ctx.getArgument("settingname", string().javaClass)
-                            .toString(),
-                        getHack(
-                            ctx.getArgument("hackname", string().javaClass)
-                                .toString()
-                        )
-                    ),
-                    getHack(
-                        ctx.getArgument("hackname", string().javaClass)
-                            .toString()
-                    )
-                )
-            })
+            literal("").
+            then(argument("hackname", string())).
+            executes({ ctx -> toggleHack(getHack(ctx.toString())) }).
+            then(argument("settingname", string())).
+            then(argument("value", string())).
+            executes({ ctx -> takeInput(
+                ctx.getArgument(
+                    "value", 
+                    string().javaClass).toString(),
+                getSetting(
+                    ctx.getArgument("settingname", string().javaClass).toString(),
+                    getHack(ctx.getArgument("hackname", string().javaClass).toString())
+                ), 
+                getHack(ctx.getArgument("hackname", string().javaClass).toString())
+            )})
         )
     }
 
@@ -61,8 +53,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     fun takeInput(input: String, key: String, hack: Hack): Int {
         try {
             hack.settings.set(key, input)
-        } 
-        catch (e: Exception) {
+        } catch (e: Exception) {
             throw builtins.dispatcherUnknownArgument().create()
         }
 
