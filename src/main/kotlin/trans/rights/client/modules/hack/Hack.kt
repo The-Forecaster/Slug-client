@@ -7,13 +7,14 @@ import trans.rights.client.TransRights.Companion.EVENTBUS
 import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
+import trans.rights.client.api.SaveLoadClass
 
 abstract class Hack(
         name: String,
         description: String,
         val settings: MutableMap<String, Any> = mutableMapOf()
-) : Module(name, description) {
-    private val file: File
+) : Module(name, description), SaveLoadClass {
+    override val file: File
     private var enabled: Boolean = false
 
     init {
@@ -47,10 +48,10 @@ abstract class Hack(
     open fun onDisable() {}
 
     // This is dumb: find a better way to do this
-    fun load() {
+    override fun load(file: File) {
         try {
             if (!file.exists()) file.createNewFile()
-            this.save()
+            this.save(file)
 
             val hackobj = readJson(file.toPath())
 
@@ -83,7 +84,7 @@ abstract class Hack(
         }
     }
 
-    fun save() {
+    override fun save(file: File) {
         try {
             val json = JsonObject()
             for (setting in settings) {

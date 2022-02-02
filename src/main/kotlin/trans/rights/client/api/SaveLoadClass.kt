@@ -1,6 +1,11 @@
 package trans.rights.client.api
 
+import java.io.File
+
 interface SaveLoadClass {
-    fun save()
-    fun load()
+    val file: File
+
+    fun save(file: File)
+
+    fun load(file: File)
 }

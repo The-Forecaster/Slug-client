@@ -6,14 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to mark a method to be added to the registry
+ * Used to mark a field to be added to the registry
  * @see Priority
  * 
  * @author Austin
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface EventHandler {
+@Target(ElementType.FIELD)
+public @interface Listener {
     /**
      * Priority of the method 
      * 

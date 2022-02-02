@@ -1,31 +1,28 @@
 package trans.rights.client.modules.hack.hacks
 
-import me.zero.alpine.listener.EventHandler
-import me.zero.alpine.listener.Listener
-import trans.rights.client.misc.Globals.mc
-import trans.rights.client.misc.Globals.nullCheck
+import trans.rights.event.listener.impl.LambdaListener
+import trans.rights.event.annotation.Listener
 import trans.rights.client.events.TickEvent
+import trans.rights.client.misc.Globals
+import trans.rights.client.misc.Globals.mc
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.util.player.*
 
-object FlightHack : Hack("Flight", "Fly using hacks") {
+object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private var vanilla = true
     private var speed = 10.0f
     private var withElytra = false
     private var cancelSpeed = false
 
-    @EventHandler
-    val updateListener = Listener<TickEvent.PostTick>({
+    @Listener
+    val updateListener = LambdaListener<TickEvent.PostTick>(-50, this, { event ->
+        if (!nullCheck() && mc.player!!.isFallFlying && withElytra || event!!.isInWorld) return@LambdaListener
+        
         when (vanilla) {
             true -> this.doVanillaFlight()
             false -> this.doVelocity()
         }
-    }, { event ->
-        !nullCheck() && 
-        mc.player!!.isFallFlying &&
-        withElytra || 
-        event.isInWorld
-    })
+    }, TickEvent.PostTick::class.java)
 
     init {
         settings["Vanilla"] = vanilla
