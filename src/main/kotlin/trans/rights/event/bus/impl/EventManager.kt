@@ -5,7 +5,6 @@ import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.type.ICancellable
-import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
