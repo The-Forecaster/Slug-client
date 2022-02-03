@@ -49,7 +49,7 @@ public final class Main {
             string = string.replace("file:", "file://");
         }
 
-        return new String[] {"xdg-open", string};
+        return new String[] {"Xdg-open", string};
     }
 
     private enum OS {

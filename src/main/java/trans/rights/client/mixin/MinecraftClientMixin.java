@@ -15,13 +15,9 @@ import trans.rights.client.events.TickEvent.PreTick;
 import trans.rights.client.misc.Globals;
 
 @Mixin(MinecraftClient.class)
-public final class MinecraftClientMixin extends MinecraftClient implements Globals {
+public final class MinecraftClientMixin implements Globals {
     @Shadow
     private Profiler profiler;
-
-    private MinecraftClientMixin(RunArgs args) {
-        super(args);
-    }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void beforeTick(CallbackInfo info) {
