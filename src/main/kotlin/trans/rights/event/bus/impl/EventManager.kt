@@ -70,6 +70,6 @@ class EventManager(private val registeredListeners: MutableSet<Any?> = mutableSe
     override fun <T : ICancellable> dispatch(event: T): T {
         val listeners = this.subscribers[event!!::class.java] ?: return event
 
-        return event
+        return dispatch(event)
     }
 }
