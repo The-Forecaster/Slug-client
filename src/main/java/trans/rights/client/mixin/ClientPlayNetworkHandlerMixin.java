@@ -1,5 +1,7 @@
 package trans.rights.client.mixin;
 
+import trans.rights.client.modules.command.CommandManager;
+
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 
@@ -15,7 +17,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.util.telemetry.TelemetrySender;
 import net.minecraft.command.CommandSource;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 @Mixin(ClientPlayNetworkHandler.class)
