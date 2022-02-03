@@ -14,13 +14,7 @@ loom {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-
-    maven {
-	name = 'jitpack'
-	url = 'https://jitpack.io'
-    }
 }
 
 dependencies {
@@ -28,8 +22,7 @@ dependencies {
     ]
 
     Set<String> libraries = [
-	"com.github.ZeroMemes:Alpine:1.9",
-	"net.jodah:typetools:0.6.3"
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
     ]
 
     // fabric dependencies
@@ -39,30 +32,36 @@ dependencies {
 
     // api dependencies
     apiModules.forEach {
-	include(modImplementation(fabricApi.module(it, "0.45.2+1.18")))
+        include(modImplementation(fabricApi.module(it, "0.46.2+1.18")))
     }
 
     // TR dependencies
-    libraries.forEach {
-	include(modImplementation(it))
+    libraries.forEach { library ->
+        include(modImplementation(library))
     }
 }
 
 jar {
     from("LICENSE") {
-	rename { 
-	    "$it-$project.mod_name" 
-	}
+        rename {
+            "$it-$project.mod_name" 
+        }
     }
 
     manifest {
-	attributes("Main-Class" : "me.austin.queer.Main")
+	    attributes("Main-Class" : "trans.rights.client.Main")
     }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
+    archiveClassifier.set("sources")
     from sourceSets.main.allSource
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set(17)
+
+    it.options.encoding = "UTF-8"
 }
 
 compileKotlin {
@@ -72,8 +71,6 @@ compileKotlin {
 }
 
 processResources {
-    inputs.property "version", project.mod_version
-
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version
     }
