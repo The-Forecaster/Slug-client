@@ -1,9 +1,8 @@
 package trans.rights.event.bus
 
-import trans.rights.event.listener.Listener
+import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.type.ICancellable
-import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Basic structure for an event dispatcher
@@ -52,8 +51,8 @@ interface EventBus {
     fun <T> dispatch(event: T): T
 
     /**
-     * Posts a cancellable event to be processed by the subscribed methods or listener objects,
-     * if an event is cancelled then lower priority events will not be invoked
+     * Posts a cancellable event to be processed by the subscribed methods or listener objects, if
+     * an event is cancelled then lower priority events will not be invoked
      *
      * @param <T>
      * @param event cancellable event to post

@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Used to mark a method to be added to the registry
+ * 
  * @see Priority
  * 
  * @author Austin
@@ -15,7 +16,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventHandler {
     /**
-     * Priority of the method 
+     * Priority of the method
      * 
      * @return int value of the Priority, default is -50
      */

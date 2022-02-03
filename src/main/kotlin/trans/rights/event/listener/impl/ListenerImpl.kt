@@ -1,9 +1,14 @@
 package trans.rights.event.listener.impl
 
-import trans.rights.event.listener.Listener
 import java.lang.reflect.Method
+import trans.rights.event.listener.Listener
 
-class MethodListener<T>(action: Method, override val priority: Int, override val parent: Any?, override val target: Class<T>) : Listener<T> {
+class MethodListener<T>(
+        action: Method,
+        override val priority: Int,
+        override val parent: Any?,
+        override val target: Class<T>
+) : Listener<T> {
     val action: Method
 
     init {
@@ -15,7 +20,12 @@ class MethodListener<T>(action: Method, override val priority: Int, override val
     }
 }
 
-class LambdaListener<T>(action: (T) -> Unit, override val priority: Int, override val parent: Any?, override val target: Class<T>) : Listener<T> {
+class LambdaListener<T>(
+        action: (T) -> Unit,
+        override val priority: Int,
+        override val parent: Any?,
+        override val target: Class<T>
+) : Listener<T> {
     private val action: (T) -> Unit
 
     init {

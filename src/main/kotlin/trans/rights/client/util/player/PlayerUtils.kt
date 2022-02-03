@@ -31,4 +31,5 @@ fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     }
 }
 
-private fun playerCheck(player: ClientPlayerEntity) = mc.player != null && mc.world != null && player.isSpectator
+private fun playerCheck(player: ClientPlayerEntity) =
+        mc.player != null && mc.world != null && player.isSpectator

@@ -1,7 +1,5 @@
 package trans.rights.client.mixin;
 
-import trans.rights.client.TransRights;
-
 import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +11,11 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
-import trans.rights.client.events.PacketEvent.*;
+import trans.rights.client.TransRights;
+import trans.rights.client.events.PacketEvent.PostReceive;
+import trans.rights.client.events.PacketEvent.PostSend;
+import trans.rights.client.events.PacketEvent.PreReceive;
+import trans.rights.client.events.PacketEvent.PreSend;
 
 @Mixin(ClientConnection.class)
 public final class ClientConnectionMixin {
