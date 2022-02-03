@@ -15,14 +15,13 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private var cancelSpeed = false
 
     @Listener
-    val updateListener = LambdaListener<TickEvent.PostTick>(-50, this, { event ->
-        if (!nullCheck() && mc.player!!.isFallFlying && withElytra || event!!.isInWorld) return@LambdaListener
-        
-        when (vanilla) {
-            true -> this.doVanillaFlight()
-            false -> this.doVelocity()
-        }
-    }, TickEvent.PostTick::class.java)
+    val updateListener = LambdaListener({ event ->
+        if (!nullCheck() || mc.player!!.isFallFlying && withElytra || event.isInWorld)
+            when (vanilla) {
+                true -> this.doVanillaFlight()
+                false -> this.doVelocity()
+            }
+    }, -50, this, TickEvent.PostTick::class.java)
 
     init {
         settings["Vanilla"] = vanilla

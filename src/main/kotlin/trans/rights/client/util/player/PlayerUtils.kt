@@ -3,7 +3,6 @@ package trans.rights.client.util.player
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.util.math.Vec3d
 import trans.rights.client.misc.Globals.mc
-import trans.rights.client.misc.Globals.nullCheck
 
 fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     val player = mc.player as ClientPlayerEntity
@@ -32,4 +31,4 @@ fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     }
 }
 
-private fun playerCheck(player: ClientPlayerEntity) = nullCheck() && player.isSpectator
+private fun playerCheck(player: ClientPlayerEntity) = mc.player != null && mc.world != null && player.isSpectator

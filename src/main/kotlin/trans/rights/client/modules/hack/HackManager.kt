@@ -16,19 +16,21 @@ object HackManager : Manager<Hack>() {
     }
 
     fun save() {
-        this.values.forEach(Hack::save)
+        this.values.forEach { hack ->
+            hack.save(hack.file)
+        }
     }
 
     override fun load() {
         this.values.forEach { hack ->
-            hack.load()
-            hack.save()
+            hack.load(hack.file)
+            hack.save(hack.file)
         }
     }
 
     override fun unload() {
         this.values.forEach { hack ->
-            hack.save()
+            hack.save(hack.file)
             hack.settings.clear()
         }
         values.clear()

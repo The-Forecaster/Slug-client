@@ -29,7 +29,7 @@ interface Listener<T> : Comparable<Listener<T>> {
      *
      * @param param event object that is being processed
      */
-    operator fun invoke(param: T?)
+    operator fun invoke(param: T)
 
     override operator fun compareTo(other: Listener<T>): Int {
         return max(priority, other.priority)

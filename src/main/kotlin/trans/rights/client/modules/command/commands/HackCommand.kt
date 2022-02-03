@@ -36,7 +36,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
             if (hack.name.lowercase() == name.lowercase()) return hack
         }
 
-        throw builtins.dispatcherUnknownArgument().create()
+        throw builtin.dispatcherUnknownArgument().create()
     }
 
     private fun getSetting(name: String, hack: Hack): String {
@@ -44,7 +44,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
             if (setting.key.lowercase() == name.lowercase()) return setting.key
         }
 
-        throw builtins.dispatcherUnknownArgument().create()
+        throw builtin.dispatcherUnknownArgument().create()
     }
 
     private fun toggleHack(hack: Hack): Int {
@@ -56,7 +56,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
         try {
             hack.settings[key] = input
         } catch (e: Exception) {
-            throw builtins.dispatcherUnknownArgument().create()
+            throw builtin.dispatcherUnknownArgument().create()
         }
 
         return 0

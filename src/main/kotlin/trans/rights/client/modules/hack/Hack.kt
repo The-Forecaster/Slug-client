@@ -14,23 +14,23 @@ abstract class Hack(
         description: String,
         val settings: MutableMap<String, Any> = mutableMapOf()
 ) : Module(name, description), SaveLoadClass {
-    override val file: File
+    final override val file: File
     private var enabled: Boolean = false
 
     init {
         this.settings["Enabled"] = enabled
 
-        file = File(HackManager.dir.absolutePath + this.name + ".json")
+        this.file = File(HackManager.dir.absolutePath + "$name.json")
     }
 
     fun enable() {
-        EVENTBUS?.register(this)
+        EVENTBUS.register(this)
 
         this.enabled = true
     }
 
     fun disable() {
-        EVENTBUS?.unregister(this)
+        EVENTBUS.unregister(this)
 
         this.enabled = false
     }
@@ -75,7 +75,8 @@ abstract class Hack(
                     }
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")

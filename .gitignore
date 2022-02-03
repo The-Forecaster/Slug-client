@@ -6,3 +6,4 @@
 *.prefs
 /.vscode/
 /bin/
+/run/

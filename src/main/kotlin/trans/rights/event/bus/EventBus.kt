@@ -1,7 +1,9 @@
 package trans.rights.event.bus
 
 import trans.rights.event.listener.Listener
+import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.type.ICancellable
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Basic structure for an event dispatcher
@@ -15,21 +17,21 @@ interface EventBus {
      *
      * <Event, Set<Listener>>
      */
-    val subscribers: MutableMap<Class<*>, MutableSet<Listener<*>>>
+    val subscribers: MutableMap<Class<*>, CopyOnWriteArraySet<MethodListener<*>>>
 
     /**
      * Adds the Subscriber to the registry
      *
      * @param subscriber event Subscriber instance
      */
-    fun register(subscriber: Any?)
+    fun register(subscriber: Any)
 
     /**
      * Removes the Subscriber from the registry
      *
      * @param subscriber event subscriber instance
      */
-    fun unregister(subscriber: Any?)
+    fun unregister(subscriber: Any)
 
     /**
      * Check if an object is currently in the registry
@@ -37,7 +39,7 @@ interface EventBus {
      * @param subscriber object to check
      * @return if the object is in the registry
      */
-    fun isRegistered(subscriber: Any?): Boolean
+    fun isRegistered(subscriber: Any): Boolean
 
     /**
      * Post an event to be processed by the subscribed methods or listener objects
@@ -58,5 +60,5 @@ interface EventBus {
      *
      * @return the event you passed
      */
-    fun <T : ICancellable?> dispatch(event: T): T
+    fun <T : ICancellable> dispatch(event: T): T
 }
