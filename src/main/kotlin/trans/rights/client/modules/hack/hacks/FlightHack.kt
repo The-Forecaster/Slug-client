@@ -5,7 +5,7 @@ import trans.rights.client.misc.Globals
 import trans.rights.client.misc.Globals.mc
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.util.player.*
-import trans.rights.event.annotation.Listener
+import trans.rights.event.annotation.EventListener
 import trans.rights.event.listener.impl.LambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
@@ -14,7 +14,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private var withElytra = false
     private var cancelSpeed = false
 
-    @Listener
+    @EventListener
     val updateListener = LambdaListener({ event ->
         if (!nullCheck() && mc.player!!.isFallFlying && !withElytra || !event.isInWorld)
             when (vanilla) {

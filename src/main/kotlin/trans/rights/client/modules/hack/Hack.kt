@@ -5,9 +5,9 @@ import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.EVENTBUS
 import trans.rights.client.TransRights.Companion.LOGGER
+import trans.rights.client.api.SaveLoadClass
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
-import trans.rights.client.api.SaveLoadClass
 
 abstract class Hack(
         name: String,
@@ -65,18 +65,18 @@ abstract class Hack(
                     try {
                         val value = rawval.toDouble()
 
-                        settings[entry.key] = when (entry.value) {
-                            is Int -> value.toInt()
-                            is Float -> value.toFloat()
-                            else -> value
-                        }
+                        settings[entry.key] =
+                                when (entry.value) {
+                                    is Int -> value.toInt()
+                                    is Float -> value.toFloat()
+                                    else -> value
+                                }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")

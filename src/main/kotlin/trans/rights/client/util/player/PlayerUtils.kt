@@ -18,6 +18,8 @@ fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
 fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     val player: ClientPlayerEntity = mc.player as ClientPlayerEntity
 
+    if (cancelSpeed) player.setVelocity(Vec3d.ZERO)
+
     if (!playerCheck(player)) {
 
         // this is retarded but I don't think there's a better way than this

@@ -26,6 +26,6 @@ public final class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private final void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
-        CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
+        CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) commandDispatcher);
     }
 }

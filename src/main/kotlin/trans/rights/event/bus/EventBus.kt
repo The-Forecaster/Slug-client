@@ -2,6 +2,7 @@ package trans.rights.event.bus
 
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.impl.MethodListener
+import trans.rights.event.listener.Listener
 import trans.rights.event.type.ICancellable
 
 /**
@@ -16,7 +17,7 @@ interface EventBus {
      *
      * <Event, Set<Listener>>
      */
-    val subscribers: MutableMap<Class<*>, CopyOnWriteArraySet<MethodListener<*>>>
+    val subscribers: MutableMap<Class<*>, CopyOnWriteArraySet<Listener<*>>>
 
     /**
      * Adds the Subscriber to the registry
@@ -48,7 +49,7 @@ interface EventBus {
      *
      * @return the event you passed
      */
-    fun <T> dispatch(event: T): T
+    fun <T: Any> dispatch(event: T): T
 
     /**
      * Posts a cancellable event to be processed by the subscribed methods or listener objects, if
