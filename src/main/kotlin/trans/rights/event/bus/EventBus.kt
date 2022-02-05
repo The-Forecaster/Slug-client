@@ -60,5 +60,5 @@ interface EventBus {
      *
      * @return the event you passed
      */
-    fun <T : ICancellable> dispatch(event: T): T
+    fun <T: ICancellable> dispatch(event: T): T
 }

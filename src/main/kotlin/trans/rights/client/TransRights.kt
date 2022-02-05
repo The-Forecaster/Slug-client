@@ -27,6 +27,6 @@ class TransRights : ClientModInitializer {
             HackManager.save()
         })
 
-        LOGGER.info(StringBuilder("Trans Rights has been started in ").append(System.currentTimeMillis() - starttime).append(" ms!").toString())
+        LOGGER.info("Trans Rights has been started in " + (System.currentTimeMillis() - starttime) + " ms!")
     }
 }

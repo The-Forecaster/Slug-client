@@ -5,7 +5,6 @@ import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.EVENTBUS
 import trans.rights.client.TransRights.Companion.LOGGER
-import trans.rights.client.api.SaveLoadClass
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
 
@@ -13,8 +12,8 @@ abstract class Hack(
         name: String,
         description: String,
         val settings: MutableMap<String, Any> = mutableMapOf()
-) : Module(name, description), SaveLoadClass {
-    final override val file: File
+) : Module(name, description) {
+    val file: File
     private var enabled: Boolean = false
 
     init {
@@ -48,7 +47,7 @@ abstract class Hack(
     open fun onDisable() {}
 
     // This is dumb: find a better way to do this
-    override fun load(file: File) {
+    fun load(file: File) {
         try {
             if (!file.exists()) file.createNewFile()
             this.save(file)
@@ -85,7 +84,7 @@ abstract class Hack(
         }
     }
 
-    override fun save(file: File) {
+    fun save(file: File) {
         try {
             val json = JsonObject()
             for (setting in settings) {
