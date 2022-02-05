@@ -5,7 +5,7 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.command.commands.*
 
-object CommandManager : Manager<Command>("CommandManager", "Stores and can iterate over the client's commands") {
+object CommandManager : Manager<Command>() {
     init {
         this.values.add(HackCommand)
         this.values.add(ReloadCommand)

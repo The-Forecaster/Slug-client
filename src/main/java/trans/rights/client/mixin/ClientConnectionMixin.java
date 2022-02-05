@@ -12,10 +12,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import trans.rights.client.TransRights;
-import trans.rights.client.events.PacketEvent.PostReceive;
-import trans.rights.client.events.PacketEvent.PostSend;
-import trans.rights.client.events.PacketEvent.PreReceive;
-import trans.rights.client.events.PacketEvent.PreSend;
+import trans.rights.client.events.PacketEvent.*;
 
 @Mixin(ClientConnection.class)
 public final class ClientConnectionMixin {

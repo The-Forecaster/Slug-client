@@ -7,7 +7,6 @@ import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.HackManager
 import trans.rights.event.bus.EventBus
 import trans.rights.event.bus.impl.EventManager
-import java.lang.StringBuilder
 
 class TransRights : ClientModInitializer {
     companion object {
