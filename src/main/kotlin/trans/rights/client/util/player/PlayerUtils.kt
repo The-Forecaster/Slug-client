@@ -18,11 +18,11 @@ fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
 fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     val player: ClientPlayerEntity = mc.player as ClientPlayerEntity
 
-    if (cancelSpeed) player.setVelocity(Vec3d.ZERO)
+    if (cancelSpeed) player.velocity = Vec3d.ZERO
 
     if (!playerCheck(player)) {
 
-        // this is retarded but I don't think there's a better way than this
+        // this is retarded, but I don't think there's a better way than this
         if (cancelSpeed) player.velocity = Vec3d.ZERO
         if (mc.options.keyJump.isPressed) player.addVelocity(0.0, 5.0, 0.0)
         if (mc.options.keySneak.isPressed) player.addVelocity(0.0, -5.0, 0.0)

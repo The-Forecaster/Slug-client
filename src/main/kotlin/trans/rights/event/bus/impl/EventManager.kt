@@ -72,14 +72,12 @@ class EventManager(
 
     override fun <T: ICancellable> dispatch(event: T): T {
         if (this.subscribers[event::class.java]?.size != 0) {
-            val listeners = this.subscribers[event::class.java] as CopyOnWriteArraySet<Listener<T>>?
+            val listeners = this.subscribers[event::class.java] as CopyOnWriteArraySet<Listener<T>>
 
-            if (listeners != null) {
-                for (listener in listeners) {
-                    listener.invoke(event)
+            for (listener in listeners) {
+                listener.invoke(event)
 
-                    if (event.isCancelled) break
-                }
+                if (event.isCancelled) break
             }
         }
 

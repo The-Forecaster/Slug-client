@@ -60,7 +60,8 @@ abstract class Hack(
                     val value = rawval.toBoolean()
 
                     settings[entry.key] = value
-                } catch (e: Exception) {
+                }
+                catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
 
@@ -70,12 +71,14 @@ abstract class Hack(
                                     is Float -> value.toFloat()
                                     else -> value
                                 }
-                    } catch (e: Exception) {
+                    }
+                    catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -91,7 +94,8 @@ abstract class Hack(
                 json.add(setting.key, JsonPrimitive(setting.value.toString()))
             }
             writeToJson(json, file.toPath())
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             LOGGER.error("Couldn't save $name", name)
             e.printStackTrace()
         }

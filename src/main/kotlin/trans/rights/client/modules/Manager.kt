@@ -3,7 +3,7 @@ package trans.rights.client.modules
 import trans.rights.client.modules.command.CommandManager
 import trans.rights.client.modules.hack.HackManager
 
-abstract class Manager<T : Module>() : Module("", "") {
+abstract class Manager<T : Module> : Module("", "") {
     companion object : Manager<Manager<*>>() {
         override fun load() {
             this.add(HackManager)
@@ -20,7 +20,7 @@ abstract class Manager<T : Module>() : Module("", "") {
     abstract fun load()
 
     fun add(value: T): T {
-        this.values.add(value)
+        this.values += value
 
         return value
     }

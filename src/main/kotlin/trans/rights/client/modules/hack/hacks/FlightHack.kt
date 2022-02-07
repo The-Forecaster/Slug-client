@@ -36,6 +36,8 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
             val packet = event.packet as PlayerAbilitiesS2CPacket
 
             packet.allowFlying = true
+            packet.flying = true
+            packet.flySpeed = this.speed
         }
     }
 
@@ -62,6 +64,4 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private fun trueSpeed(): Float {
         return speed / 10
     }
-
-
 }

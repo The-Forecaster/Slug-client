@@ -36,6 +36,7 @@ public final class Main {
 
             if (!modsFile.exists())
                 modsFile.mkdirs();
+
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }
     }
