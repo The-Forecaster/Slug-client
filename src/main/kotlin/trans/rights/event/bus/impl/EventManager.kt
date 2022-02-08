@@ -12,6 +12,7 @@ import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.Listener
 import trans.rights.event.type.ICancellable
 import java.lang.reflect.Method
+import kotlin.Comparator
 
 class EventManager(
     override val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap(),
@@ -22,11 +23,11 @@ class EventManager(
         if (this.registeredListeners.contains(subscriber)) return
 
         Arrays.stream(subscriber.javaClass.methods).filter { method ->
-            method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
+            isMethodValid(method)
         }
         .forEach { method -> 
             subscribers.getOrPut(method.parameters[0].javaClass, ::CopyOnWriteArraySet).add(
-                asListener(subscriber, method, method.getAnnotation(EventHandler::class.java).priority)
+                asListener(subscriber, method)
             )
         }
 
@@ -34,9 +35,11 @@ class EventManager(
             field.isAnnotationPresent(EventListener::class.java) && field.get(subscriber) is Listener<*>
         }
         .forEach { field ->
-            val list = asListener(subscriber, field)
+            subscribers.getOrPut(asListener(subscriber, field).target, ::CopyOnWriteArraySet).add(asListener(subscriber, field))
+        }
 
-            subscribers.getOrPut(list.target, ::CopyOnWriteArraySet).add(list)
+        this.subscribers.values.stream().forEach { listeners ->
+            listeners.toSortedSet(Comparator.comparingInt { listener -> listener.priority })
         }
 
         this.registeredListeners.add(subscribers)
@@ -46,13 +49,14 @@ class EventManager(
         if (!this.registeredListeners.contains(subscriber)) return
 
         Arrays.stream(subscriber.javaClass.methods).filter { method ->
-            method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
+            isMethodValid(method)
         }
         .forEach { method ->
             subscribers[method.parameters[0].javaClass]?.forEach { listener ->
                 subscribers[method.parameters[0].javaClass]?.remove(listener)
             }
         }
+
         this.registeredListeners.remove(subscriber)
     }
 
@@ -62,8 +66,8 @@ class EventManager(
 
     override fun <T: Any> dispatch(event: T): T {
         if (this.subscribers[event::class.java]?.size != 0) {
-            (subscribers[event::class.java] as CopyOnWriteArraySet<Listener<T>>?)?.forEach {
-                it.invoke(event)
+            getOrPutList(event.javaClass).stream().forEach { listener ->
+                listener.invoke(event)
             }
         }
 
@@ -72,9 +76,7 @@ class EventManager(
 
     override fun <T: ICancellable> dispatch(event: T): T {
         if (this.subscribers[event::class.java]?.size != 0) {
-            val listeners = this.subscribers[event::class.java] as CopyOnWriteArraySet<Listener<T>>
-
-            for (listener in listeners) {
+            for (listener in getOrPutList(event.javaClass)) {
                 listener.invoke(event)
 
                 if (event.isCancelled) break
@@ -84,10 +86,10 @@ class EventManager(
         return event
     }
 
-    private fun asListener(parent: Any, method: Method, priority: Int): MethodListener<*> {
+    private fun asListener(parent: Any, method: Method): MethodListener<*> {
         method.trySetAccessible()
 
-        return MethodListener(method, priority, parent, method.parameters[0]::class.java)
+        return MethodListener(method, method.getAnnotation(EventHandler::class.java).priority, parent, method.parameters[0]::class.java)
     }
 
     private fun asListener(parent: Any, field: Field): LambdaListener<*> {
@@ -95,4 +97,13 @@ class EventManager(
 
         return field.get(parent) as LambdaListener<*>
     }
+
+    private fun <T> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
+        return this.subscribers.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
+    }
+
+    private fun isMethodValid(method: Method): Boolean {
+        return method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
+    }
+
 }
