@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.HackManager
 import trans.rights.event.bus.EventBus
-import trans.rights.event.bus.impl.EventManager
+import trans.rights.event.bus.impl.BasicEventManager
 
 class TransRights : ClientModInitializer {
     companion object {
@@ -14,9 +14,6 @@ class TransRights : ClientModInitializer {
 
         @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
-
-        @JvmField
-        var EVENTBUS: EventBus = EventManager()
     }
 
     override fun onInitializeClient() {

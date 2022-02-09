@@ -12,4 +12,8 @@ public interface Globals {
     default boolean nullCheck() {
         return mc.player == null && mc.world == null; 
     }
+
+    default MinecraftClient getMinecraft() {
+        return MinecraftClient.getInstance();
+    }
 }

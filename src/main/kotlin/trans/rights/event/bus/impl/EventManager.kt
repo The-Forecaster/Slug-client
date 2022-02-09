@@ -14,42 +14,42 @@ import trans.rights.event.type.ICancellable
 import java.lang.reflect.Method
 import kotlin.Comparator
 
-class EventManager(
+open class BasicEventManager(
     override val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap(),
     private val registeredListeners: MutableSet<Any?> = mutableSetOf()
 ) : EventBus {
 
     override fun register(subscriber: Any) {
-        if (this.registeredListeners.contains(subscriber)) return
+        if (isRegistered(subscriber)) return
 
-        Arrays.stream(subscriber.javaClass.methods).filter { method ->
-            isMethodValid(method)
+        Arrays.stream(subscriber.javaClass.declaredMethods).filter { method ->
+            isValid(method)
         }
-        .forEach { method -> 
+        .forEach { method ->
             subscribers.getOrPut(method.parameters[0].javaClass, ::CopyOnWriteArraySet).add(
                 asListener(subscriber, method)
             )
         }
 
         Arrays.stream(subscriber.javaClass.declaredFields).filter { field ->
-            field.isAnnotationPresent(EventListener::class.java) && field.get(subscriber) is Listener<*>
+            isValid(field, subscriber)
         }
         .forEach { field ->
             subscribers.getOrPut(asListener(subscriber, field).target, ::CopyOnWriteArraySet).add(asListener(subscriber, field))
         }
 
         this.subscribers.values.stream().forEach { listeners ->
-            listeners.toSortedSet(Comparator.comparingInt { listener -> listener.priority })
+            listeners.toSortedSet(Comparator.comparing { listener -> listener })
         }
 
         this.registeredListeners.add(subscribers)
     }
 
     override fun unregister(subscriber: Any) {
-        if (!this.registeredListeners.contains(subscriber)) return
+        if (!isRegistered(subscriber)) return
 
-        Arrays.stream(subscriber.javaClass.methods).filter { method ->
-            isMethodValid(method)
+        Arrays.stream(subscriber.javaClass.declaredMethods).filter { method ->
+            isValid(method)
         }
         .forEach { method ->
             subscribers[method.parameters[0].javaClass]?.forEach { listener ->
@@ -102,8 +102,7 @@ class EventManager(
         return this.subscribers.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
     }
 
-    private fun isMethodValid(method: Method): Boolean {
-        return method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
-    }
+    private fun isValid(method: Method): Boolean = method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
 
+    private fun isValid(field: Field, parent: Any): Boolean = field.isAnnotationPresent(EventListener::class.java) && field.get(parent) is Listener<*>
 }
