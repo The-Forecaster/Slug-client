@@ -1,4 +1,4 @@
-package trans.rights.client.misc;
+package trans.rights.client.misc.api;
 
 import net.minecraft.client.MinecraftClient;
 

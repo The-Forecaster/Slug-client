@@ -10,7 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
 import trans.rights.client.events.TickEvent.PostTick;
 import trans.rights.client.events.TickEvent.PreTick;
-import trans.rights.client.misc.EventPoster;
+import trans.rights.client.misc.api.EventPoster;
 
 @Mixin(MinecraftClient.class)
 public final class MinecraftClientMixin implements EventPoster {

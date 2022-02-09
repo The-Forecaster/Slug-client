@@ -11,10 +11,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
-import trans.rights.client.TransRights;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.*;
-import trans.rights.client.misc.EventPoster;
+import trans.rights.client.misc.api.EventPoster;
 
 @Mixin(ClientConnection.class)
 public final class ClientConnectionMixin implements EventPoster {

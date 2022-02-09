@@ -1,4 +1,4 @@
-package trans.rights.client.misc;
+package trans.rights.client.misc.api;
 
 import trans.rights.event.bus.EventBus;
 import trans.rights.event.bus.impl.BasicEventManager;

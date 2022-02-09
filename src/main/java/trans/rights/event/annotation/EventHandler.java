@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @author Austin
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.FIELD})
 public @interface EventHandler {
     /**
      * Priority of the method

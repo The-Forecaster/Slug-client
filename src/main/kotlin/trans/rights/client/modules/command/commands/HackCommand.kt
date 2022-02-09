@@ -53,12 +53,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     }
 
     private fun takeInput(input: String, key: String, hack: Hack): Int {
-        try {
-            hack.settings[key] = input
-        }
-        catch (e: Exception) {
-            throw builtin.dispatcherUnknownArgument().create()
-        }
+        hack.settings[key] = input
 
         return 0
     }

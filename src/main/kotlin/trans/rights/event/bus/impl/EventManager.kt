@@ -5,7 +5,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.annotation.EventHandler
-import trans.rights.event.annotation.EventListener
 import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.listener.impl.LambdaListener
@@ -104,5 +103,5 @@ open class BasicEventManager(
 
     private fun isValid(method: Method): Boolean = method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
 
-    private fun isValid(field: Field, parent: Any): Boolean = field.isAnnotationPresent(EventListener::class.java) && field.get(parent) is Listener<*>
+    private fun isValid(field: Field, parent: Any): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.get(parent) is Listener<*>
 }
