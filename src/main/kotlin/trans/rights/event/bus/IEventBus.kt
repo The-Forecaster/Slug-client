@@ -2,7 +2,6 @@ package trans.rights.event.bus
 
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.Listener
-import trans.rights.event.type.ICancellable
 
 /**
  * Basic structure for an event dispatcher

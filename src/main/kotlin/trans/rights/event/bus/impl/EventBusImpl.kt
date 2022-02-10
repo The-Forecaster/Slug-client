@@ -7,7 +7,7 @@ import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.Listener
-import trans.rights.event.type.ICancellable
+import type.ICancellable
 import java.lang.reflect.Method
 
 object BasicEventManager : AbstractEventBus() {

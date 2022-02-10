@@ -13,10 +13,10 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.*;
-import trans.rights.client.misc.api.EventPoster;
+import trans.rights.client.misc.api.EventObject;
 
 @Mixin(ClientConnection.class)
-public final class ClientConnectionMixin implements EventPoster {
+public final class ClientConnectionMixin implements EventObject {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         postCancel(PreReceive.get(packet), info);

@@ -1,4 +1,4 @@
-package trans.rights.event.type;
+package type;
 
 /**
  * Default implementation of {@link ICancellable}

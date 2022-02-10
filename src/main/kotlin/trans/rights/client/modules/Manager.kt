@@ -3,8 +3,8 @@ package trans.rights.client.modules
 import trans.rights.client.modules.command.CommandManager
 import trans.rights.client.modules.hack.HackManager
 
-abstract class Manager<T : Module> : Module("", "") {
-    companion object : Manager<Manager<*>>() {
+abstract class Manager<T : Module>(val values: MutableCollection<T>) : Module("", "") {
+    companion object : Manager<Manager<*>>(mutableSetOf()) {
         override fun load() {
             this.add(HackManager)
             this.add(CommandManager)
@@ -14,8 +14,6 @@ abstract class Manager<T : Module> : Module("", "") {
             this.values.clear()
         }
     }
-
-    val values: MutableList<T> = mutableListOf()
 
     abstract fun load()
 
