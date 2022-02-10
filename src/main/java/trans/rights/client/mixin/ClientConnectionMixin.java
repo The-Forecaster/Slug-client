@@ -39,10 +39,12 @@ public final class ClientConnectionMixin implements EventPoster {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
-        if (throwable instanceof IOException) info.cancel();
+        if (throwable instanceof IOException)
+            info.cancel();
     }
 
     private void postCancel(PacketEvent event, CallbackInfo info) {
-        if (this.getEventBus().dispatch(event).isCancelled()) info.cancel();
+        if (this.getEventBus().dispatch(event).isCancelled())
+            info.cancel();
     }
 }

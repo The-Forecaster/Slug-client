@@ -1,3 +1,5 @@
 package trans.rights.client.modules
 
-abstract class Module(val name: String, val description: String)
+import trans.rights.client.misc.api.EventPoster
+
+abstract class Module(val name: String, val description: String) : EventPoster

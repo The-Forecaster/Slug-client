@@ -3,7 +3,6 @@ package trans.rights.client.modules.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
-import trans.rights.client.TransRights.Companion.EVENTBUS
 import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
@@ -23,13 +22,13 @@ abstract class Hack(
     }
 
     fun enable() {
-        EVENTBUS.register(this)
+        this.getEventBus().register(this)
 
         this.enabled = true
     }
 
     fun disable() {
-        EVENTBUS.unregister(this)
+        this.getEventBus().unregister(this)
 
         this.enabled = false
     }
@@ -60,24 +59,23 @@ abstract class Hack(
                     val value = rawval.toBoolean()
 
                     settings[entry.key] = value
-                }
+                } 
                 catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
 
-                        settings[entry.key] =
-                                when (entry.value) {
-                                    is Int -> value.toInt()
-                                    is Float -> value.toFloat()
-                                    else -> value
-                                }
-                    }
+                        settings[entry.key] = when (entry.value) {
+                            is Int -> value.toInt()
+                            is Float -> value.toFloat()
+                            else -> value
+                        }
+                    } 
                     catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        }
+        } 
         catch (e: Exception) {
             clearJson(file.toPath())
 
@@ -94,7 +92,7 @@ abstract class Hack(
                 json.add(setting.key, JsonPrimitive(setting.value.toString()))
             }
             writeToJson(json, file.toPath())
-        }
+        } 
         catch (e: Exception) {
             LOGGER.error("Couldn't save $name", name)
             e.printStackTrace()

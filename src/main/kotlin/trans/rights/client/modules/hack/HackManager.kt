@@ -16,9 +16,7 @@ object HackManager : Manager<Hack>() {
     }
 
     fun save() {
-        this.values.forEach { hack ->
-            hack.save(hack.file)
-        }
+        this.values.forEach { hack -> hack.save(hack.file) }
     }
 
     override fun load() {

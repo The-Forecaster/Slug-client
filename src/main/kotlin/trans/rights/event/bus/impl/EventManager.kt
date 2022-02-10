@@ -13,28 +13,24 @@ import trans.rights.event.type.ICancellable
 import java.lang.reflect.Method
 import kotlin.Comparator
 
-open class BasicEventManager(
-    override val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap(),
+open class BasicEventManager() : EventBus {
+    override val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap()
+
     private val registeredListeners: MutableSet<Any?> = mutableSetOf()
-) : EventBus {
 
     override fun register(subscriber: Any) {
         if (isRegistered(subscriber)) return
 
-        Arrays.stream(subscriber.javaClass.declaredMethods).filter { method ->
-            isValid(method)
-        }
+        Arrays.stream(subscriber.javaClass.declaredMethods).filter { method -> method.isValid() }
         .forEach { method ->
             subscribers.getOrPut(method.parameters[0].javaClass, ::CopyOnWriteArraySet).add(
-                asListener(subscriber, method)
+                method.asListener(subscriber)
             )
         }
 
-        Arrays.stream(subscriber.javaClass.declaredFields).filter { field ->
-            isValid(field, subscriber)
-        }
+        Arrays.stream(subscriber.javaClass.declaredFields).filter { field -> field.isValid(subscriber) }
         .forEach { field ->
-            subscribers.getOrPut(asListener(subscriber, field).target, ::CopyOnWriteArraySet).add(asListener(subscriber, field))
+            subscribers.getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).add(field.asListener(subscriber))
         }
 
         this.subscribers.values.stream().forEach { listeners ->
@@ -48,7 +44,7 @@ open class BasicEventManager(
         if (!isRegistered(subscriber)) return
 
         Arrays.stream(subscriber.javaClass.declaredMethods).filter { method ->
-            isValid(method)
+            method.isValid()
         }
         .forEach { method ->
             subscribers[method.parameters[0].javaClass]?.forEach { listener ->
@@ -85,23 +81,32 @@ open class BasicEventManager(
         return event
     }
 
-    private fun asListener(parent: Any, method: Method): MethodListener<*> {
-        method.trySetAccessible()
-
-        return MethodListener(method, method.getAnnotation(EventHandler::class.java).priority, parent, method.parameters[0]::class.java)
-    }
-
-    private fun asListener(parent: Any, field: Field): LambdaListener<*> {
-        field.trySetAccessible()
-
-        return field.get(parent) as LambdaListener<*>
-    }
-
     private fun <T> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
         return this.subscribers.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
     }
 
-    private fun isValid(method: Method): Boolean = method.isAnnotationPresent(EventHandler::class.java) && method.parameterCount == 1
+    private fun fieldAsListener(field: Field, parent: Any) {
+        try {
+            
+        }
+        catch(e: IllegalAccessException)
+    }
+}
 
-    private fun isValid(field: Field, parent: Any): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.get(parent) is Listener<*>
+object AnnotatedEventBus : BasicEventManager() {}
+
+private fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
+
+private fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
+
+private fun Method.asListener(parent: Any): MethodListener<*> {
+    this.trySetAccessible()
+
+    return MethodListener(this, this.getAnnotation(EventHandler::class.java).priority, parent, this.parameters[0]::class.java)
+}
+
+private fun Field.asListener(parent: Any): LambdaListener<*> {
+    this.trySetAccessible()
+
+    return this.get(parent) as LambdaListener<*>
 }
