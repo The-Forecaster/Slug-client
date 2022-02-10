@@ -3,6 +3,9 @@ package trans.rights.event.listener.impl
 import java.lang.reflect.Method
 import trans.rights.event.listener.Listener
 
+/**
+ * Implementation of {@link Listener} that uses a method as its target
+ */
 class MethodListener<T: Any>(
         private val action: Method,
         override val priority: Int,
@@ -15,6 +18,9 @@ class MethodListener<T: Any>(
     }
 }
 
+/**
+ * Implementation of {@link Listener} that uses a consumer function as its target
+ */
 class LambdaListener<T: Any?>(
     private val action: (T) -> Unit,
     override val priority: Int,
@@ -26,3 +32,5 @@ class LambdaListener<T: Any?>(
         this.action.invoke(param)
     }
 }
+
+

@@ -1,4 +1,4 @@
-package type;
+package trans.rights.event.type;
 
 /**
  * Event structure for a cancellable event
