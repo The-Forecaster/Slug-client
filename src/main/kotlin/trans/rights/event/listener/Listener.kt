@@ -7,7 +7,7 @@ import kotlin.math.max
  *
  * @author Austin
  */
-interface Listener<T: Any?> : Comparable<Listener<T>> {
+interface Listener<T: Any> : Comparable<Listener<T>> {
 
     /** the priority that the listener will be called upon(use wisely) */
     val priority: Int

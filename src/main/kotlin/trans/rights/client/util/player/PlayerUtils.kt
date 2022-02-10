@@ -4,7 +4,7 @@ import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.util.math.Vec3d
 import trans.rights.client.misc.api.Globals.mc
 
-fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
+inline fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     val player = mc.player as ClientPlayerEntity
 
     if (playerCheck(player)) {
@@ -15,7 +15,7 @@ fun setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     }
 }
 
-fun setVelocity(speed: Float, cancelSpeed: Boolean) {
+inline fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     val player: ClientPlayerEntity = mc.player as ClientPlayerEntity
 
     if (cancelSpeed) player.velocity = Vec3d.ZERO
@@ -33,5 +33,4 @@ fun setVelocity(speed: Float, cancelSpeed: Boolean) {
     }
 }
 
-private fun playerCheck(player: ClientPlayerEntity) =
-        mc.player != null && mc.world != null && player.isSpectator
+fun playerCheck(player: ClientPlayerEntity) = mc.player != null && mc.world != null && player.isSpectator

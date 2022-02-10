@@ -9,6 +9,7 @@ import trans.rights.client.modules.hack.Hack
 import trans.rights.client.util.player.*
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
+import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private var vanilla = true
@@ -17,17 +18,14 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private var cancelSpeed = false
 
     @EventHandler
-    val updateListener = LambdaListener({ event ->
-        if (!nullCheck() && mc.player!!.isFallFlying && !withElytra || !event.isInWorld)
+    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener({ event ->
+        if (!nullCheck() && mc.player!!.isFallFlying && !withElytra || !event.isInWorld) {
             when (vanilla) {
                 true -> this.doVanillaFlight()
                 false -> this.doVelocity()
-            }   
-        }, 
-        -50,
-        this,
-        TickEvent.PostTick::class.java
-    )
+            }
+        }
+    }, -50)
 
     @EventHandler
     fun onPacketRecieve(event: PacketEvent) {

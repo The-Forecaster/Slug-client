@@ -5,7 +5,7 @@ import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.hacks.*
 import trans.rights.client.util.file.maindir
 
-object HackManager : Manager<Hack>() {
+object HackManager : Manager<Hack>(mutableSetOf()) {
     val dir = File("$maindir/hacks")
 
     init {

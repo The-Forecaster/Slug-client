@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
+import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
 
@@ -11,7 +12,7 @@ abstract class Hack(
         name: String,
         description: String,
         val settings: MutableMap<String, Any> = mutableMapOf()
-) : Module(name, description) {
+) : Module(name, description), Globals {
     val file: File
     private var enabled: Boolean = false
 

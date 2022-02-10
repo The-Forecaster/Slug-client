@@ -64,7 +64,7 @@ abstract class AbstractEventBus : EventBus {
         return event
     }
 
-    protected fun <T> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
+    protected fun <T: Any> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
         return this.subscribers.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
     }
 }
