@@ -61,6 +61,6 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     private fun trueSpeed(): Float {
-        return speed / 10
+        return this.speed / 10
     }
 }

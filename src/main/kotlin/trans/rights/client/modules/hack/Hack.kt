@@ -22,13 +22,13 @@ abstract class Hack(
     }
 
     fun enable() {
-        this.getEventBus().register(this)
+        this.eventBus.register(this)
 
         this.enabled = true
     }
 
     fun disable() {
-        this.getEventBus().unregister(this)
+        this.eventBus.unregister(this)
 
         this.enabled = false
     }

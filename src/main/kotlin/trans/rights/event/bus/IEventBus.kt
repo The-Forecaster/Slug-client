@@ -35,7 +35,6 @@ interface EventBus {
     /**
      * Check if an object is currently in the registry
      *
-     * @param subscriber object to check
      * @return if the object is in the registry
      */
     fun isRegistered(subscriber: Any): Boolean
@@ -49,15 +48,4 @@ interface EventBus {
      * @return the event you passed
      */
     fun <T: Any> dispatch(event: T): T
-
-    /**
-     * Posts a cancellable event to be processed by the subscribed methods or listener objects, if
-     * an event is cancelled then lower priority events will not be invoked
-     *
-     * @param <T>
-     * @param event cancellable event to post
-     *
-     * @return the event you passed
-     */
-    fun <T: ICancellable> dispatch(event: T): T
 }
