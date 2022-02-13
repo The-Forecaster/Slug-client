@@ -13,7 +13,7 @@ import trans.rights.client.events.TickEvent.PreTick;
 import trans.rights.client.misc.api.EventObject;
 
 @Mixin(MinecraftClient.class)
-public final class MinecraftClientMixin implements EventObject {
+public class MinecraftClientMixin implements EventObject {
     @Shadow
     private Profiler profiler;
 

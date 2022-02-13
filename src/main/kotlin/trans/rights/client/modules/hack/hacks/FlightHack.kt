@@ -19,8 +19,8 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener({ event ->
-        if (!nullCheck() && mc.player!!.isFallFlying && !withElytra || !event.isInWorld) {
-            when (vanilla) {
+        if (!this.nullCheck() && mc.player!!.isFallFlying && !this.withElytra || !event.isInWorld) {
+            when (this.vanilla) {
                 true -> this.doVanillaFlight()
                 false -> this.doVelocity()
             }
@@ -39,10 +39,10 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     init {
-        settings["Vanilla"] = vanilla
-        settings["Flight-speed"] = speed
-        settings["With-elytra"] = withElytra
-        settings["Cancel-speed"] = cancelSpeed
+        settings["Vanilla"] = this.vanilla
+        settings["Flight-speed"] = this.speed
+        settings["With-elytra"] = this.withElytra
+        settings["Cancel-speed"] = this.cancelSpeed
     }
 
     override fun onDisable() {

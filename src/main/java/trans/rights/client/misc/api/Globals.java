@@ -4,13 +4,14 @@ import net.minecraft.client.MinecraftClient;
 
 /**
  * This class contains the global variables for the client
- * @author Austin 
+ * 
+ * @author Austin
  */
 public interface Globals {
     MinecraftClient mc = MinecraftClient.getInstance();
 
     default boolean nullCheck() {
-        return mc.player == null && mc.world == null; 
+        return mc.player == null && mc.world == null;
     }
 
     default MinecraftClient getMinecraft() {

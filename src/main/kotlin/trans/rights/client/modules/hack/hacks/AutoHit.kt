@@ -3,6 +3,8 @@ package trans.rights.client.modules.hack.hacks
 import trans.rights.client.events.TickEvent
 import trans.rights.client.modules.hack.Hack
 import trans.rights.event.annotation.EventHandler
+import com.mojang.datafixers.FunctionType
+import com.mojang.datafixers.DataFix
 
 object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
 
@@ -20,12 +22,12 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
 
     @EventHandler
     fun onUpdate(event: TickEvent.PostTick) {
-        if (nullCheck()) return
+        if (nullCheck() || !event.isInWorld) return
 
         val player = this.minecraft.player
 
         if (this.swap) {
-            var index = 0
+            
         }
     }
 }

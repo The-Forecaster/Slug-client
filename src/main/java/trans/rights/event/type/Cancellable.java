@@ -10,7 +10,7 @@ public abstract class Cancellable implements ICancellable {
     /**
      * This stores whether the event is cancelled or not
      */
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     @Override
     public final boolean isCancelled() {

@@ -4,6 +4,7 @@ import java.io.File
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.hacks.*
 import trans.rights.client.util.file.maindir
+import kotlin.requireNotNull
 
 object HackManager : Manager<Hack>(mutableSetOf()) {
     val dir = File("$maindir/hacks")
@@ -16,21 +17,29 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
     }
 
     fun save() {
-        this.values.forEach { hack -> hack.save(hack.file) }
+        this.values.stream().forEach { hack -> hack.save(hack.file) }
     }
 
     override fun load() {
-        this.values.forEach { hack ->
+        this.values.stream().forEach { hack ->
             hack.load(hack.file)
             hack.save(hack.file)
         }
     }
 
     override fun unload() {
-        this.values.forEach { hack ->
+        this.values.stream().forEach { hack ->
             hack.save(hack.file)
             hack.settings.clear()
         }
         values.clear()
+    }
+
+    fun forEachEnabledO(action: (Hack) -> Unit) {
+        requireNotNull(action)
+
+        this.values.stream().filter(Hack::isEnabled).forEach { hack ->
+            action.invoke(hack)
+        }
     }
 }

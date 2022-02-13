@@ -3,6 +3,7 @@ package trans.rights.client.mixin;
 import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -16,7 +17,7 @@ import trans.rights.client.events.PacketEvent.*;
 import trans.rights.client.misc.api.EventObject;
 
 @Mixin(ClientConnection.class)
-public final class ClientConnectionMixin implements EventObject {
+public class ClientConnectionMixin implements EventObject {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         postCancel(PreReceive.get(packet), info);
@@ -43,6 +44,7 @@ public final class ClientConnectionMixin implements EventObject {
             info.cancel();
     }
 
+    @Unique
     private void postCancel(PacketEvent event, CallbackInfo info) {
         if (this.getEventBus().dispatch(event).isCancelled())
             info.cancel();

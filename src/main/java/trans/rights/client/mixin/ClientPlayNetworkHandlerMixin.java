@@ -20,7 +20,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.command.ServerCommandSource;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public final class ClientPlayNetworkHandlerMixin {
+public class ClientPlayNetworkHandlerMixin {
     @Shadow
     private CommandDispatcher<CommandSource> commandDispatcher;
 

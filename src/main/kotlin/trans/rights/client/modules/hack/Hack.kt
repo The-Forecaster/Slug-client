@@ -7,29 +7,28 @@ import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
+import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
         name: String,
         description: String,
-        val settings: MutableMap<String, Any> = mutableMapOf()
+        val settings: MutableMap<String, Any> = mutableMapOf(),
+        val file: File = File(HackManager.dir.absolutePath + "$name.json"),
+        var enabled: Boolean = false
 ) : Module(name, description), Globals {
-    val file: File
-    private var enabled: Boolean = false
 
     init {
         this.settings["Enabled"] = enabled
-
-        this.file = File(HackManager.dir.absolutePath + "$name.json")
     }
 
     fun enable() {
-        this.eventBus.register(this)
+        BasicEventManager.register(this)
 
         this.enabled = true
     }
 
     fun disable() {
-        this.eventBus.unregister(this)
+        BasicEventManager.unregister(this)
 
         this.enabled = false
     }
@@ -93,8 +92,7 @@ abstract class Hack(
                 json.add(setting.key, JsonPrimitive(setting.value.toString()))
             }
             writeToJson(json, file.toPath())
-        } 
-        catch (e: Exception) {
+        } catch (e: Exception) {
             LOGGER.error("Couldn't save $name", name)
             e.printStackTrace()
         }
