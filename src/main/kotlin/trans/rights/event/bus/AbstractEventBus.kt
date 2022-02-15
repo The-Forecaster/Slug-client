@@ -7,7 +7,7 @@ import trans.rights.event.listener.Listener
 abstract class AbstractEventBus : EventBus {
     val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap()
 
-    val registeredListeners: MutableSet<Any?> = CopyOnWriteArraySet()
+    private val registeredListeners: MutableSet<Any?> = CopyOnWriteArraySet()
 
     /** Finds and registers all valid listener fields in a target object class */
     abstract fun registerFields(subscriber: Any)
@@ -29,7 +29,7 @@ abstract class AbstractEventBus : EventBus {
         this.registeredListeners.add(subscribers)
 
         this.subscribers.values.stream().forEach { listeners ->
-            listeners.stream().sorted((Comparator.comparing { listener -> listener })
+            listeners.stream().sorted((Comparator.comparing { listener -> listener }))
         }
     }
 
