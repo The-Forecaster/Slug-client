@@ -5,11 +5,11 @@ import trans.rights.client.modules.hack.HackManager
 
 abstract class Manager<T : Module>(val values: MutableCollection<T>) {
     companion object  {
-        fun load() {
-            
+        private val values = mutableSetOf<Manager<*>>()
 
-            this.add(HackManager)
-            this.add(CommandManager)
+        fun load() {
+            this.values.add(HackManager)
+            this.values.add(CommandManager)
         }
 
         fun unload() {

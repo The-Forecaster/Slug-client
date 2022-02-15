@@ -36,8 +36,6 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
     }
 
     fun forEachEnabled(action: (Hack) -> Unit) {
-        requireNotNull(action)
-
         this.values.stream().filter(Hack::isEnabled).forEach { hack -> action.invoke(hack) }
     }
 }

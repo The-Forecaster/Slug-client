@@ -51,11 +51,11 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     private fun doVanillaFlight() {
-        setFlySpeed(trueSpeed(), cancelSpeed)
+        mc.player!!.setFlySpeed(trueSpeed(), cancelSpeed)
     }
 
     private fun doVelocity() {
-        setVelocity(trueSpeed(), cancelSpeed)
+        mc.player!!.setVelocity(trueSpeed(), cancelSpeed)
     }
 
     private fun trueSpeed(): Float {
