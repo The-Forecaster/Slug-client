@@ -5,6 +5,7 @@ import java.lang.reflect.Method
 import java.util.Arrays
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.annotation.EventHandler
+import trans.rights.event.bus.AbstractEventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.MethodListener

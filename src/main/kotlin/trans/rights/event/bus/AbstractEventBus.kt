@@ -1,8 +1,7 @@
-package trans.rights.event.bus.impl
+package trans.rights.event.bus
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
-import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 
 abstract class AbstractEventBus : EventBus {

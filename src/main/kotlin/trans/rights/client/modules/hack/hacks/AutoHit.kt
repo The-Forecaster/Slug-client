@@ -24,6 +24,15 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
 
         val player = this.minecraft.player
 
-        if (this.swap) {}
+        if (this.swap) {
+            var index = 0
+            var dam = 0.0
+
+            while (index < 9) {
+
+
+                index ++
+            }
+        }
     }
 }
