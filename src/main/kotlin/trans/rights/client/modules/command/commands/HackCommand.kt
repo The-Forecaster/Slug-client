@@ -12,13 +12,13 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(
             literal("").
-            then(argument("hackname", string())).
-            executes { ctx ->
+            then(argument("hackname", string()))
+            .executes { ctx ->
                 toggleHack(getHack(ctx.toString()))
-            }.
-            then(argument("settingname", string())).
-            then(argument("value", string())).
-            executes { ctx -> takeInput(
+            }
+            .then(argument("settingname", string()))
+            .then(argument("value", string()))
+            .executes { ctx -> takeInput(
                 ctx.getArgument(
                     "value", 
                     string().javaClass).toString(),

@@ -3,14 +3,16 @@ package trans.rights.client.modules
 import trans.rights.client.modules.command.CommandManager
 import trans.rights.client.modules.hack.HackManager
 
-abstract class Manager<T : Module>(val values: MutableCollection<T>) : Module("", "") {
-    companion object : Manager<Manager<*>>(mutableSetOf()) {
-        override fun load() {
+abstract class Manager<T : Module>(val values: MutableCollection<T>) {
+    companion object  {
+        fun load() {
+            
+
             this.add(HackManager)
             this.add(CommandManager)
         }
 
-        override fun unload() {
+        fun unload() {
             this.values.clear()
         }
     }

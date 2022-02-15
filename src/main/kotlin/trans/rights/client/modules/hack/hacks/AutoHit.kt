@@ -22,17 +22,8 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
     fun onUpdate(event: TickEvent.PostTick) {
         if (nullCheck() || !event.isInWorld) return
 
-        val player = this.minecraft.player!!
+        val player = this.minecraft.player
 
-        if (this.swap) {
-            var index = 0
-            var dam = 0
-
-            while (index < 36) {
-                player.inventory.swappableHotbarSlot
-
-                index ++
-            }
-        }
+        if (this.swap) {}
     }
 }

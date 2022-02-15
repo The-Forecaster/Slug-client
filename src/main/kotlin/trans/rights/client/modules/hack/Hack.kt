@@ -59,8 +59,7 @@ abstract class Hack(
                     val value = rawval.toBoolean()
 
                     settings[entry.key] = value
-                } 
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     try {
                         val value = rawval.toDouble()
 
@@ -69,14 +68,12 @@ abstract class Hack(
                             is Float -> value.toFloat()
                             else -> value
                         }
-                    } 
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        } 
-        catch (e: Exception) {
+        } catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
