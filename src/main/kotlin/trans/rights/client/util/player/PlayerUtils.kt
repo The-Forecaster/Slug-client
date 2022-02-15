@@ -19,7 +19,7 @@ fun ClientPlayerEntity.setVelocity(speed: Float, cancelSpeed: Boolean) {
     if (!this.isSpectator && mc.world != null) {
 
         // this is retarded, but I don't think there's a better way than this
-        if (cancelSpeed) this.velocity = Vec3d.ZERO.relativize(this.getRotationVec(mc.tickDelta))
+        if (cancelSpeed) this.velocity = Vec3d.ZERO
         if (mc.options.keyJump.isPressed) this.addVelocity(0.0, 5.0, 0.0)
         if (mc.options.keySneak.isPressed) this.addVelocity(0.0, -5.0, 0.0)
         if (mc.options.keyForward.isPressed) this.addVelocity(speed.toDouble(), 0.0, 0.0)
