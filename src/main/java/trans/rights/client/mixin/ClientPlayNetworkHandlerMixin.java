@@ -20,12 +20,12 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.command.ServerCommandSource;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public final class ClientPlayNetworkHandlerMixin {
+public class ClientPlayNetworkHandlerMixin {
     @Shadow
     private CommandDispatcher<CommandSource> commandDispatcher;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private final void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
+    private void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
         CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
     }
 }

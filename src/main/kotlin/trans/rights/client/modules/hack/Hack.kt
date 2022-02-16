@@ -3,34 +3,32 @@ package trans.rights.client.modules.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
-import trans.rights.client.TransRights.Companion.EVENTBUS
 import trans.rights.client.TransRights.Companion.LOGGER
+import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.util.file.*
-import trans.rights.client.api.SaveLoadClass
+import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
         name: String,
         description: String,
-        val settings: MutableMap<String, Any> = mutableMapOf()
-) : Module(name, description), SaveLoadClass {
-    final override val file: File
-    private var enabled: Boolean = false
+        val settings: MutableMap<String, Any> = mutableMapOf(),
+        val file: File = File(HackManager.dir.absolutePath + "$name.json"),
+        var enabled: Boolean = false
+) : Module(name, description), Globals {
 
     init {
         this.settings["Enabled"] = enabled
-
-        this.file = File(HackManager.dir.absolutePath + "$name.json")
     }
 
-    fun enable() {
-        EVENTBUS.register(this)
+    protected fun enable() {
+        BasicEventManager.register(this)
 
         this.enabled = true
     }
 
-    fun disable() {
-        EVENTBUS.unregister(this)
+    protected fun disable() {
+        BasicEventManager.unregister(this)
 
         this.enabled = false
     }
@@ -48,7 +46,7 @@ abstract class Hack(
     open fun onDisable() {}
 
     // This is dumb: find a better way to do this
-    override fun load(file: File) {
+    fun load(file: File) {
         try {
             if (!file.exists()) file.createNewFile()
             this.save(file)
@@ -75,8 +73,7 @@ abstract class Hack(
                     }
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -85,7 +82,7 @@ abstract class Hack(
         }
     }
 
-    override fun save(file: File) {
+    fun save(file: File) {
         try {
             val json = JsonObject()
             for (setting in settings) {

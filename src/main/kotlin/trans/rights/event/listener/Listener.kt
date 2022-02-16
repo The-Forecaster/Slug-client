@@ -7,16 +7,16 @@ import kotlin.math.max
  *
  * @author Austin
  */
-interface Listener<T> : Comparable<Listener<T>> {
-
-    /** the object that this listener was defined in */
-    val parent: Any?
-
-    /** the class of the target event */
-    val target: Class<T>
+interface Listener<T : Any> : Comparable<Listener<T>> {
 
     /** the priority that the listener will be called upon(use wisely) */
     val priority: Int
+
+    /** the object that this listener was defined in */
+    val parent: Any
+
+    /** the class of the target event */
+    val target: Class<T>
 
     /**
      * Processes an event passed through this listener

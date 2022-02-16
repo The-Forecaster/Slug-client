@@ -10,7 +10,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import net.fabricmc.loader.api.FabricLoader
 
-val maindir = FabricLoader.getInstance().configDir
+val maindir: Path = FabricLoader.getInstance().configDir
 
 private val gson = GsonBuilder().setPrettyPrinting().setLenient().create()
 

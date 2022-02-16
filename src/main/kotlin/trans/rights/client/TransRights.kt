@@ -1,21 +1,21 @@
 package trans.rights.client
 
 import net.fabricmc.api.ClientModInitializer
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.HackManager
-import trans.rights.event.bus.EventBus
-import trans.rights.event.bus.impl.EventManager
-import java.lang.StringBuilder
+import trans.rights.event.bus.impl.BasicEventManager
 
 class TransRights : ClientModInitializer {
     companion object {
-        @JvmField
-        var LOGGER: Logger = LogManager.getLogger()
+        const val NAME: String = "Trans-Rights"
 
-        @JvmField
-        var EVENTBUS: EventBus = EventManager()
+        @JvmField var LOGGER: Logger = LoggerFactory.getLogger(NAME)
+    }
+
+    init {
+        BasicEventManager.register(this)
     }
 
     override fun onInitializeClient() {
@@ -23,10 +23,8 @@ class TransRights : ClientModInitializer {
 
         Manager.load()
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            HackManager.save()
-        })
+        Runtime.getRuntime().addShutdownHook(Thread { HackManager.save() })
 
-        LOGGER.info(StringBuilder("Trans Rights has been started in ").append(System.currentTimeMillis() - starttime).append(" ms!").toString())
+        LOGGER.info("Trans Rights has been started in " + (System.currentTimeMillis() - starttime) + " ms!")
     }
 }

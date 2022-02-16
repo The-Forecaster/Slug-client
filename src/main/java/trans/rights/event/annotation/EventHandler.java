@@ -6,14 +6,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to mark a method to be added to the registry
+ * Used to mark something to be added to the subscriber registry
+ * 
+ * If you annotate a method you will need to specify the priority in this
+ * annotation if you want to have a custom priority
+ * 
+ * If you are annotating an object then define the priority in the object,
+ * changing it here will do nothing
  * 
  * @see Priority
  * 
  * @author Austin
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ ElementType.METHOD, ElementType.FIELD })
 public @interface EventHandler {
     /**
      * Priority of the method
