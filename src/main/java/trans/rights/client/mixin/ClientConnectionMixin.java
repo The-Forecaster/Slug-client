@@ -14,7 +14,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.*;
-import trans.rights.client.misc.api.EventObject;
+import trans.rights.event.bus.impl.BasicEventManager;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin implements EventObject {
@@ -46,7 +46,7 @@ public class ClientConnectionMixin implements EventObject {
 
     @Unique
     private void postCancel(PacketEvent event, CallbackInfo info) {
-        if (this.getEventBus().dispatch(event).isCancelled())
+        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled())
             info.cancel();
     }
 }

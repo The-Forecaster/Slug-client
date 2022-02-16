@@ -8,7 +8,7 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     private var blockAlpha = 50
     private var players = true
     
-    val blocks = mutableSetOf<Block>()
+    private val blocks = mutableSetOf<Block>()
 
     init {
         this.settings["Block-Alpha"] = blockAlpha

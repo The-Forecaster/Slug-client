@@ -60,11 +60,11 @@ object BasicEventManager : AbstractEventBus() {
     }
 }
 
-private fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
+internal fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
 
-private fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
+internal fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
 
-private fun Method.asListener(parent: Any): MethodListener<*> {
+internal fun Method.asListener(parent: Any): MethodListener<*> {
     this.trySetAccessible()
 
     return MethodListener(
@@ -75,7 +75,7 @@ private fun Method.asListener(parent: Any): MethodListener<*> {
     )
 }
 
-private fun Field.asListener(parent: Any): LambdaListener<*> {
+internal fun Field.asListener(parent: Any): LambdaListener<*> {
     this.trySetAccessible()
 
     return this.get(parent) as LambdaListener<*>
