@@ -20,22 +20,22 @@ import trans.rights.client.misc.api.EventObject;
 public class ClientConnectionMixin implements EventObject {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        postCancel(PreReceive.get(packet), info);
+        this.postCancel(PreReceive.get(packet), info);
     }
 
     @Inject(method = "handlePacket", at = @At("TAIL"), cancellable = true)
     private void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        postCancel(PostReceive.get(packet), info);
+        this.postCancel(PostReceive.get(packet), info);
     }
 
     @Inject(method = "send", at = @At("HEAD"), cancellable = true)
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
-        postCancel(PreSend.get(packet), info);
+        this.postCancel(PreSend.get(packet), info);
     }
 
     @Inject(at = @At("TAIL"), method = "send", cancellable = true)
     private void afterSend(Packet<?> packet, CallbackInfo info) {
-        postCancel(PostSend.get(packet), info);
+        this.postCancel(PostSend.get(packet), info);
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)

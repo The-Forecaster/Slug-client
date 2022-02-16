@@ -5,12 +5,17 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.HackManager
+import trans.rights.event.bus.impl.BasicEventManager
 
 class TransRights : ClientModInitializer {
     companion object {
         const val NAME: String = "Trans-Rights"
 
         @JvmField var LOGGER: Logger = LoggerFactory.getLogger(NAME)
+    }
+
+    init {
+        BasicEventManager.register(this)
     }
 
     override fun onInitializeClient() {
