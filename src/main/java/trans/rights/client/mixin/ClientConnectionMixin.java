@@ -17,7 +17,7 @@ import trans.rights.client.events.PacketEvent.*;
 import trans.rights.event.bus.impl.BasicEventManager;
 
 @Mixin(ClientConnection.class)
-public class ClientConnectionMixin implements EventObject {
+public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         this.postCancel(PreReceive.get(packet), info);
@@ -44,7 +44,6 @@ public class ClientConnectionMixin implements EventObject {
             info.cancel();
     }
 
-    @Unique
     private void postCancel(PacketEvent event, CallbackInfo info) {
         if (BasicEventManager.INSTANCE.dispatch(event).isCancelled())
             info.cancel();
