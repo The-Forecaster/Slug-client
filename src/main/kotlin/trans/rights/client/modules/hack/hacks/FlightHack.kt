@@ -45,6 +45,10 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
         settings["Cancel-speed"] = this.cancelSpeed
     }
 
+    override fun onEnable() {
+        if (nullCheck()) this.disable()
+    }
+
     override fun onDisable() {
         mc.player!!.abilities.allowFlying = false
         mc.player!!.abilities.flySpeed = 0.05f
