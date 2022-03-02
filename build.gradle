@@ -17,42 +17,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    Set<String> apiModules = [
-    ]
-
-    Set<String> libraries = [
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
-    ]
-
-    // fabric dependencies
-    minecraft "com.mojang:minecraft:$project.minecraft_version"
-    mappings "net.fabricmc:yarn:$project.minecraft_version+$project.yarn_mappings:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.12.12"
-
-    // api dependencies
-    apiModules.forEach {
-        include(modImplementation(fabricApi.module(it, "0.46.2+1.18")))
-    }
-
-    // TR dependencies
-    libraries.forEach { library ->
-        include(modImplementation(library))
-    }
-}
-
-jar {
-    from("LICENSE") {
-        rename {
-            "$it-$project.mod_name" 
-        }
-    }
-
-    manifest {
-        attributes("Main-Class" : "trans.rights.client.Main")
-    }
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier.set("sources")
     from sourceSets.main.allSource
@@ -72,5 +36,41 @@ compileKotlin {
 processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.mod_version
+    }
+}
+
+dependencies {
+    Set<String> apiModules = [
+    ]
+
+    Set<String> libraries = [
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
+    ]
+
+    // fabric dependencies
+    minecraft "com.mojang:minecraft:$project.minecraft_version"
+    mappings "net.fabricmc:yarn:$project.minecraft_version+$project.yarn_mappings:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.13.3"
+
+    // api dependencies
+    apiModules.forEach {
+        include(modImplementation(fabricApi.module(it, "0.47.8+$project.minecraft_version")))
+    }
+
+    // TR dependencies
+    libraries.forEach { library ->
+        include(modImplementation(library))
+    }
+}
+
+jar {
+    from("LICENSE") {
+        rename {
+            "$it-$project.mod_name" 
+        }
+    }
+
+    manifest {
+        attributes("Main-Class" : "trans.rights.client.Main")
     }
 }

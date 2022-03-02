@@ -1,6 +1,5 @@
 package trans.rights.client.modules.hack.hacks
 
-import net.minecraft.client.MinecraftClient
 import trans.rights.client.events.TickEvent
 import trans.rights.client.modules.hack.Hack
 import trans.rights.event.annotation.EventHandler

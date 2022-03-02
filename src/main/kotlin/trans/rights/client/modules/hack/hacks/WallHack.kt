@@ -1,15 +1,15 @@
 package trans.rights.client.modules.hack.hacks
 
-import trans.rights.client.modules.hack.Hack
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.client.events.BlockSideDrawEvent
+import trans.rights.client.modules.hack.Hack
 import trans.rights.event.annotation.EventHandler
 
 object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players") {
     private var blockAlpha = 50
     private var players = true
-    
+
     private val blocks = mutableSetOf<Block>()
 
     init {
@@ -27,7 +27,7 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
             event.isCancelled = true
         }
     }
-     
+
     override fun onEnable() {
         if (this.nullCheck()) {
             this.disable()

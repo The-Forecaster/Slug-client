@@ -1,7 +1,6 @@
 package trans.rights.client.modules.hack
 
 import java.io.File
-import kotlin.requireNotNull
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.hacks.*
 import trans.rights.client.util.file.maindir

@@ -13,8 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 public final class Main {
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
 
-    private Main() {}
-
     /**
      * This opens a new Panel when you run the jar so idiots know what to do
      * 

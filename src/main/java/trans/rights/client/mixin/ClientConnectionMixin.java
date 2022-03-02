@@ -3,7 +3,6 @@ package trans.rights.client.mixin;
 import java.io.IOException;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,7 +12,10 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import trans.rights.client.events.PacketEvent;
-import trans.rights.client.events.PacketEvent.*;
+import trans.rights.client.events.PacketEvent.PostReceive;
+import trans.rights.client.events.PacketEvent.PostSend;
+import trans.rights.client.events.PacketEvent.PreReceive;
+import trans.rights.client.events.PacketEvent.PreSend;
 import trans.rights.event.bus.impl.BasicEventManager;
 
 @Mixin(ClientConnection.class)

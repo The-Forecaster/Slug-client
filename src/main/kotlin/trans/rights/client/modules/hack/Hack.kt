@@ -63,11 +63,12 @@ abstract class Hack(
                     try {
                         val value = rawval.toDouble()
 
-                        settings[entry.key] = when (entry.value) {
-                            is Int -> value.toInt()
-                            is Float -> value.toFloat()
-                            else -> value
-                        }
+                        settings[entry.key] =
+                                when (entry.value) {
+                                    is Int -> value.toInt()
+                                    is Float -> value.toFloat()
+                                    else -> value
+                                }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
