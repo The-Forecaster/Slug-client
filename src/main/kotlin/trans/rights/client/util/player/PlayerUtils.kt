@@ -20,11 +20,11 @@ fun ClientPlayerEntity.setVelocity(speed: Float, cancelSpeed: Boolean) {
 
         // this is retarded, but I don't think there's a better way than this
         if (cancelSpeed) this.velocity = Vec3d.ZERO
-        if (mc.options.keyJump.isPressed) this.addVelocity(0.0, 5.0, 0.0)
-        if (mc.options.keySneak.isPressed) this.addVelocity(0.0, -5.0, 0.0)
-        if (mc.options.keyForward.isPressed) this.addVelocity(speed.toDouble(), 0.0, 0.0)
-        if (mc.options.keyBack.isPressed) this.addVelocity(-speed.toDouble(), 0.0, 0.0)
-        if (mc.options.keyLeft.isPressed) this.addVelocity(0.0, 0.0, speed.toDouble())
-        if (mc.options.keyRight.isPressed) this.addVelocity(0.0, 0.0, -speed.toDouble())
+        if (mc.options.jumpKey.isPressed) this.addVelocity(0.0, 5.0, 0.0)
+        if (mc.options.sneakKey.isPressed) this.addVelocity(0.0, -5.0, 0.0)
+        if (mc.options.forwardKey.isPressed) this.addVelocity(speed.toDouble(), 0.0, 0.0)
+        if (mc.options.backKey.isPressed) this.addVelocity(-speed.toDouble(), 0.0, 0.0)
+        if (mc.options.leftKey.isPressed) this.addVelocity(0.0, 0.0, speed.toDouble())
+        if (mc.options.rightKey.isPressed) this.addVelocity(0.0, 0.0, -speed.toDouble())
     }
 }
