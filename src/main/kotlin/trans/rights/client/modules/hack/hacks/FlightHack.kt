@@ -14,17 +14,21 @@ import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private var vanilla = true
     private var speed = 10.0f
     private var cancelSpeed = false
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener({ event ->
+<<<<<<< Updated upstream
         if (!this.nullCheck() && mc.player!!.isFallFlying || !event.isInWorld) {
             when (this.vanilla) {
                 true -> this.doVanillaFlight()
                 false -> this.doVelocity()
             }
+=======
+        if (!this.nullCheck() && mc.player!!.isFallFlying && !this.withElytra || !event.isInWorld) {
+            this.doVanillaFlight()
+>>>>>>> Stashed changes
         }
     })
 
@@ -40,9 +44,15 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     init {
+<<<<<<< Updated upstream
         this.settings["Vanilla"] = this.vanilla
         this.settings["Flight-speed"] = this.speed
         this.settings["Cancel-speed"] = this.cancelSpeed
+=======
+        settings["Flight-speed"] = this.speed
+        settings["With-elytra"] = this.withElytra
+        settings["Cancel-speed"] = this.cancelSpeed
+>>>>>>> Stashed changes
     }
 
     override fun onEnable() {
@@ -56,10 +66,6 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
     private fun doVanillaFlight() {
         mc.player!!.setFlySpeed(trueSpeed(), cancelSpeed)
-    }
-
-    private fun doVelocity() {
-        mc.player!!.setVelocity(trueSpeed(), cancelSpeed)
     }
 
     private fun trueSpeed(): Float {
