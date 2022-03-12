@@ -2,7 +2,6 @@ package trans.rights.event.listener.impl
 
 import trans.rights.event.annotation.Priority
 import java.lang.reflect.Method
-import trans.rights.event.annotation.Priority
 import trans.rights.event.listener.Listener
 
 /** Implementation of Listener that uses a method as its target */
@@ -19,11 +18,7 @@ class MethodListener<T : Any>(
 
 inline fun <reified T : Any> Any.lambdaListener(
     noinline action: (T) -> Unit
-<<<<<<< Updated upstream
-) : LambdaListener<T> {
-=======
 ): LambdaListener<T> {
->>>>>>> Stashed changes
     return lambdaListener(action, Priority.DEFAULT)
 }
 

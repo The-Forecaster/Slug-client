@@ -10,16 +10,15 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
     private var swap: Boolean = true
 
     init {
-        this.settings["wait"] = waitForDelay
-        this.settings["delay"] = tickDelay
-        this.settings["swap"] = swap
+        settings["wait"] = waitForDelay
+        settings["delay"] = tickDelay
+        settings["swap"] = swap
     }
 
     @EventHandler
     fun onUpdate(event: TickEvent.PostTick) {
         if (nullCheck() || !event.isInWorld) {
-            this.disable()
-            return
+            disable()
         }
     }
 }

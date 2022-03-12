@@ -7,14 +7,14 @@ import trans.rights.client.modules.command.commands.*
 
 object CommandManager : Manager<Command>(mutableSetOf()) {
     init {
-        this.values.add(HackCommand)
-        this.values.add(ReloadCommand)
+        values.add(HackCommand)
+        values.add(ReloadCommand)
     }
 
     override fun load() {}
 
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        this.values.forEach { command -> command.register(dispatcher) }
+        values.forEach { command -> command.register(dispatcher) }
     }
 }

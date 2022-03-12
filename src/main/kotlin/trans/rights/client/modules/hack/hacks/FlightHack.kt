@@ -8,29 +8,20 @@ import trans.rights.client.events.TickEvent
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.misc.api.Globals.mc
 import trans.rights.client.modules.hack.Hack
-import trans.rights.client.util.player.*
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private var speed = 10.0f
+    private var speed = 15.0f
     private var cancelSpeed = false
 
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener({ event ->
-<<<<<<< Updated upstream
-        if (!this.nullCheck() && mc.player!!.isFallFlying || !event.isInWorld) {
-            when (this.vanilla) {
-                true -> this.doVanillaFlight()
-                false -> this.doVelocity()
-            }
-=======
-        if (!this.nullCheck() && mc.player!!.isFallFlying && !this.withElytra || !event.isInWorld) {
-            this.doVanillaFlight()
->>>>>>> Stashed changes
+    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
+        if (!nullCheck() || !event.isInWorld) {
+            this.doFlight()
         }
-    })
+    }
 
     @EventHandler
     fun onPacketRecieve(event: PacketEvent) {
@@ -39,37 +30,36 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
             packet.allowFlying = true
             packet.flying = true
-            packet.flySpeed = this.speed
+            packet.flySpeed = this.trueSpeed()
         }
     }
 
     init {
-<<<<<<< Updated upstream
-        this.settings["Vanilla"] = this.vanilla
-        this.settings["Flight-speed"] = this.speed
-        this.settings["Cancel-speed"] = this.cancelSpeed
-=======
-        settings["Flight-speed"] = this.speed
-        settings["With-elytra"] = this.withElytra
-        settings["Cancel-speed"] = this.cancelSpeed
->>>>>>> Stashed changes
+        settings["Flight-speed"] = speed
+        settings["Cancel-speed"] = cancelSpeed
     }
 
     override fun onEnable() {
-        if (nullCheck()) this.disable()
+        if (nullCheck())
+            disable()
     }
 
     override fun onDisable() {
-        mc.player!!.abilities.allowFlying = false
-        mc.player!!.abilities.flySpeed = 0.05f
+        if (nullCheck()) {
+            mc.player!!.abilities.allowFlying = false
+            mc.player!!.abilities.flySpeed = 0.05f
+        }
     }
 
-    private fun doVanillaFlight() {
-        mc.player!!.setFlySpeed(trueSpeed(), cancelSpeed)
+    private fun doFlight() {
+        mc.player!!.run {
+            setFlySpeed(trueSpeed(), cancelSpeed)
+            setVelocity(trueSpeed(), cancelSpeed)
+        }
     }
 
     private fun trueSpeed(): Float {
-        return this.speed / 10
+        return speed / 10
     }
 }
 
@@ -83,8 +73,6 @@ fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
 }
 
 fun ClientPlayerEntity.setVelocity(speed: Float, cancelSpeed: Boolean) {
-    if (cancelSpeed) this.velocity = Vec3d.ZERO
-
     if (!this.isSpectator && mc.world != null) {
 
         // this is retarded, but I don't think there's a better way than this

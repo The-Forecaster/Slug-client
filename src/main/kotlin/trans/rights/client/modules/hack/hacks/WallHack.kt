@@ -13,8 +13,8 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     private val blocks = mutableSetOf<Block>()
 
     init {
-        this.settings["Block-Alpha"] = blockAlpha
-        this.settings["Players"] = players
+        settings["Block-Alpha"] = blockAlpha
+        settings["Players"] = players
 
         blocks.add(Blocks.DIAMOND_ORE)
         blocks.add(Blocks.ANCIENT_DEBRIS)
@@ -24,7 +24,7 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
 
     @EventHandler
     fun onBlockDraw(event: BlockSideDrawEvent) {
-        if (this.blocks.contains(event.block)) {
+        if (!blocks.contains(event.block)) {
             event.isCancelled = true
         }
     }
@@ -34,12 +34,12 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
             this.disable()
             return
         }
-        this.minecraft.worldRenderer.reload()
+        minecraft.worldRenderer.reload()
     }
 
     override fun onDisable() {
         if (!this.nullCheck()) {
-            this.minecraft.worldRenderer.reload()
+            minecraft.worldRenderer.reload()
         }
     }
 }

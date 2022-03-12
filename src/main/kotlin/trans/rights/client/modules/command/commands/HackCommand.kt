@@ -33,7 +33,8 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
 
     private fun getHack(name: String): Hack {
         for (hack in HackManager.values) {
-            if (hack.name.lowercase() == name.lowercase()) return hack
+            if (hack.name.lowercase() == name.lowercase())
+                return hack
         }
 
         throw builtin.dispatcherUnknownArgument().create()
@@ -41,7 +42,8 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
 
     private fun getSetting(name: String, hack: Hack): String {
         for (setting in hack.settings) {
-            if (setting.key.lowercase() == name.lowercase()) return setting.key
+            if (setting.key.lowercase() == name.lowercase())
+                return setting.key
         }
 
         throw builtin.dispatcherUnknownArgument().create()

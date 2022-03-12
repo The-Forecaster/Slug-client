@@ -1,9 +1,10 @@
 package trans.rights.client.modules.setting
 
 import trans.rights.client.modules.Manager
+import java.util.*
 
-class SettingManager : Manager<Setting<*>>(mutableListOf()) {
+class Settings : Manager<Setting<*>>(mutableListOf()) {
     override fun load() {
-        this.values.toSortedSet())
+        values.toSortedSet(Comparator.naturalOrder())
     }
 }

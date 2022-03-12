@@ -20,7 +20,7 @@ object BasicEventManager : AbstractEventBus() {
             this.subscribers.
             getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
                 this.add(field.asListener(subscriber))
-                this.toSortedSet()
+                this.toSortedSet(Comparator.comparingInt { listener -> listener.priority })
             }
         }
     }
