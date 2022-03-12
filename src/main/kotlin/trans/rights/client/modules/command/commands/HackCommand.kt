@@ -51,6 +51,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
 
     private fun toggleHack(hack: Hack): Int {
         hack.toggle()
+
         return 0
     }
 

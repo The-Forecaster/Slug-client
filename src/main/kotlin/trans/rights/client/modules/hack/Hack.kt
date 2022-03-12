@@ -21,7 +21,7 @@ abstract class Hack(
         this.settings["Enabled"] = enabled
     }
 
-    protected fun enable() {
+    private fun enable() {
         BasicEventManager.register(this)
 
         this.enabled = true

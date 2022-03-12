@@ -6,7 +6,7 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.modules.Module
 
 abstract class Command(name: String, description: String) : Module(name, description) {
-    val builtin = BuiltInExceptions()
+    protected val builtin = BuiltInExceptions()
 
     abstract fun register(dispatcher: CommandDispatcher<ServerCommandSource>)
 }

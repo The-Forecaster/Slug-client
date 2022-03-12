@@ -21,9 +21,14 @@ public final class Main {
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        if (JOptionPane.showConfirmDialog(null,
+        if (JOptionPane.showConfirmDialog(
+            null,
             "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?",
-            "ERROR", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
+            "ERROR",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.ERROR_MESSAGE,
+            icon
+        ) == 0) {
             var modsFile = switch (getOS()) {
                 case WINDOWS -> new File(System.getenv("AppData") + "/.minecraft/mods");
                 case OSX -> new File(System.getProperty("user.home") + "/Library/Application Support/minecraft/mods");

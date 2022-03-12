@@ -30,15 +30,15 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     }
 
     override fun onEnable() {
-        if (this.nullCheck()) {
-            this.disable()
+        if (nullCheck()) {
+            disable()
             return
         }
         minecraft.worldRenderer.reload()
     }
 
     override fun onDisable() {
-        if (!this.nullCheck()) {
+        if (!nullCheck()) {
             minecraft.worldRenderer.reload()
         }
     }
