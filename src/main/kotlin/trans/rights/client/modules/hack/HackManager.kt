@@ -1,9 +1,9 @@
 package trans.rights.client.modules.hack
 
 import java.io.File
+import trans.rights.client.TransRights.Companion.maindir
 import trans.rights.client.modules.Manager
 import trans.rights.client.modules.hack.hacks.*
-import trans.rights.client.util.file.maindir
 
 object HackManager : Manager<Hack>(mutableSetOf()) {
     val dir = File("$maindir/hacks")

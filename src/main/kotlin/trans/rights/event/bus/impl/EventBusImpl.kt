@@ -17,9 +17,11 @@ object BasicEventManager : AbstractEventBus() {
             field.isValid(subscriber) 
         }
         .forEach { field ->
-            this.subscribers
-            .getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet)
-            .add(field.asListener(subscriber))
+            this.subscribers.
+            getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
+                this.add(field.asListener(subscriber))
+                this.toSortedSet()
+            }
         }
     }
 
@@ -27,9 +29,9 @@ object BasicEventManager : AbstractEventBus() {
         Arrays.stream(subscriber.javaClass.declaredMethods)
         .filter { method -> method.isValid() }
         .forEach { method ->
-            this.subscribers
-            .getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet)
-            .add(method.asListener(subscriber))
+            this.subscribers.
+            getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).
+            add(method.asListener(subscriber))
         }
     }
 

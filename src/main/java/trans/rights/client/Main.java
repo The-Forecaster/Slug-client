@@ -46,8 +46,7 @@ public final class Main {
             return OS.OSX;
         else if (osName.contains("win"))
             return OS.WINDOWS;
-        else
-            return OS.UNKNOWN;
+        return OS.UNKNOWN;
     }
 
     private static String[] getURLOpenCommand(URL url) {

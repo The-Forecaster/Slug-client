@@ -4,7 +4,7 @@ import trans.rights.client.modules.command.CommandManager
 import trans.rights.client.modules.hack.HackManager
 
 abstract class Manager<T : Module>(val values: MutableCollection<T>) {
-    companion object  {
+    companion object {
         private val values = mutableSetOf<Manager<*>>()
 
         fun load() {

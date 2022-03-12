@@ -5,11 +5,8 @@ import trans.rights.client.modules.hack.Hack
 import trans.rights.event.annotation.EventHandler
 
 object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
-
     private var waitForDelay: Boolean = true
-
     private var tickDelay: Double = 3.0
-
     private var swap: Boolean = true
 
     init {

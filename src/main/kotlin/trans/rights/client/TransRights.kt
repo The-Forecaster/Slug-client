@@ -1,6 +1,7 @@
 package trans.rights.client
 
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.loader.impl.FabricLoaderImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.modules.Manager
@@ -10,6 +11,8 @@ import trans.rights.event.bus.impl.BasicEventManager
 class TransRights : ClientModInitializer {
     companion object {
         const val NAME: String = "Trans-Rights"
+
+        val maindir = FabricLoaderImpl.INSTANCE.configDir
 
         @JvmField var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }

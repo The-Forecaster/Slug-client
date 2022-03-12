@@ -21,6 +21,7 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
         blocks.add(Blocks.ENDER_CHEST)
         blocks.add(Blocks.BEDROCK)
     }
+
     @EventHandler
     fun onBlockDraw(event: BlockSideDrawEvent) {
         if (this.blocks.contains(event.block)) {
