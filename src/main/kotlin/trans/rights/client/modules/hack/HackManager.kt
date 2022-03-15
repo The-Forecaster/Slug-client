@@ -29,6 +29,8 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
             hack.load(hack.file)
             hack.save(hack.file)
         }
+
+        this.values.toSortedSet(Comparator.comparing(Hack::name))
     }
 
     override fun unload() {

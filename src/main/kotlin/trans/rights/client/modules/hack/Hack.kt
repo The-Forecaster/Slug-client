@@ -9,6 +9,8 @@ import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.modules.setting.Settings
 import trans.rights.client.modules.setting.settings.BooleanSetting
+import trans.rights.client.modules.setting.settings.DoubleSetting
+import trans.rights.client.modules.setting.settings.IntSetting
 import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
@@ -54,11 +56,12 @@ abstract class Hack(
             val json = this.fileMang.fromJson(file.toPath())
 
             for (setting in settings.values) {
-                if (setting.value is Boolean) {
-                    (setting as BooleanSetting).value = json.get(setting.name).asBoolean
+                when (setting.value) {
+                    is Boolean -> (setting as BooleanSetting).value = json.get(setting.name).asBoolean
+                    is Int -> (setting as IntSetting).value = json.get(setting.name).asInt
+                    is Double -> (setting as DoubleSetting).value = json.get(setting.name).asDouble
+                    else -> return
                 }
-
-                json.get(setting.name)
             }
         } 
         catch (e: Exception) {
