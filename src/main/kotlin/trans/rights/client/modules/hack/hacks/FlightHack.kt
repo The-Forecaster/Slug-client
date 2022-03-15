@@ -8,13 +8,15 @@ import trans.rights.client.events.TickEvent
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.misc.api.Globals.mc
 import trans.rights.client.modules.hack.Hack
+import trans.rights.client.modules.setting.settings.BooleanSetting
+import trans.rights.client.modules.setting.settings.DoubleSetting
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private var speed = 15.0f
-    private var cancelSpeed = false
+    private val speed = DoubleSetting("Speed", "How fast you want to fly", 15.0)
+    private var cancelSpeed = BooleanSetting("Cancel-speed", "If you want speed to multiply as you go", true)
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
@@ -35,8 +37,8 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     init {
-        settings["Flight-speed"] = speed
-        settings["Cancel-speed"] = cancelSpeed
+        settings.add(speed)
+        settings.add(cancelSpeed)
     }
 
     override fun onEnable() {
@@ -53,13 +55,13 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
     private fun doFlight() {
         mc.player!!.run {
-            setFlySpeed(trueSpeed(), cancelSpeed)
-            setVelocity(trueSpeed(), cancelSpeed)
+            setFlySpeed(trueSpeed(), cancelSpeed.value)
+            setVelocity(trueSpeed(), cancelSpeed.value)
         }
     }
 
     private fun trueSpeed(): Float {
-        return speed / 10
+        return speed.value.toFloat() / 10f
     }
 }
 

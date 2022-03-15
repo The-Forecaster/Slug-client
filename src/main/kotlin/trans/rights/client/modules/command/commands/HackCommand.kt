@@ -41,9 +41,9 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     }
 
     private fun getSetting(name: String, hack: Hack): String {
-        for (setting in hack.settings) {
-            if (setting.key.lowercase() == name.lowercase())
-                return setting.key
+        for (setting in hack.settings.values) {
+            if (setting.name.lowercase() == name.lowercase())
+                return setting.name
         }
 
         throw builtin.dispatcherUnknownArgument().create()
@@ -56,7 +56,9 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     }
 
     private fun takeInput(input: String, key: String, hack: Hack): Int {
-        hack.settings[key] = input
+        // TODO: Finish this
+
+        // hack.settings.get(key).set(input.)
 
         return 0
     }

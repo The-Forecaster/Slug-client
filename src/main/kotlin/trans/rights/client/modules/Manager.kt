@@ -25,6 +25,10 @@ abstract class Manager<T : Module>(val values: MutableCollection<T>) {
         return value
     }
 
+    fun add(values: Collection<T>) {
+        this.values.addAll(values)
+    }
+
     open fun unload() {
         this.values.clear()
     }

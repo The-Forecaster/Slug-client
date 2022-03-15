@@ -4,22 +4,21 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
+import trans.rights.client.file.FileManager
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
-import trans.rights.client.util.file.*
+import trans.rights.client.modules.setting.Settings
+import trans.rights.client.modules.setting.settings.BooleanSetting
 import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
-        name: String,
-        description: String,
-        val settings: MutableMap<String, Any> = mutableMapOf(),
-        val file: File = File(HackManager.dir.absolutePath + "$name.json"),
-        var enabled: Boolean = false
+    name: String,
+    description: String,
+    val settings: Settings = Settings(),
+    val file: File = File(HackManager.dir.absolutePath + "$name.json"),
+    private var enabled: Boolean = false,
+    val fileMang: FileManager = FileManager()
 ) : Module(name, description), Globals {
-
-    init {
-        this.settings["Enabled"] = enabled
-    }
 
     private fun enable() {
         BasicEventManager.register(this)
@@ -37,10 +36,6 @@ abstract class Hack(
         if (this.enabled) disable() else enable()
     }
 
-    fun isEnabled(): Boolean {
-        return this.enabled
-    }
-
     open fun onEnable() {}
 
     open fun onDisable() {}
@@ -48,36 +43,28 @@ abstract class Hack(
     // This is dumb: find a better way to do this
     fun load(file: File) {
         try {
-            if (!file.exists()) file.createNewFile()
-            this.save(file)
+            if (!file.exists())
+                file.createNewFile()
 
-            val hackobj = readJson(file.toPath())
+            if (this.fileMang.read(this.file.toPath()) == "") {
+                this.save(file)
+                return
+            }
 
-            for (entry in settings) {
-                val rawval = hackobj.get(entry.key).asString
-                try {
-                    val value = rawval.toBoolean()
+            val json = this.fileMang.fromJson(file.toPath())
 
-                    this.settings[entry.key] = value
-                } 
-                catch (e: Exception) {
-                    try {
-                        val value = rawval.toDouble()
-
-                        this.settings[entry.key] = when (entry.value) {
-                            is Int -> value.toInt()
-                            is Float -> value.toFloat()
-                            else -> value
-                        }
-                    } 
-                    catch (empty: Exception) {}
+            for (setting in settings.values) {
+                if (setting.value is Boolean) {
+                    (setting as BooleanSetting).value = json.get(setting.name).asBoolean
                 }
+
+                json.get(setting.name)
             }
         } 
         catch (e: Exception) {
-            clearJson(file.toPath())
+            this.fileMang.clearJson(file.toPath())
 
-            LOGGER.error("$name failed to load", this.name)
+            LOGGER.error("$name failed to load")
 
             e.printStackTrace()
         }
@@ -86,10 +73,12 @@ abstract class Hack(
     fun save(file: File) {
         try {
             val json = JsonObject()
-            for (setting in settings) {
-                json.add(setting.key, JsonPrimitive(setting.value.toString()))
+
+            for (setting in settings.values) {
+                json.add(setting.name, JsonPrimitive(setting.value.toString()))
             }
-            writeToJson(json, file.toPath())
+
+            this.fileMang.writeToJson(json, file.toPath())
         } 
         catch (e: Exception) {
             LOGGER.error("$name failed to save", this.name)
