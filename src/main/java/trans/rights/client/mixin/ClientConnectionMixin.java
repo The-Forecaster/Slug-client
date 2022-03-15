@@ -46,8 +46,7 @@ public class ClientConnectionMixin {
         if (throwable instanceof IOException)
             info.cancel();
     }
-
-    @Unique
+    
     private static void postCancel(PacketEvent event, CallbackInfo info) {
         if (BasicEventManager.INSTANCE.dispatch(event).isCancelled())
             info.cancel();

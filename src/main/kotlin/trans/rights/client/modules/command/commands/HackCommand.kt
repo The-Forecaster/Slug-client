@@ -10,34 +10,25 @@ import trans.rights.client.modules.hack.HackManager
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(
-            literal("").
-            then(argument("hackname", string()))
-            .executes { ctx ->
-                toggleHack(getHack(ctx.toString()))
-            }
-            .then(argument("settingname", string()))
-            .then(argument("value", string()))
-            .executes { ctx -> takeInput(
-                ctx.getArgument(
-                    "value", 
-                    string().javaClass).toString(),
-                getSetting(
-                    ctx.getArgument("settingname", string().javaClass).toString(),
-                    getHack(ctx.getArgument("hackname", string().javaClass).toString())
-                ), 
-                getHack(ctx.getArgument("hackname", string().javaClass).toString())
-            )}
-        )
-    }
-
-    private fun getHack(name: String): Hack {
         for (hack in HackManager.values) {
-            if (hack.name.lowercase() == name.lowercase())
-                return hack
+            dispatcher.register(
+                literal(hack.name).executes {
+                    toggleHack(hack)
+                }
+                .then(argument("settingname", string()))
+                .then(argument("value", string()))
+                .executes { ctx -> takeInput(
+                    ctx.getArgument(
+                        "value",
+                        string().javaClass).toString(),
+                    getSetting(
+                        ctx.getArgument("settingname", string().javaClass).toString(),
+                        hack
+                    ),
+                    hack
+                )}
+            )
         }
-
-        throw builtin.dispatcherUnknownArgument().create()
     }
 
     private fun getSetting(name: String, hack: Hack): String {
