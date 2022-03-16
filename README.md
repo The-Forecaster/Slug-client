@@ -6,7 +6,7 @@
 
 - The Fabric team for fabric and Mojang for minecraft
 - Bailey, or the person who made the original Queer Client and is my inspiration for creating this
-- Cyri [https://github.com/Fentanull] and the Yakuza bros for being cool
+- [Cyri] (https://github.com/Fentanull) and the Yakuza bros for being cool
 - Everyone in the ECME community thats been cool to me
 - Everyone not named here that I've met in anarchy
 
