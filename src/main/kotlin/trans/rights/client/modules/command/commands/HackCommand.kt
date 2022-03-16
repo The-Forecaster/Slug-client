@@ -7,6 +7,10 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.modules.command.Command
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.hack.HackManager
+import trans.rights.client.modules.setting.Setting
+import trans.rights.client.modules.setting.settings.BooleanSetting
+import trans.rights.client.modules.setting.settings.DoubleSetting
+import trans.rights.client.modules.setting.settings.IntSetting
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -14,28 +18,24 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
             dispatcher.register(
                 literal(hack.name).executes {
                     toggleHack(hack)
-                }
-                .then(argument("settingname", string()))
-                .then(argument("value", string()))
-                .executes { ctx -> takeInput(
-                    ctx.getArgument(
-                        "value",
-                        string().javaClass).toString(),
+                }.
+                then(argument("settingname", string())).
+                then(argument("value", string())).
+                executes { ctx -> takeInput(
+                    ctx.getArgument("value", string().javaClass).toString(),
                     getSetting(
                         ctx.getArgument("settingname", string().javaClass).toString(),
                         hack
-                    ),
-                    hack
+                    )
                 )}
             )
         }
     }
 
-    private fun getSetting(name: String, hack: Hack): String {
-        for (setting in hack.settings.values) {
+    private fun getSetting(name: String, hack: Hack): Setting<*> {
+        for (setting in hack.settings.values)
             if (setting.name.lowercase() == name.lowercase())
-                return setting.name
-        }
+                return setting
 
         throw builtin.dispatcherUnknownArgument().create()
     }
@@ -46,10 +46,17 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
         return 0
     }
 
-    private fun takeInput(input: String, key: String, hack: Hack): Int {
-        // TODO: Finish this
-
-        // hack.settings.get(key).set(input.)
+    private fun takeInput(input: String, setting: Setting<*>): Int {
+        try {
+            when (setting) {
+                is IntSetting -> setting.set(input.toInt())
+                is DoubleSetting -> setting.set(input.toDouble())
+                is BooleanSetting -> setting.set(input.toBoolean())
+            }
+        }
+        catch (e: Exception) {
+            throw builtin.dispatcherUnknownArgument().create()
+        }
 
         return 0
     }

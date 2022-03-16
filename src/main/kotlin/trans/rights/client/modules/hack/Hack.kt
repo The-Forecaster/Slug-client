@@ -56,11 +56,10 @@ abstract class Hack(
             val json = this.fileMang.fromJson(file.toPath())
 
             for (setting in settings.values) {
-                when (setting.value) {
-                    is Boolean -> (setting as BooleanSetting).value = json.get(setting.name).asBoolean
-                    is Int -> (setting as IntSetting).value = json.get(setting.name).asInt
-                    is Double -> (setting as DoubleSetting).value = json.get(setting.name).asDouble
-                    else -> return
+                when (setting) {
+                    is BooleanSetting -> setting.value = json.get(setting.name).asBoolean
+                    is IntSetting -> setting.value = json.get(setting.name).asInt
+                    is DoubleSetting -> setting.value = json.get(setting.name).asDouble
                 }
             }
         } 
@@ -84,7 +83,7 @@ abstract class Hack(
             this.fileMang.writeToJson(json, file.toPath())
         } 
         catch (e: Exception) {
-            LOGGER.error("$name failed to save", this.name)
+            LOGGER.error("$name failed to save")
 
             e.printStackTrace()
         }
