@@ -1,6 +1,6 @@
 package trans.rights.client.mixin;
 
-import trans.rights.client.modules.command.CommandManager;
+import trans.rights.client.manager.impl.CommandManager;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;

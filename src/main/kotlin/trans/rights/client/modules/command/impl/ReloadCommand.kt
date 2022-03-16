@@ -1,0 +1,20 @@
+package trans.rights.client.modules.command.impl
+
+import com.mojang.brigadier.CommandDispatcher
+import net.minecraft.server.command.CommandManager.*
+import net.minecraft.server.command.ServerCommandSource
+import trans.rights.client.manager.Manager
+import trans.rights.client.modules.command.Command
+
+object ReloadCommand : Command("Reload", "Reload parts of the client or mc") {
+    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+        dispatcher.register(literal(name).executes { reload() })
+    }
+
+    private fun reload(): Int {
+        Manager.unload()
+        Manager.load()
+
+        return 0
+    }
+}

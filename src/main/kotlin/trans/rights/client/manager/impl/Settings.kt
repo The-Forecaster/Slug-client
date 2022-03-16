@@ -1,6 +1,7 @@
-package trans.rights.client.modules.setting
+package trans.rights.client.manager.impl
 
-import trans.rights.client.modules.Manager
+import trans.rights.client.manager.Manager
+import trans.rights.client.modules.setting.Setting
 import java.util.*
 
 class Settings : Manager<Setting<*>>(mutableListOf()) {

@@ -8,12 +8,6 @@ package trans.rights.event.bus;
 public interface EventBus {
 
     /**
-     * map for listeners and their target events
-     *
-     * <Event, Set<Listener>>
-     */
-
-    /**
      * Adds the Subscriber to the registry
      *
      * @param subscriber event Subscriber instance

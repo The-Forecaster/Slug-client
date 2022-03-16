@@ -1,4 +1,4 @@
-package trans.rights.client.file
+package trans.rights.client.util.file
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -7,12 +7,11 @@ import com.google.gson.JsonSyntaxException
 import trans.rights.client.TransRights.Companion.LOGGER
 import java.io.BufferedWriter
 import java.io.IOException
-import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-class FileManager {
+class FileHelper {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().setLenient().create()
 
     fun writeToJson(element: JsonObject, path: Path) {

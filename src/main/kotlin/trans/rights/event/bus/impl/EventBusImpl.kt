@@ -27,7 +27,7 @@ object BasicEventManager : AbstractEventBus() {
 
     override fun registerMethods(subscriber: Any) {
         Arrays.stream(subscriber.javaClass.declaredMethods).
-        filter { method -> method.isValid() }.
+        filter(Method::isValid).
         forEach { method ->
             this.subscribers.
             getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).

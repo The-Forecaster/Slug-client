@@ -4,10 +4,11 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
-import trans.rights.client.file.FileManager
+import trans.rights.client.manager.impl.HackManager
+import trans.rights.client.util.file.FileHelper
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
-import trans.rights.client.modules.setting.Settings
+import trans.rights.client.manager.impl.Settings
 import trans.rights.client.modules.setting.settings.BooleanSetting
 import trans.rights.client.modules.setting.settings.DoubleSetting
 import trans.rights.client.modules.setting.settings.IntSetting
@@ -17,9 +18,9 @@ abstract class Hack(
     name: String,
     description: String,
     val settings: Settings = Settings(),
-    val file: File = File(HackManager.dir.absolutePath + "$name.json"),
+    val file: File = File(HackManager.directory.absolutePath + "$name.json"),
     private var enabled: Boolean = false,
-    val fileMang: FileManager = FileManager()
+    val fileMang: FileHelper = FileHelper()
 ) : Module(name, description), Globals {
 
     private fun enable() {
@@ -42,7 +43,6 @@ abstract class Hack(
 
     open fun onDisable() {}
 
-    // This is dumb: find a better way to do this
     fun load(file: File) {
         try {
             if (!file.exists())
