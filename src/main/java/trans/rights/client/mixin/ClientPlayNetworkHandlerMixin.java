@@ -30,13 +30,11 @@ public class ClientPlayNetworkHandlerMixin {
     @Shadow
     private CommandDispatcher<CommandSource> commandDispatcher;
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
         CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
     }
 
-    @SuppressWarnings("unchecked")
     @Inject(method = "onCommandTree", at = @At("TAIL"))
     private void onOnCommandTree(CommandTreeS2CPacket packet, CallbackInfo ci) {
         CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
