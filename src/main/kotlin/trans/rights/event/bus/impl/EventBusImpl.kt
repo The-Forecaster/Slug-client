@@ -15,34 +15,36 @@ object BasicEventManager : AbstractEventBus() {
     override fun registerFields(subscriber: Any) {
         Arrays.stream(subscriber.javaClass.declaredFields).filter { field -> 
             field.isValid(subscriber) 
-        }
-        .forEach { field ->
-            this.subscribers
-            .getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet)
-            .add(field.asListener(subscriber))
+        }.
+        forEach { field ->
+            this.subscribers.
+            getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
+                this.add(field.asListener(subscriber))
+                this.toSortedSet(Comparator.comparingInt { listener -> listener.priority })
+            }
         }
     }
 
     override fun registerMethods(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredMethods)
-        .filter { method -> method.isValid() }
-        .forEach { method ->
-            this.subscribers
-            .getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet)
-            .add(method.asListener(subscriber))
+        Arrays.stream(subscriber.javaClass.declaredMethods).
+        filter(Method::isValid).
+        forEach { method ->
+            this.subscribers.
+            getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).
+            add(method.asListener(subscriber))
         }
     }
 
     override fun unregisterFields(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredFields)
-        .filter { field -> field.isValid(subscriber) }
-        .forEach { field -> this.subscribers[field.type]?.remove(field.get(subscriber)) }
+        Arrays.stream(subscriber.javaClass.declaredFields).
+        filter { field -> field.isValid(subscriber) }.
+        forEach { field -> this.subscribers[field.type]?.remove(field.get(subscriber)) }
     }
 
     override fun unregisterMethods(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredMethods)
-        .filter { method -> method.isValid() }
-        .forEach { method ->
+        Arrays.stream(subscriber.javaClass.declaredMethods).
+        filter { method -> method.isValid() }.
+        forEach { method ->
             this.subscribers[method.parameters[0].type]?.remove(method.asListener(subscriber))
         }
     }
@@ -60,11 +62,11 @@ object BasicEventManager : AbstractEventBus() {
     }
 }
 
-private fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
+internal fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
 
-private fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
+internal fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
 
-private fun Method.asListener(parent: Any): MethodListener<*> {
+internal fun Method.asListener(parent: Any): MethodListener<*> {
     this.trySetAccessible()
 
     return MethodListener(
@@ -75,7 +77,7 @@ private fun Method.asListener(parent: Any): MethodListener<*> {
     )
 }
 
-private fun Field.asListener(parent: Any): LambdaListener<*> {
+internal fun Field.asListener(parent: Any): LambdaListener<*> {
     this.trySetAccessible()
 
     return this.get(parent) as LambdaListener<*>

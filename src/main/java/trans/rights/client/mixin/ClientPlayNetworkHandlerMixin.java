@@ -1,6 +1,7 @@
 package trans.rights.client.mixin;
 
-import trans.rights.client.modules.command.CommandManager;
+import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
+import trans.rights.client.manager.impl.CommandManager;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
@@ -19,6 +20,11 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.command.ServerCommandSource;
 
+/**
+ * A lot of this is pasted from https://github.com/Earthcomputer/clientcommands
+ *
+ * Will improve in the future but this is how it is for now
+ */
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
     @Shadow
@@ -26,6 +32,11 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(MinecraftClient mc, Screen screen, ClientConnection connection, GameProfile profile, TelemetrySender sender, CallbackInfo info) {
+        CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
+    }
+
+    @Inject(method = "onCommandTree", at = @At("TAIL"))
+    private void onOnCommandTree(CommandTreeS2CPacket packet, CallbackInfo ci) {
         CommandManager.registerCommands((CommandDispatcher<ServerCommandSource>) (Object) commandDispatcher);
     }
 }

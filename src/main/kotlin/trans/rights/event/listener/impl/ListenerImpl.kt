@@ -1,5 +1,6 @@
 package trans.rights.event.listener.impl
 
+import trans.rights.event.annotation.Priority
 import java.lang.reflect.Method
 import trans.rights.event.listener.Listener
 
@@ -13,6 +14,12 @@ class MethodListener<T : Any>(
     override operator fun invoke(param: T) {
         this.action.invoke(this.parent, param)
     }
+}
+
+inline fun <reified T : Any> Any.lambdaListener(
+    noinline action: (T) -> Unit
+): LambdaListener<T> {
+    return lambdaListener(action, Priority.DEFAULT)
 }
 
 inline fun <reified T : Any> Any.lambdaListener(

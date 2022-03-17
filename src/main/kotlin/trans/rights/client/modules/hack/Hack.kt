@@ -4,24 +4,25 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
+import trans.rights.client.manager.impl.HackManager
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
-import trans.rights.client.util.file.*
+import trans.rights.client.manager.impl.Settings
+import trans.rights.client.modules.setting.settings.BooleanSetting
+import trans.rights.client.modules.setting.settings.DoubleSetting
+import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.util.file.FileHelper
 import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
-        name: String,
-        description: String,
-        val settings: MutableMap<String, Any> = mutableMapOf(),
-        val file: File = File(HackManager.dir.absolutePath + "$name.json"),
-        var enabled: Boolean = false
+    name: String,
+    description: String,
+    val settings: Settings = Settings(),
+    val file: File = File(HackManager.directory.absolutePath + "$name.json"),
+    private var enabled: Boolean = false
 ) : Module(name, description), Globals {
 
-    init {
-        this.settings["Enabled"] = enabled
-    }
-
-    protected fun enable() {
+    private fun enable() {
         BasicEventManager.register(this)
 
         this.enabled = true
@@ -37,44 +38,32 @@ abstract class Hack(
         if (this.enabled) disable() else enable()
     }
 
-    fun isEnabled(): Boolean {
-        return this.enabled
-    }
-
     open fun onEnable() {}
 
     open fun onDisable() {}
 
-    // This is dumb: find a better way to do this
     fun load(file: File) {
         try {
-            if (!file.exists()) file.createNewFile()
-            this.save(file)
+            if (!file.exists())
+                file.createNewFile()
 
-            val hackobj = readJson(file.toPath())
+            if (FileHelper.read(this.file.toPath()) == "") {
+                this.save(file)
+                return
+            }
 
-            for (entry in settings) {
-                val rawval = hackobj.get(entry.key).asString
-                try {
-                    val value = rawval.toBoolean()
+            val json = FileHelper.fromJson(file.toPath())
 
-                    settings[entry.key] = value
-                } catch (e: Exception) {
-                    try {
-                        val value = rawval.toDouble()
-
-                        settings[entry.key] = when (entry.value) {
-                            is Int -> value.toInt()
-                            is Float -> value.toFloat()
-                            else -> value
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+            for (setting in settings.values) {
+                when (setting) {
+                    is BooleanSetting -> setting.value = json.get(setting.name).asBoolean
+                    is IntSetting -> setting.value = json.get(setting.name).asInt
+                    is DoubleSetting -> setting.value = json.get(setting.name).asDouble
                 }
             }
-        } catch (e: Exception) {
-            clearJson(file.toPath())
+        } 
+        catch (e: Exception) {
+            FileHelper.clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
 
@@ -85,12 +74,16 @@ abstract class Hack(
     fun save(file: File) {
         try {
             val json = JsonObject()
-            for (setting in settings) {
-                json.add(setting.key, JsonPrimitive(setting.value.toString()))
+
+            for (setting in settings.values) {
+                json.add(setting.name, JsonPrimitive(setting.value.toString()))
             }
-            writeToJson(json, file.toPath())
-        } catch (e: Exception) {
-            LOGGER.error("Couldn't save $name", name)
+
+            FileHelper.writeToJson(json, file.toPath())
+        } 
+        catch (e: Exception) {
+            LOGGER.error("$name failed to save")
+
             e.printStackTrace()
         }
     }

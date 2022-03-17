@@ -3,11 +3,12 @@ package trans.rights.event.bus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.Listener
+import java.util.Collections
 
 abstract class AbstractEventBus : EventBus {
     val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap()
 
-    private val registeredListeners: MutableSet<Any?> = CopyOnWriteArraySet()
+    private val registeredListeners: MutableSet<Any> = Collections.synchronizedSet(mutableSetOf())
 
     /** Finds and registers all valid listener fields in a target object class */
     abstract fun registerFields(subscriber: Any)
@@ -24,7 +25,7 @@ abstract class AbstractEventBus : EventBus {
     override fun register(subscriber: Any) {
         if (isRegistered(subscriber)) return
 
-        this.registerFields(subscriber).also { this.registerMethods(subscriber) }
+        this.registerFields(subscriber)
 
         this.registeredListeners.add(subscribers)
 
@@ -36,7 +37,7 @@ abstract class AbstractEventBus : EventBus {
     override fun unregister(subscriber: Any) {
         if (!isRegistered(subscriber)) return
 
-        this.unregisterFields(subscriber).also { this.unregisterMethods(subscriber) }
+        this.unregisterFields(subscriber)
 
         this.registeredListeners.remove(subscriber)
     }

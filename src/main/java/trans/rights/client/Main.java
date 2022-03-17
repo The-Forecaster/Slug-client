@@ -3,6 +3,7 @@ package trans.rights.client;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
@@ -13,8 +14,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 public final class Main {
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
 
-    private Main() {}
-
     /**
      * This opens a new Panel when you run the jar so idiots know what to do
      * 
@@ -23,9 +22,14 @@ public final class Main {
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        if (JOptionPane.showConfirmDialog(null,
+        if (JOptionPane.showConfirmDialog(
+            null,
             "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?",
-            "ERROR", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
+            "ERROR",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.ERROR_MESSAGE,
+            icon
+        ) == 0) {
             var modsFile = switch (getOS()) {
                 case WINDOWS -> new File(System.getenv("AppData") + "/.minecraft/mods");
                 case OSX -> new File(System.getProperty("user.home") + "/Library/Application Support/minecraft/mods");
@@ -34,7 +38,7 @@ public final class Main {
             };
 
             if (!modsFile.exists())
-                modsFile.mkdirs();
+                Files.createDirectories(modsFile.toPath());
 
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }
@@ -48,8 +52,7 @@ public final class Main {
             return OS.OSX;
         else if (osName.contains("win"))
             return OS.WINDOWS;
-        else
-            return OS.UNKNOWN;
+        return OS.UNKNOWN;
     }
 
     private static String[] getURLOpenCommand(URL url) {
