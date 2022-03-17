@@ -7,12 +7,13 @@ import org.slf4j.LoggerFactory
 import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
 import trans.rights.event.bus.impl.BasicEventManager
+import java.nio.file.Path
 
 class TransRights : ClientModInitializer {
     companion object {
         const val NAME: String = "Trans-Rights"
 
-        val mainDirectory = FabricLoaderImpl.INSTANCE.configDir
+        val mainDirectory: Path = FabricLoaderImpl.INSTANCE.configDir
 
         @JvmField var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }

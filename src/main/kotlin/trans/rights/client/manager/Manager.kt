@@ -9,8 +9,12 @@ abstract class Manager<T : Module>(val values: MutableCollection<T>) {
         private val values = mutableSetOf<Manager<*>>()
 
         fun load() {
-            values.add(HackManager)
-            values.add(CommandManager)
+            this.values.addAll(
+                listOf(
+                    HackManager,
+                    CommandManager
+                )
+            )
         }
 
         fun unload() {

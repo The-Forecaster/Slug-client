@@ -5,13 +5,13 @@ import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.manager.impl.HackManager
-import trans.rights.client.util.file.FileHelper
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.manager.impl.Settings
 import trans.rights.client.modules.setting.settings.BooleanSetting
 import trans.rights.client.modules.setting.settings.DoubleSetting
 import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.util.file.FileHelper
 import trans.rights.event.bus.impl.BasicEventManager
 
 abstract class Hack(
@@ -19,8 +19,7 @@ abstract class Hack(
     description: String,
     val settings: Settings = Settings(),
     val file: File = File(HackManager.directory.absolutePath + "$name.json"),
-    private var enabled: Boolean = false,
-    val fileMang: FileHelper = FileHelper()
+    private var enabled: Boolean = false
 ) : Module(name, description), Globals {
 
     private fun enable() {
@@ -48,12 +47,12 @@ abstract class Hack(
             if (!file.exists())
                 file.createNewFile()
 
-            if (this.fileMang.read(this.file.toPath()) == "") {
+            if (FileHelper.read(this.file.toPath()) == "") {
                 this.save(file)
                 return
             }
 
-            val json = this.fileMang.fromJson(file.toPath())
+            val json = FileHelper.fromJson(file.toPath())
 
             for (setting in settings.values) {
                 when (setting) {
@@ -64,7 +63,7 @@ abstract class Hack(
             }
         } 
         catch (e: Exception) {
-            this.fileMang.clearJson(file.toPath())
+            FileHelper.clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
 
@@ -80,7 +79,7 @@ abstract class Hack(
                 json.add(setting.name, JsonPrimitive(setting.value.toString()))
             }
 
-            this.fileMang.writeToJson(json, file.toPath())
+            FileHelper.writeToJson(json, file.toPath())
         } 
         catch (e: Exception) {
             LOGGER.error("$name failed to save")

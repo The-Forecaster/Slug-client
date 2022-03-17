@@ -2,7 +2,6 @@ package trans.rights.client.manager.impl
 
 import trans.rights.client.manager.Manager
 import trans.rights.client.modules.setting.Setting
-import java.util.*
 
 class Settings : Manager<Setting<*>>(mutableListOf()) {
     fun get(name: String): Setting<*>? {
@@ -13,7 +12,5 @@ class Settings : Manager<Setting<*>>(mutableListOf()) {
         return null
     }
 
-    override fun load() {
-        values.toSortedSet(Comparator.naturalOrder())
-    }
+    override fun load() {}
 }

@@ -7,7 +7,7 @@ import trans.rights.client.modules.command.Command
 import trans.rights.client.modules.command.impl.*
 
 object CommandManager : Manager<Command>(mutableSetOf()) {
-    init {
+    override fun load() {
         this.add(
             listOf(
                 HackCommand,
@@ -16,10 +16,8 @@ object CommandManager : Manager<Command>(mutableSetOf()) {
         )
     }
 
-    override fun load() {}
-
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        values.forEach { command -> command.register(dispatcher) }
+        values.stream().forEach { command -> command.register(dispatcher) }
     }
 }

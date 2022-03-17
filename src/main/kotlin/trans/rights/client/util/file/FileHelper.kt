@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-class FileHelper {
+object FileHelper {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().setLenient().create()
 
     fun writeToJson(element: JsonObject, path: Path) {

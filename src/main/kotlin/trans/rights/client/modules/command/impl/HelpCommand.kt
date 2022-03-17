@@ -12,7 +12,7 @@ object HelpCommand : Command("Help", "Informs you about the different features o
         })
     }
 
-    fun helpMessage(): Int {
+    private fun helpMessage(): Int {
         return 0
     }
 }

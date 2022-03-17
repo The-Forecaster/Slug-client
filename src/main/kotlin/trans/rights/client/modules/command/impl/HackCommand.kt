@@ -19,12 +19,12 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                 literal(hack.name).executes {
                     toggleHack(hack)
                 }.
-                then(argument("settingname", string())).
+                then(argument("settingName", string())).
                 then(argument("value", string())).
                 executes { ctx -> takeInput(
-                    ctx.getArgument("value", string().javaClass).toString(),
+                    getString(ctx, "value"),
                     getSetting(
-                        ctx.getArgument("settingname", string().javaClass).toString(),
+                        ctx.getArgument("settingName", string().javaClass).toString(),
                         hack
                     )
                 )}
@@ -52,10 +52,11 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                 is IntSetting -> setting.set(input.toInt())
                 is DoubleSetting -> setting.set(input.toDouble())
                 is BooleanSetting -> setting.set(input.toBoolean())
+                else -> throw builtin.dispatcherUnknownArgument().create()
             }
         }
         catch (e: Exception) {
-            throw builtin.dispatcherUnknownArgument().create()
+            e.printStackTrace()
         }
 
         return 0

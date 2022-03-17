@@ -3,6 +3,7 @@ package trans.rights.client;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
@@ -37,7 +38,7 @@ public final class Main {
             };
 
             if (!modsFile.exists())
-                modsFile.mkdirs();
+                Files.createDirectories(modsFile.toPath());
 
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }
