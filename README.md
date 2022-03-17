@@ -1,5 +1,5 @@
 <h1 align="center"> 
-     Queer Client
+    <p> Queer Client
     <p> Minecraft Hack client/Utility Mod
     <p> Don't take this too seriously 
 </h1>
