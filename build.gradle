@@ -9,17 +9,16 @@ archivesBaseName = project.mod_name
 version = project.mod_version
 group = project.mod_group
 
+java {
+    withSourcesJar()
+}
+
 loom {
     accessWidenerPath = file("src/main/resources/transrights.accesswidener")
 }
 
 repositories {
     mavenCentral()
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
 }
 
 tasks.withType(JavaCompile).configureEach {
