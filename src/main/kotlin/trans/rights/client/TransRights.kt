@@ -6,6 +6,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
+import trans.rights.client.modules.hack.impl.FlightHack
 import trans.rights.event.bus.impl.BasicEventManager
 import java.nio.file.Path
 
@@ -25,10 +26,14 @@ class TransRights : ClientModInitializer {
     override fun onInitializeClient() {
         val start = System.currentTimeMillis()
 
+        LOGGER.info("Starting $NAME...")
+
         Manager.load()
 
         Runtime.getRuntime().addShutdownHook(Thread { HackManager.save() })
 
-        LOGGER.info("Trans Rights has been started in " + (System.currentTimeMillis() - start) + " ms!")
+        FlightHack.enable()
+
+        LOGGER.info("$NAME has been started in " + (System.currentTimeMillis() - start) + " ms!")
     }
 }

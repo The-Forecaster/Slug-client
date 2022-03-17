@@ -15,13 +15,14 @@ import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private val speed = DoubleSetting("Speed", "How fast you want to fly", 15.0)
-    private var cancelSpeed = BooleanSetting("Cancel-speed", "If you want speed to multiply as you go", true)
+    private val speed = DoubleSetting("Speed", 15.0)
+    private var cancelSpeed = BooleanSetting("Cancel-speed", true)
 
+    @JvmField
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
-        if (!nullCheck() || !event.isInWorld) {
-            this.doFlight()
+    var updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener {
+        if (!nullCheck()) {
+            doFlight()
         }
     }
 
@@ -32,7 +33,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
             packet.allowFlying = true
             packet.flying = true
-            packet.flySpeed = this.trueSpeed()
+            packet.flySpeed = trueSpeed()
         }
     }
 
@@ -47,7 +48,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     override fun onDisable() {
-        if (nullCheck()) {
+        if (!nullCheck()) {
             mc.player!!.abilities.allowFlying = false
             mc.player!!.abilities.flySpeed = 0.05f
         }
@@ -56,7 +57,6 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     private fun doFlight() {
         mc.player!!.run {
             setFlySpeed(trueSpeed(), cancelSpeed.value)
-            setVelocity(trueSpeed(), cancelSpeed.value)
         }
     }
 

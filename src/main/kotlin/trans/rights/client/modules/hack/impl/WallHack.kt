@@ -9,8 +9,8 @@ import trans.rights.client.modules.setting.settings.IntSetting
 import trans.rights.event.annotation.EventHandler
 
 object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players") {
-    private var blockAlpha = IntSetting("Block-Alpha", "How see-through the non-highlighted blocks will be", 50)
-    private var players = BooleanSetting("Players", "Whether or not you want the client to render players while this module is on", true)
+    private var blockAlpha = IntSetting("Block-Alpha", 50)
+    private var players = BooleanSetting("Players", true)
 
     private val blocks = mutableSetOf<Block>()
 

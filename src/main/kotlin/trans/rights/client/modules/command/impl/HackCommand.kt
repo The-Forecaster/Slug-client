@@ -16,7 +16,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         for (hack in HackManager.values) {
             dispatcher.register(
-                literal(hack.name).executes {
+                literal("/${hack.name}").executes {
                     toggleHack(hack)
                 }.
                 then(argument("settingName", string())).
