@@ -7,3 +7,6 @@
 /.vscode/
 /bin/
 /run/
+*.iml
+*.ipr
+*.iws

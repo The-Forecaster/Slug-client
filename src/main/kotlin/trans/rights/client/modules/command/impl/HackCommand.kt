@@ -24,7 +24,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                 executes { ctx -> takeInput(
                     getString(ctx, "value"),
                     getSetting(
-                        ctx.getArgument("settingName", string().javaClass).toString(),
+                        getString(ctx, "settingName"),
                         hack
                     )
                 )}
