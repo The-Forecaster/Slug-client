@@ -5,9 +5,9 @@ import com.google.gson.JsonPrimitive
 import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.manager.impl.HackManager
+import trans.rights.client.manager.impl.Settings
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
-import trans.rights.client.manager.impl.Settings
 import trans.rights.client.modules.setting.settings.BooleanSetting
 import trans.rights.client.modules.setting.settings.DoubleSetting
 import trans.rights.client.modules.setting.settings.IntSetting
@@ -44,8 +44,7 @@ abstract class Hack(
 
     fun load(file: File) {
         try {
-            if (!file.exists())
-                file.createNewFile()
+            if (!file.exists()) file.createNewFile()
 
             if (FileHelper.read(this.file.toPath()) == "") {
                 this.save(file)
@@ -54,6 +53,8 @@ abstract class Hack(
 
             val json = FileHelper.fromJson(file.toPath())
 
+            this.enabled = json.get("enabled").asBoolean
+
             for (setting in settings.values) {
                 when (setting) {
                     is BooleanSetting -> setting.value = json.get(setting.name).asBoolean
@@ -61,8 +62,7 @@ abstract class Hack(
                     is DoubleSetting -> setting.value = json.get(setting.name).asDouble
                 }
             }
-        } 
-        catch (e: Exception) {
+        } catch (e: Exception) {
             FileHelper.clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -80,8 +80,7 @@ abstract class Hack(
             }
 
             FileHelper.writeToJson(json, file.toPath())
-        } 
-        catch (e: Exception) {
+        } catch (e: Exception) {
             LOGGER.error("$name failed to save")
 
             e.printStackTrace()

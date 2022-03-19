@@ -8,7 +8,7 @@ import trans.rights.event.annotation.EventHandler
 
 object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
     private val waitForDelay = BooleanSetting("Wait", true)
-    private val swap = BooleanSetting("Swap",  true)
+    private val swap = BooleanSetting("Swap", true)
     private val delay = IntSetting("tick-delay", 6)
 
     init {

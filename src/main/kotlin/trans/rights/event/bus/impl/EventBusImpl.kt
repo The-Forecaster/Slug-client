@@ -13,39 +13,39 @@ import trans.rights.event.type.ICancellable
 
 object BasicEventManager : AbstractEventBus() {
     override fun registerFields(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredFields).filter { field -> 
-            field.isValid(subscriber) 
-        }.
-        forEach { field ->
-            this.subscribers.
-            getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
+        Arrays.stream(subscriber.javaClass.declaredFields)
+        .filter { field -> field.isValid(subscriber) }
+        .forEach { field ->
+            this.subscribers.getOrPut(
+                field.asListener(subscriber).target,
+                ::CopyOnWriteArraySet
+            )
+            .run {
                 this.add(field.asListener(subscriber))
-                this.toSortedSet(Comparator.comparingInt { listener -> listener.priority })
+                this.toSortedSet(
+                    Comparator.comparingInt { listener -> listener.priority }
+                )
             }
         }
     }
 
     override fun registerMethods(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredMethods).
-        filter(Method::isValid).
-        forEach { method ->
-            this.subscribers.
-            getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).
-            add(method.asListener(subscriber))
+        Arrays.stream(subscriber.javaClass.declaredMethods).filter(Method::isValid).forEach { method ->
+            this.subscribers.getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).add(method.asListener(subscriber))
         }
     }
 
     override fun unregisterFields(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredFields).
-        filter { field -> field.isValid(subscriber) }.
-        forEach { field -> this.subscribers[field.type]?.remove(field.get(subscriber)) }
+        Arrays.stream(subscriber.javaClass.declaredFields).filter { field -> field.isValid(subscriber) }.forEach { field -> this.subscribers[field.type]?.remove(field.get(subscriber)) }
     }
 
     override fun unregisterMethods(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredMethods).
-        filter { method -> method.isValid() }.
-        forEach { method ->
-            this.subscribers[method.parameters[0].type]?.remove(method.asListener(subscriber))
+        Arrays.stream(subscriber.javaClass.declaredMethods)
+        .filter { method -> method.isValid() }
+        .forEach { method ->
+            this.subscribers[method.parameters[0].type]?.remove(
+                    method.asListener(subscriber)
+            )
         }
     }
 

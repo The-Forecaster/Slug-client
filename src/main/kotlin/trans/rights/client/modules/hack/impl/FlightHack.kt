@@ -43,8 +43,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     override fun onEnable() {
-        if (nullCheck())
-            disable()
+        if (nullCheck()) disable()
     }
 
     override fun onDisable() {
@@ -55,9 +54,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     private fun doFlight() {
-        mc.player!!.run {
-            setFlySpeed(trueSpeed(), cancelSpeed.value)
-        }
+        mc.player!!.run { setFlySpeed(trueSpeed(), cancelSpeed.value) }
     }
 
     private fun trueSpeed(): Float {

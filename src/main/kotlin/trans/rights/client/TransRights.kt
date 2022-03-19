@@ -1,5 +1,6 @@
 package trans.rights.client
 
+import java.nio.file.Path
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.impl.FabricLoaderImpl
 import org.slf4j.Logger
@@ -8,7 +9,6 @@ import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
 import trans.rights.client.modules.hack.impl.FlightHack
 import trans.rights.event.bus.impl.BasicEventManager
-import java.nio.file.Path
 
 class TransRights : ClientModInitializer {
     companion object {

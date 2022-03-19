@@ -1,9 +1,9 @@
 package trans.rights.event.bus
 
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.Listener
-import java.util.Collections
 
 abstract class AbstractEventBus : EventBus {
     val subscribers: ConcurrentHashMap<Class<*>, CopyOnWriteArraySet<Listener<*>>> = ConcurrentHashMap()

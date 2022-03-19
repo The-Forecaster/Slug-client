@@ -1,8 +1,7 @@
-<h1 align="center"> 
+<h1 align="center">
     <p> Queer Client
     <p> Minecraft Hack client/Utility Mod
-    <p> Don't take this too seriously 
-</h1>
+    <p> Don't take this too seriously
 
 ## Credits
 
@@ -27,4 +26,5 @@
 
 If you find any bugs feel free to open an issue or even make a pull request if you already know a fix
 I'm also open to whoever wants to help out with this, if you want to contact me outside of github your best option is to contact my discord at Austin the Forecaster#0760
-###### Thx u, if you're reading this u r cute <3
+
+#### Thx u, if you're reading this u r cute <3
