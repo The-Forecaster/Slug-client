@@ -1,21 +1,17 @@
 package trans.rights.event.bus
 
 import java.util.Collections
-import java.util.Arrays
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.listener.Listener
-import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.bus.ListenerType.*
 
-abstract class AbstractEventBus(val type: ListenerType) : EventBus {
+abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     val registry: ConcurrentHashMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
 
     private val subscribers: MutableSet<Any> = Collections.synchronizedSet(mutableSetOf())
 
-    private val cache: MutableMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
-
-    constructor() : this(ListenerType.BOTH)
+    constructor() : this(BOTH)
 
     /** Finds and registers all valid listener fields in a target object class */
     abstract fun registerFields(subscriber: Any)
@@ -86,7 +82,7 @@ abstract class AbstractEventBus(val type: ListenerType) : EventBus {
     }
 }
 
-enum ListenerType {
+enum class ListenerType {
     METHOD,
     LAMBDA,
     BOTH

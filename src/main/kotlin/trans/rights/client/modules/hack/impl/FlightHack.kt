@@ -14,18 +14,18 @@ import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.*
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private val speed = NumberSetting("Speed", 15.0, 0.1)
+    private val speed = NumberSetting("Speed", 15.0)
     private var cancelSpeed = BooleanSetting("Cancel-speed", true)
 
     @EventHandler
-    var updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener {
+    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener {
         if (!nullCheck()) {
             doFlight()
         }
     }
 
     @EventHandler
-    var packetListener: LambdaListener<PacketEvent.PostReceive> = lambdaListener { event ->
+    val packetListener: LambdaListener<PacketEvent.PostReceive> = lambdaListener { event ->
         if (event.packet is PlayerAbilitiesS2CPacket) {
             val packet = event.packet as PlayerAbilitiesS2CPacket
 
@@ -38,10 +38,12 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     init {
         settings.add(speed)
         settings.add(cancelSpeed)
+
+        this.enable()
     }
 
     override fun onEnable() {
-        if (nullCheck()) disable()
+        // if (nullCheck()) disable()
     }
 
     override fun onDisable() {
@@ -60,25 +62,11 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 }
 
-fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
+private fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     if (!this.isSpectator || mc.world != null) {
         if (cancelSpeed) this.velocity = Vec3d.ZERO
 
         this.abilities.allowFlying = true
         this.abilities.flySpeed = speed
-    }
-}
-
-fun ClientPlayerEntity.setVelocity(speed: Float, cancelSpeed: Boolean) {
-    if (!this.isSpectator && mc.world != null) {
-
-        // this is retarded, but I don't think there's a better way than this
-        if (cancelSpeed) this.velocity = Vec3d.ZERO
-        if (mc.options.jumpKey.isPressed) this.addVelocity(0.0, 5.0, 0.0)
-        if (mc.options.sneakKey.isPressed) this.addVelocity(0.0, -5.0, 0.0)
-        if (mc.options.forwardKey.isPressed) this.addVelocity(speed.toDouble(), 0.0, 0.0)
-        if (mc.options.backKey.isPressed) this.addVelocity(-speed.toDouble(), 0.0, 0.0)
-        if (mc.options.leftKey.isPressed) this.addVelocity(0.0, 0.0, speed.toDouble())
-        if (mc.options.rightKey.isPressed) this.addVelocity(0.0, 0.0, -speed.toDouble())
     }
 }

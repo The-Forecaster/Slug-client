@@ -9,8 +9,7 @@ import trans.rights.client.manager.impl.Settings
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.Module
 import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.DoubleSetting
-import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.modules.setting.settings.NumberSetting
 import trans.rights.client.util.file.FileHelper
 import trans.rights.event.bus.impl.BasicEventManager
 
@@ -22,7 +21,7 @@ abstract class Hack(
     private var enabled: Boolean = false
 ) : Module(name, description), Globals {
 
-    private fun enable() {
+    protected fun enable() {
         BasicEventManager.register(this)
 
         this.enabled = true
@@ -58,8 +57,7 @@ abstract class Hack(
             for (setting in settings.values) {
                 when (setting) {
                     is BooleanSetting -> setting.value = json.get(setting.name).asBoolean
-                    is IntSetting -> setting.value = json.get(setting.name).asInt
-                    is DoubleSetting -> setting.value = json.get(setting.name).asDouble
+                    is NumberSetting -> setting.value = json.get(setting.name).asDouble
                 }
             }
         } catch (e: Exception) {

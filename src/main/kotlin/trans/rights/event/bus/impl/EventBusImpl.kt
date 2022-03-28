@@ -55,7 +55,7 @@ object BasicEventManager : AbstractEventBus() {
         return event
     }
 
-    fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.javaClass.isAssignableFrom(Listener::class.java)
+    private fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.javaClass.isAssignableFrom(Listener::class.java)
 }
 
 internal fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1

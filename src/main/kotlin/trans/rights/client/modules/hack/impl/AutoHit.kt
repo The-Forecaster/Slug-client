@@ -13,7 +13,7 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
     private val delay = NumberSetting("tick-delay", 6)
 
     @EventHandler
-    var updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event -> 
+    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
         if (nullCheck() || !event.isInWorld) disable() 
     }
 

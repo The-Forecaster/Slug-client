@@ -9,8 +9,7 @@ import trans.rights.client.modules.command.Command
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.setting.Setting
 import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.DoubleSetting
-import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.modules.setting.settings.NumberSetting
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -46,8 +45,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     private fun takeInput(input: String, setting: Setting<*>): Int {
         try {
             when (setting) {
-                is IntSetting -> setting.set(input.toInt())
-                is DoubleSetting -> setting.set(input.toDouble())
+                is NumberSetting -> setting.set(input.toDouble())
                 is BooleanSetting -> setting.set(input.toBoolean())
                 else -> throw builtin.dispatcherUnknownArgument().create()
             }

@@ -16,7 +16,7 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     private val blocks = mutableSetOf<Block>()
 
     @EventHandler
-    var blockDrawListener: LambdaListener<BlockSideDrawEvent> = lambdaListener { event ->
+    val blockDrawListener: LambdaListener<BlockSideDrawEvent> = lambdaListener { event ->
         if (!blocks.contains(event.block)) {
             event.isCancelled = true
         }
