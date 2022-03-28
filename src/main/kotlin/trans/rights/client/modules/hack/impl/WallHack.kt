@@ -5,14 +5,22 @@ import net.minecraft.block.Blocks
 import trans.rights.client.events.BlockSideDrawEvent
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.modules.setting.settings.NumberSetting
 import trans.rights.event.annotation.EventHandler
+import trans.rights.event.listener.impl.*
 
 object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players") {
-    private var blockAlpha = IntSetting("Block-Alpha", 50)
+    private var blockAlpha = NumberSetting("Block-Alpha", 50)
     private var players = BooleanSetting("Players", true)
 
     private val blocks = mutableSetOf<Block>()
+
+    @EventHandler
+    var blockDrawListener: LambdaListener<BlockSideDrawEvent> = lambdaListener { event ->
+        if (!blocks.contains(event.block)) {
+            event.isCancelled = true
+        }
+    }
 
     init {
         settings.add(blockAlpha)
@@ -22,13 +30,6 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
         blocks.add(Blocks.ANCIENT_DEBRIS)
         blocks.add(Blocks.ENDER_CHEST)
         blocks.add(Blocks.BEDROCK)
-    }
-
-    @EventHandler
-    fun onBlockDraw(event: BlockSideDrawEvent) {
-        if (!blocks.contains(event.block)) {
-            event.isCancelled = true
-        }
     }
 
     override fun onEnable() {

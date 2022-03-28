@@ -52,7 +52,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                 else -> throw builtin.dispatcherUnknownArgument().create()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            throw builtin.dispatcherUnknownArgument().create()
         }
 
         return 0

@@ -21,7 +21,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.command.ServerCommandSource;
 
 /**
- * A lot of this is pasted from https://github.com/Earthcomputer/clientcommands
+ *  this is (mostly) pasted from https://github.com/Earthcomputer/clientcommands
  *
  * Will improve in the future but this is how it is for now
  */

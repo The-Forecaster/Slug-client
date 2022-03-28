@@ -11,6 +11,7 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
+import net.minecraft.util.TimeHelper;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.PostReceive;
 import trans.rights.client.events.PacketEvent.PostSend;
@@ -47,7 +48,6 @@ public class ClientConnectionMixin {
     }
     
     private static void postCancel(PacketEvent event, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled())
-            info.cancel();
+        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled()) info.cancel();
     }
 }

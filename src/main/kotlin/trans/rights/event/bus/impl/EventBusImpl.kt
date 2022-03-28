@@ -6,6 +6,7 @@ import java.util.Arrays
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.bus.AbstractEventBus
+import trans.rights.event.bus.ListenerType.*
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.MethodListener
@@ -13,44 +14,37 @@ import trans.rights.event.type.ICancellable
 
 object BasicEventManager : AbstractEventBus() {
     override fun registerFields(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredFields)
-        .filter { field -> field.isValid(subscriber) }
-        .forEach { field ->
-            this.subscribers.getOrPut(
-                field.asListener(subscriber).target,
-                ::CopyOnWriteArraySet
-            )
-            .run {
+        Arrays.stream(subscriber.javaClass.declaredFields).filter(this::isValid).forEach { field ->
+            this.registry.getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
                 this.add(field.asListener(subscriber))
-                this.toSortedSet(
-                    Comparator.comparingInt { listener -> listener.priority }
-                )
+                this.toSortedSet(Comparator.comparingInt(Listener<*>::priority))
             }
         }
     }
 
     override fun registerMethods(subscriber: Any) {
         Arrays.stream(subscriber.javaClass.declaredMethods).filter(Method::isValid).forEach { method ->
-            this.subscribers.getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).add(method.asListener(subscriber))
+            this.registry.getOrPut(method.parameters[0].type, ::CopyOnWriteArraySet).run {
+                this.add(method.asListener(subscriber))
+                this.toSortedSet(Comparator.comparingInt(Listener<*>::priority))
+            }
         }
     }
 
     override fun unregisterFields(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredFields).filter { field -> field.isValid(subscriber) }.forEach { field -> this.subscribers[field.type]?.remove(field.get(subscriber)) }
+        Arrays.stream(subscriber.javaClass.declaredFields).filter(this::isValid).forEach { field ->
+            this.registry[field.type]?.remove(field.get(subscriber))
+        }
     }
 
     override fun unregisterMethods(subscriber: Any) {
-        Arrays.stream(subscriber.javaClass.declaredMethods)
-        .filter { method -> method.isValid() }
-        .forEach { method ->
-            this.subscribers[method.parameters[0].type]?.remove(
-                    method.asListener(subscriber)
-            )
+        Arrays.stream(subscriber.javaClass.declaredMethods).filter(Method::isValid).forEach { method ->
+            this.registry[method.parameters[0].type]?.remove(method.asListener(subscriber))
         }
     }
 
     fun <T : ICancellable> dispatch(event: T): T {
-        if (this.subscribers[event::class.java]?.size != 0) {
+        if (this.registry[event::class.java]?.size != 0) {
             for (listener in this.getOrPutList(event.javaClass)) {
                 listener.invoke(event)
 
@@ -60,11 +54,11 @@ object BasicEventManager : AbstractEventBus() {
 
         return event
     }
+
+    fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.javaClass.isAssignableFrom(Listener::class.java)
 }
 
 internal fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
-
-internal fun Field.isValid(parent: Any): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.get(parent) is Listener<*>
 
 internal fun Method.asListener(parent: Any): MethodListener<*> {
     this.trySetAccessible()

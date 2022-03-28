@@ -19,10 +19,6 @@ class TransRights : ClientModInitializer {
         @JvmField var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }
 
-    init {
-        BasicEventManager.register(this)
-    }
-
     override fun onInitializeClient() {
         val start = System.currentTimeMillis()
 

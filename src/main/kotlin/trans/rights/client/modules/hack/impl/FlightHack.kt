@@ -9,16 +9,14 @@ import trans.rights.client.misc.api.Globals
 import trans.rights.client.misc.api.Globals.mc
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.DoubleSetting
+import trans.rights.client.modules.setting.settings.NumberSetting
 import trans.rights.event.annotation.EventHandler
-import trans.rights.event.listener.impl.LambdaListener
-import trans.rights.event.listener.impl.lambdaListener
+import trans.rights.event.listener.impl.*
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private val speed = DoubleSetting("Speed", 15.0)
+    private val speed = NumberSetting("Speed", 15.0, 0.1)
     private var cancelSpeed = BooleanSetting("Cancel-speed", true)
 
-    @JvmField
     @EventHandler
     var updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener {
         if (!nullCheck()) {
@@ -27,7 +25,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     @EventHandler
-    fun onPacketRecieve(event: PacketEvent) {
+    var packetListener: LambdaListener<PacketEvent.PostReceive> = lambdaListener { event ->
         if (event.packet is PlayerAbilitiesS2CPacket) {
             val packet = event.packet as PlayerAbilitiesS2CPacket
 
@@ -48,13 +46,13 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
     override fun onDisable() {
         if (!nullCheck()) {
-            mc.player!!.abilities.allowFlying = false
-            mc.player!!.abilities.flySpeed = 0.05f
+            player.abilities.allowFlying = false
+            player.abilities.flySpeed = 0.05f
         }
     }
 
     private fun doFlight() {
-        mc.player!!.run { setFlySpeed(trueSpeed(), cancelSpeed.value) }
+        player.run { setFlySpeed(trueSpeed(), cancelSpeed.value) }
     }
 
     private fun trueSpeed(): Float {
