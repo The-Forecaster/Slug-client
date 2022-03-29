@@ -21,7 +21,7 @@ abstract class Hack(
     private var enabled: Boolean = false
 ) : Module(name, description), Globals {
 
-    protected fun enable() {
+    fun enable() {
         BasicEventManager.register(this)
 
         this.enabled = true

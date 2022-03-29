@@ -46,16 +46,6 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
         this.subscribers.add(subscriber)
     }
 
-    fun register(vararg listeners: Listener<*>) {
-        listeners.asList().stream().forEach { listener ->
-            this.registry.getOrPut(listener.target, ::CopyOnWriteArraySet).add(listener)
-        }
-
-        this.registry.values.stream().forEach { set ->
-            set.stream().sorted((Comparator.comparingInt(Listener<*>::priority)))
-        }
-    }
-
     override fun unregister(subscriber: Any) {
         if (!isRegistered(subscriber)) return
 
@@ -86,8 +76,7 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     }
 
     protected fun <T : Any> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
-        return this.registry.getOrPut(clazz, ::CopyOnWriteArraySet) as
-                CopyOnWriteArraySet<Listener<T>>
+        return this.registry.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
     }
 }
 

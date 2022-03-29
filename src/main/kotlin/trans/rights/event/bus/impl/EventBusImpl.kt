@@ -6,13 +6,13 @@ import java.util.Arrays
 import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.bus.AbstractEventBus
-import trans.rights.event.bus.ListenerType.*
+import trans.rights.event.bus.ListenerType.LAMBDA
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.type.ICancellable
 
-object BasicEventManager : AbstractEventBus() {
+object BasicEventManager : AbstractEventBus(LAMBDA) {
     override fun registerFields(subscriber: Any) {
         Arrays.stream(subscriber.javaClass.declaredFields).filter(this::isValid).forEach { field ->
             this.registry.getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {

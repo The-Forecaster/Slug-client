@@ -3,6 +3,7 @@ package trans.rights.client.modules.hack.impl
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.util.math.Vec3d
+import trans.rights.client.TransRights
 import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.misc.api.Globals
@@ -36,12 +37,12 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     init {
         settings.add(speed)
         settings.add(cancelSpeed)
-
-        this.enable()
     }
 
     override fun onEnable() {
         // if (nullCheck()) disable()
+
+        TransRights.LOGGER.info("$name enabled")
     }
 
     override fun onDisable() {
@@ -61,6 +62,7 @@ private fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
         if (cancelSpeed) this.velocity = Vec3d.ZERO
 
         this.abilities.allowFlying = true
+        this.abilities.flying = true
         this.abilities.flySpeed = speed
     }
 }

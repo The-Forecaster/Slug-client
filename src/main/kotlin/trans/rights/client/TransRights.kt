@@ -7,6 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
+import trans.rights.client.modules.hack.impl.FlightHack
 
 class TransRights : ClientModInitializer {
     companion object {
@@ -23,6 +24,8 @@ class TransRights : ClientModInitializer {
         LOGGER.info("Starting $NAME...")
 
         Manager.load()
+
+        FlightHack.enable()
 
         Runtime.getRuntime().addShutdownHook(Thread { HackManager.save() })
 

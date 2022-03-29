@@ -16,8 +16,8 @@ import net.minecraft.client.util.telemetry.TelemetrySender;
 import net.minecraft.command.CommandSource;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import trans.rights.client.manager.impl.CommandManager;
 
 /**
  *  this is (mostly) pasted from https://github.com/Earthcomputer/clientcommands
