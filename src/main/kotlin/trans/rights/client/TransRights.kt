@@ -7,8 +7,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
-import trans.rights.client.modules.hack.impl.FlightHack
-import trans.rights.event.bus.impl.BasicEventManager
 
 class TransRights : ClientModInitializer {
     companion object {

@@ -11,7 +11,6 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
-import net.minecraft.util.TimeHelper;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.PostReceive;
 import trans.rights.client.events.PacketEvent.PostSend;

@@ -19,9 +19,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener {
-        if (!nullCheck()) {
-            doFlight()
-        }
+        if (!nullCheck()) player.setFlySpeed(trueSpeed(), cancelSpeed.value)
     }
 
     @EventHandler
@@ -51,10 +49,6 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
             player.abilities.allowFlying = false
             player.abilities.flySpeed = 0.05f
         }
-    }
-
-    private fun doFlight() {
-        player.run { setFlySpeed(trueSpeed(), cancelSpeed.value) }
     }
 
     private fun trueSpeed(): Float {

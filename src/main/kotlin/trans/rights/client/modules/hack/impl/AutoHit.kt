@@ -14,7 +14,7 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
-        if (nullCheck() || !event.isInWorld) disable() 
+        if (nullCheck() || !event.isInWorld) disable()
     }
 
     init {

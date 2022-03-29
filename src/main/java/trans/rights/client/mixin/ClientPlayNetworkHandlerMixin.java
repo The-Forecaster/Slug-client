@@ -1,8 +1,5 @@
 package trans.rights.client.mixin;
 
-import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
-import trans.rights.client.manager.impl.CommandManager;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 
@@ -18,6 +15,8 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.util.telemetry.TelemetrySender;
 import net.minecraft.command.CommandSource;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 /**

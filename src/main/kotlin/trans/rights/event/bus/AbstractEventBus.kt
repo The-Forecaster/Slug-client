@@ -3,8 +3,8 @@ package trans.rights.event.bus
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
-import trans.rights.event.listener.Listener
 import trans.rights.event.bus.ListenerType.*
+import trans.rights.event.listener.Listener
 
 abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     val registry: ConcurrentHashMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
@@ -13,10 +13,16 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
 
     constructor() : this(BOTH)
 
-    /** Finds and registers all valid listener fields in a target object class */
+    /**
+     * Finds and registers all valid listener fields in a target object class. Will then sort them
+     * after adding them.
+     */
     abstract fun registerFields(subscriber: Any)
 
-    /** Finds and registers all valid methods in a target object class */
+    /**
+     * Finds and registers all valid methods in a target object class. Will then sort them after
+     * adding them.
+     */
     abstract fun registerMethods(subscriber: Any)
 
     /** Finds and removes all valid fields from the subscriber registry */
@@ -28,7 +34,7 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     override fun register(subscriber: Any) {
         if (isRegistered(subscriber)) return
 
-        when(this.type) {
+        when (this.type) {
             LAMBDA -> this.registerFields(subscriber)
             METHOD -> this.registerMethods(subscriber)
             else -> {
@@ -53,7 +59,7 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     override fun unregister(subscriber: Any) {
         if (!isRegistered(subscriber)) return
 
-        when(this.type) {
+        when (this.type) {
             LAMBDA -> this.unregisterFields(subscriber)
             METHOD -> this.unregisterMethods(subscriber)
             else -> {
@@ -71,14 +77,17 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
 
     override fun <T : Any> dispatch(event: T): T {
         if (this.registry[event::class.java]?.size != 0) {
-            this.getOrPutList(event.javaClass).stream().forEach { listener -> listener.invoke(event) }
+            this.getOrPutList(event.javaClass).stream().forEach { listener ->
+                listener.invoke(event)
+            }
         }
 
         return event
     }
 
     protected fun <T : Any> getOrPutList(clazz: Class<T>): CopyOnWriteArraySet<Listener<T>> {
-        return this.registry.getOrPut(clazz, ::CopyOnWriteArraySet) as CopyOnWriteArraySet<Listener<T>>
+        return this.registry.getOrPut(clazz, ::CopyOnWriteArraySet) as
+                CopyOnWriteArraySet<Listener<T>>
     }
 }
 
