@@ -35,8 +35,8 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     }
 
     init {
-        settings.add(speed)
-        settings.add(cancelSpeed)
+        settings.values.add(speed)
+        settings.values.add(cancelSpeed)
 
         this.enable()
     }

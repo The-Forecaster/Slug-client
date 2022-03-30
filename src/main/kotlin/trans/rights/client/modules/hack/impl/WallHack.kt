@@ -24,8 +24,8 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     }
 
     init {
-        settings.add(blockAlpha)
-        settings.add(players)
+        settings.values.add(blockAlpha)
+        settings.values.add(players)
 
         blocks.add(Blocks.DIAMOND_ORE)
         blocks.add(Blocks.ANCIENT_DEBRIS)
