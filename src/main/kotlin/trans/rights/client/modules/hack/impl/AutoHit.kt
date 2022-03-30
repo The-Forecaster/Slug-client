@@ -19,8 +19,8 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Globals 
     }
 
     init {
-        settings.add(waitForDelay)
-        settings.add(swap)
-        settings.add(delay)
+        settings.values.add(waitForDelay)
+        settings.values.add(swap)
+        settings.values.add(delay)
     }
 }
