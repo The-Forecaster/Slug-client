@@ -46,7 +46,7 @@ object BasicEventManager : AbstractEventBus(LAMBDA) {
     fun <T : ICancellable> dispatch(event: T): T {
         if (this.registry[event::class.java]?.size != 0) {
             for (listener in this.getOrPutList(event.javaClass)) {
-                listener.invoke(event)
+                listener(event)
 
                 if (event.isCancelled) break
             }

@@ -1,4 +1,4 @@
-package trans.rights.client.modules.setting.settings
+package trans.rights.client.modules.setting.impl
 
 import trans.rights.client.modules.setting.Setting
 

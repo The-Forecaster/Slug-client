@@ -12,7 +12,7 @@ class MethodListener<T : Any>(
     override val target: Class<T>
 ) : Listener<T> {
     override operator fun invoke(param: T) {
-        this.action.invoke(this.parent, param)
+        this.action(this.parent, param)
     }
 }
 
@@ -44,6 +44,6 @@ class LambdaListener<T : Any>(
     override val target: Class<T>
 ) : Listener<T> {
     override operator fun invoke(param: T) {
-        this.action.invoke(param)
+        this.action(param)
     }
 }

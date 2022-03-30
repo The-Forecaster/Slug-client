@@ -25,8 +25,6 @@ class TransRights : ClientModInitializer {
 
         Manager.load()
 
-        FlightHack.enable()
-
         Runtime.getRuntime().addShutdownHook(Thread { HackManager.save() })
 
         LOGGER.info("$NAME has been started in " + (System.currentTimeMillis() - start) + " ms!")

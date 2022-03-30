@@ -8,8 +8,8 @@ import trans.rights.client.manager.impl.HackManager
 import trans.rights.client.modules.command.Command
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.setting.Setting
-import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.NumberSetting
+import trans.rights.client.modules.setting.impl.BooleanSetting
+import trans.rights.client.modules.setting.impl.NumberSetting
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {

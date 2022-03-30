@@ -3,13 +3,14 @@ package trans.rights.client.modules.hack.impl
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.client.events.BlockSideDrawEvent
+import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.hack.Hack
-import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.NumberSetting
+import trans.rights.client.modules.setting.impl.BooleanSetting
+import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.*
 
-object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players") {
+object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players"), Globals {
     private var blockAlpha = NumberSetting("Block-Alpha", 50)
     private var players = BooleanSetting("Players", true)
 

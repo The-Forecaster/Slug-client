@@ -68,7 +68,7 @@ abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     override fun <T : Any> dispatch(event: T): T {
         if (this.registry[event::class.java]?.size != 0) {
             this.getOrPutList(event.javaClass).stream().forEach { listener ->
-                listener.invoke(event)
+                listener(event)
             }
         }
 
