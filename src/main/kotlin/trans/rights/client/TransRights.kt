@@ -8,13 +8,14 @@ import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.io.path.exists
 
 class TransRights : ClientModInitializer {
     companion object {
         const val NAME: String = "Trans-Rights"
 
-        val mainDirectory: Path = FabricLoaderImpl.INSTANCE.configDir
+        val mainDirectory: Path = Paths.get("${FabricLoaderImpl.INSTANCE.configDir}/transrights")
 
         @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
