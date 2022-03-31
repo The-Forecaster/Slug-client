@@ -12,7 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 object FileHelper {
-    private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+    private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
     fun writeToJson(element: JsonObject, path: Path) {
         val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
