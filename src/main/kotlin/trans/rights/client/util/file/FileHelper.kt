@@ -4,12 +4,12 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
+import trans.rights.client.TransRights.Companion.LOGGER
 import java.io.BufferedWriter
 import java.io.IOException
 import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
-import trans.rights.client.TransRights.Companion.LOGGER
 
 object FileHelper {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().setLenient().create()

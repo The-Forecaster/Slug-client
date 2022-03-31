@@ -1,8 +1,8 @@
 package trans.rights.event.listener.impl
 
-import java.lang.reflect.Method
 import trans.rights.event.annotation.Priority
 import trans.rights.event.listener.Listener
+import java.lang.reflect.Method
 
 /** Implementation of Listener that uses a method as its target */
 class MethodListener<T : Any>(

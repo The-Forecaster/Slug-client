@@ -5,15 +5,11 @@ import net.minecraft.block.Blocks
 import trans.rights.client.events.BlockSideDrawEvent
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.hack.Hack
-import trans.rights.client.modules.setting.impl.BooleanSetting
-import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.event.annotation.EventHandler
-import trans.rights.event.listener.impl.*
+import trans.rights.event.listener.impl.LambdaListener
+import trans.rights.event.listener.impl.lambdaListener
 
 object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players"), Globals {
-    private var blockAlpha = NumberSetting("Block-Alpha", 50)
-    private var players = BooleanSetting("Players", true)
-
     private val blocks = mutableSetOf<Block>()
 
     @EventHandler
@@ -24,8 +20,6 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     }
 
     init {
-        settings.values.add(blockAlpha)
-        settings.values.add(players)
 
         blocks.add(Blocks.DIAMOND_ORE)
         blocks.add(Blocks.ANCIENT_DEBRIS)

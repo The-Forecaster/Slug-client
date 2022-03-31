@@ -10,16 +10,14 @@ import trans.rights.client.modules.hack.impl.*
 object HackManager : Manager<Hack>(mutableSetOf()) {
     val directory = File("$mainDirectory/hacks")
 
-    init {
-        if (!directory.exists()) Files.createDirectory(directory.toPath())
-    }
-
     fun save() {
         this.values.stream().forEach { hack -> hack.save(hack.file) }
     }
 
     override fun load() {
-        this.add(listOf(AutoHit, FlightHack, WallHack))
+        if (!directory.exists()) Files.createDirectory(directory.toPath())
+
+        this.add(AutoHit, FlightHack, WallHack)
 
         this.values.stream().forEach { hack ->
             hack.load(hack.file)

@@ -17,10 +17,6 @@ loom {
     accessWidenerPath = file("src/main/resources/transrights.accesswidener")
 }
 
-repositories {
-    mavenCentral()
-}
-
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(17)
     it.options.encoding = "UTF-8"
@@ -41,8 +37,7 @@ processResources {
 }
 
 dependencies {
-    Set<String> apiModules = [
-    ]
+    Set<String> apiModules = []
 
     // fabric dependencies
     minecraft "com.mojang:minecraft:$project.minecraft_version"
@@ -51,7 +46,7 @@ dependencies {
 
     // api dependencies
     apiModules.forEach {
-        include(modImplementation(fabricApi.module(it, "0.48.0+$project.minecraft_version")))
+        include modImplementation(fabricApi.module(it, "0.48.0+$project.minecraft_version"))
     }
 
     // TR dependencies
@@ -62,9 +57,11 @@ dependencies {
 }
 
 jar {
-    from("LICENSE")
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}" }
+    }
 
     manifest {
-        attributes("Main-Class" : "trans.rights.client.Main")
+        attributes("Main-Class": "trans.rights.client.Main")
     }
 }

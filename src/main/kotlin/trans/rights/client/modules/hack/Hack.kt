@@ -2,16 +2,16 @@ package trans.rights.client.modules.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
-import java.io.File
 import trans.rights.client.TransRights.Companion.LOGGER
 import trans.rights.client.manager.impl.HackManager
-import trans.rights.client.modules.setting.Settings
 import trans.rights.client.modules.Module
+import trans.rights.client.modules.setting.Settings
 import trans.rights.client.modules.setting.impl.BooleanSetting
 import trans.rights.client.modules.setting.impl.EnumSetting
 import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.client.util.file.FileHelper
 import trans.rights.event.bus.impl.BasicEventManager
+import java.io.File
 
 abstract class Hack(
     name: String,
@@ -22,14 +22,20 @@ abstract class Hack(
 ) : Module(name, description) {
 
     fun enable() {
+        if (this.enabled) return
+
         BasicEventManager.register(this)
 
+        this.onEnable()
         this.enabled = true
     }
 
     protected fun disable() {
+        if (!this.enabled) return
+
         BasicEventManager.unregister(this)
 
+        this.onDisable()
         this.enabled = false
     }
 
@@ -73,6 +79,8 @@ abstract class Hack(
     fun save(file: File) {
         try {
             val json = JsonObject()
+
+            json.add("enabled", JsonPrimitive(enabled))
 
             for (setting in settings.values) {
                 when (setting) {

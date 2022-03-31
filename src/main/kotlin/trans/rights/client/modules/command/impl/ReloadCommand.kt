@@ -5,7 +5,8 @@ import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
 import com.mojang.brigadier.context.CommandContext
 import kotlinx.coroutines.runBlocking
-import net.minecraft.server.command.CommandManager.*
+import net.minecraft.server.command.CommandManager.argument
+import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.manager.Manager
 import trans.rights.client.misc.api.Globals
