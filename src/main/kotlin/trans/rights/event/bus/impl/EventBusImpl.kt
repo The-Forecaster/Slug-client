@@ -1,9 +1,5 @@
 package trans.rights.event.bus.impl
 
-import java.lang.reflect.Field
-import java.lang.reflect.Method
-import java.util.Arrays
-import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.bus.AbstractEventBus
 import trans.rights.event.bus.ListenerType.LAMBDA
@@ -11,6 +7,10 @@ import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.MethodListener
 import trans.rights.event.type.ICancellable
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+import java.util.*
+import java.util.concurrent.CopyOnWriteArraySet
 
 object BasicEventManager : AbstractEventBus(LAMBDA) {
     override fun registerFields(subscriber: Any) {
@@ -55,7 +55,7 @@ object BasicEventManager : AbstractEventBus(LAMBDA) {
         return event
     }
 
-    private fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && field.javaClass.isAssignableFrom(Listener::class.java)
+    private fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && Listener::class.java.isAssignableFrom(field.type)
 }
 
 internal fun Method.isValid(): Boolean = this.isAnnotationPresent(EventHandler::class.java) && this.parameterCount == 1
