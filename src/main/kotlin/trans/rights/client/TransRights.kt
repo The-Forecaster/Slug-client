@@ -6,7 +6,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.manager.Manager
 import trans.rights.client.manager.impl.HackManager
+import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.exists
 
 class TransRights : ClientModInitializer {
     companion object {
@@ -22,6 +24,8 @@ class TransRights : ClientModInitializer {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")
+
+        if (!mainDirectory.exists()) Files.createDirectory(mainDirectory)
 
         Manager.load()
 

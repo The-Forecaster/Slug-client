@@ -23,8 +23,7 @@ import java.lang.annotation.Target;
 public @interface EventHandler {
     /**
      * Priority of the method
-     * 
-     * @return int value of the Priority, default is -50
+     *
      */
     int priority() default Priority.DEFAULT;
 }
