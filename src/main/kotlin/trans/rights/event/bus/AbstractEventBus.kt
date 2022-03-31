@@ -1,10 +1,10 @@
 package trans.rights.event.bus
 
-import java.util.Collections
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CopyOnWriteArraySet
 import trans.rights.event.bus.ListenerType.*
 import trans.rights.event.listener.Listener
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArraySet
 
 abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
     val registry: ConcurrentHashMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
