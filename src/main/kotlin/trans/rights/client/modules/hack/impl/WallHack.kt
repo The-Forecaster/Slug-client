@@ -20,7 +20,6 @@ object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights pla
     }
 
     init {
-
         blocks.add(Blocks.DIAMOND_ORE)
         blocks.add(Blocks.ANCIENT_DEBRIS)
         blocks.add(Blocks.ENDER_CHEST)
