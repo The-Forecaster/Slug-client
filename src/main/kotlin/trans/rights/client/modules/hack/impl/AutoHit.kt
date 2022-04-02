@@ -19,19 +19,16 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Globals 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
         if (!event.isInWorld) {
-            if (!waitForDelay.value || delay.value.toInt() != ticks) {
-                if (getTarget() != null) minecraft.interactionManager!!.attackEntity(player, getTarget())
+            if (waitForDelay.value && delay.value.toInt() != ticks) ticks ++
 
-                ticks = 0
-            }
-            else ticks ++
+            else if (getTarget() != null) minecraft.interactionManager!!.attackEntity(player, getTarget())
         }
     }
 
     private fun getTarget(): PlayerEntity? {
         if (minecraft.networkHandler!!.playerList.isEmpty()) return null
 
-        return minecraft.world!!.players.stream().min(Comparator.comparingDouble { player ->
+        return minecraft.world!!.players.stream().max(Comparator.comparingDouble { player ->
             minecraft.player!!.distanceTo(player).toDouble()
         }).get()
     }
