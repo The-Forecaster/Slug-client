@@ -21,7 +21,7 @@ public final class Main {
         if (JOptionPane.showConfirmDialog(
             null,
             "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?",
-            "ERROR",
+            "Error",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.ERROR_MESSAGE,
             icon

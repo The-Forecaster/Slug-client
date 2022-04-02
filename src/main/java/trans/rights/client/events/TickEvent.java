@@ -7,7 +7,7 @@ public abstract class TickEvent {
         return inWorld;
     }
 
-    public final void setInWorld(boolean inWorld) {
+    protected final void setInWorld(boolean inWorld) {
         this.inWorld = inWorld;
     }
 
