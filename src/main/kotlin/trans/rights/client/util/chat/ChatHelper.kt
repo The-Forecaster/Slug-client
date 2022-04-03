@@ -8,6 +8,6 @@ object ChatHelper : Globals {
     private const val prefix = "\\u00A79[${NAME}]\\u00A79"
 
     fun send(text: String) {
-        minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix $text"))
+        minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix$text"))
     }
 }
