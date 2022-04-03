@@ -9,7 +9,7 @@ class Settings {
         return null
     }
 
-    fun <T : Any> add(setting: Setting<T>): Setting<T> {
+    fun <T : Setting<*>> add(setting: T): T {
         this.values.add(setting)
 
         return setting
