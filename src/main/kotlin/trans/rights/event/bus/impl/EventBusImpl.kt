@@ -2,7 +2,7 @@ package trans.rights.event.bus.impl
 
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.bus.AbstractEventBus
-import trans.rights.event.bus.ListenerType.LAMBDA
+import trans.rights.event.bus.ListenerType
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.MethodListener
@@ -12,7 +12,9 @@ import java.lang.reflect.Method
 import java.util.*
 import java.util.concurrent.CopyOnWriteArraySet
 
-object BasicEventManager : AbstractEventBus(LAMBDA) {
+object BasicEventManager : EventManager(ListenerType.LAMBDA)
+
+open class EventManager(type: ListenerType) : AbstractEventBus(type) {
     override fun registerFields(subscriber: Any) {
         Arrays.stream(subscriber.javaClass.declaredFields).filter(this::isValid).forEach { field ->
             this.registry.getOrPut(field.asListener(subscriber).target, ::CopyOnWriteArraySet).run {
@@ -41,18 +43,6 @@ object BasicEventManager : AbstractEventBus(LAMBDA) {
         Arrays.stream(subscriber.javaClass.declaredMethods).filter(Method::isValid).forEach { method ->
             this.registry[method.parameters[0].type]?.remove(method.asListener(subscriber))
         }
-    }
-
-    fun <T : ICancellable> dispatch(event: T): T {
-        if (this.registry[event::class.java]?.size != 0) {
-            for (listener in this.getOrPutList(event.javaClass)) {
-                listener(event)
-
-                if (event.isCancelled) break
-            }
-        }
-
-        return event
     }
 
     private fun isValid(field: Field): Boolean = field.isAnnotationPresent(EventHandler::class.java) && Listener::class.java.isAssignableFrom(field.type)

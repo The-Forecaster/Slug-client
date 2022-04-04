@@ -6,11 +6,11 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 
-abstract class AbstractEventBus(private val type: ListenerType) : EventBus {
-    val registry: ConcurrentHashMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
-
-    private val subscribers: MutableSet<Any> = Collections.synchronizedSet(mutableSetOf())
-
+abstract class AbstractEventBus(
+    private val type: ListenerType,
+    private val subscribers: MutableSet<Any> = Collections.synchronizedSet(mutableSetOf()),
+    protected val registry: ConcurrentHashMap<Class<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
+) : EventBus {
     constructor() : this(BOTH)
 
     /**

@@ -15,7 +15,7 @@ import trans.rights.client.modules.command.Command
 object ReloadCommand : Command("Reload", "Reload parts of the client or mc"), Globals {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(
-            literal("/$name").executes { reload() }.then(argument("type", string())).executes { ctx ->
+            literal(name).executes { reload() }.then(argument("type", string())).executes { ctx ->
                 reload(ctx)
             }
         )
@@ -31,10 +31,8 @@ object ReloadCommand : Command("Reload", "Reload parts of the client or mc"), Gl
     }
 
     private fun reload(): Int {
-        runBlocking {
-            reloadClient()
-            reloadMc()
-        }
+        reloadClient()
+        reloadMc()
 
         return 0
     }
