@@ -61,9 +61,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
         }
     }
 
-    private fun trueSpeed(): Float {
-        return speed.value.toFloat() / 10f
-    }
+    private fun trueSpeed(): Float = speed.value.toFloat() / 10f
 }
 
 private fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
