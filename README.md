@@ -1,8 +1,10 @@
-<h1 align="center"> 
-     Queer Client
+<h1 align="center">
+    <p> Queer Client
     <p> Minecraft Hack client/Utility Mod
-    <p> Don't take this too seriously 
+    <p> Don't take this too seriously
 </h1>
+
+The creator(s) of this piece of software do not condone and are not responsible for any actions taken by any of its users.
 
 ## Credits
 
@@ -17,7 +19,7 @@
 ### General
 
 - Download the jar under the 'releases' tab
-- Put it into your mods folder along with the Fabric API file
+- Put it into your "mods" folder along with the Fabric API file
 
 ### Building/Devs
 
@@ -26,5 +28,6 @@
 - the jar should be under the build\libs folder, choose the one without any suffixes
 
 If you find any bugs feel free to open an issue or even make a pull request if you already know a fix
-I'm also open to whoever wants to help out with this, if you want to contact me outside of github your best option is to contact my discord at Austin the Forecaster#0760
-###### Thx u, if you're reading this u r cute <3
+I'm also open to whoever wants to help out with this, if you want to contact me outside GitHub your best option is to contact my discord at Austin the Forecaster#0760
+
+#### Thx u, if you're reading this u r cute <3

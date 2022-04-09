@@ -1,21 +1,21 @@
 package trans.rights.client.events;
 
 public abstract class TickEvent {
-    private boolean inworld;
+    private boolean inWorld;
 
     public final boolean isInWorld() {
-        return inworld;
+        return inWorld;
     }
 
-    public final void setInworld(boolean inworld) {
-        this.inworld = inworld;
+    protected final void setInWorld(boolean inWorld) {
+        this.inWorld = inWorld;
     }
 
     public static final class PreTick extends TickEvent {
         private static final PreTick INSTANCE = new PreTick();
 
-        public static PreTick get(boolean inworld) {
-            INSTANCE.setInworld(inworld);
+        public static PreTick get(boolean inWorld) {
+            INSTANCE.setInWorld(inWorld);
 
             return INSTANCE;
         }
@@ -24,8 +24,8 @@ public abstract class TickEvent {
     public static final class PostTick extends TickEvent {
         private static final PostTick INSTANCE = new PostTick();
 
-        public static PostTick get(boolean inworld) {
-            INSTANCE.setInworld(inworld);
+        public static PostTick get(boolean inWorld) {
+            INSTANCE.setInWorld(inWorld);
 
             return INSTANCE;
         }

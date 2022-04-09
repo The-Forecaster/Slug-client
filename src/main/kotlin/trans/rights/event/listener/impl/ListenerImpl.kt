@@ -1,51 +1,58 @@
 package trans.rights.event.listener.impl
 
-import trans.rights.event.annotation.Priority
-import java.lang.reflect.Method
+import trans.rights.event.annotation.DEFAULT
 import trans.rights.event.listener.Listener
+import java.util.function.Consumer
+import kotlin.reflect.KClass
 
-/** Implementation of Listener that uses a method as its target */
-class MethodListener<T : Any>(
-    private val action: Method,
-    override val priority: Int,
-    override val parent: Any,
-    override val target: Class<T>
+/**
+ * This is for creating listeners in Java specifically, as it uses consumers which don't have a return statement
+ *
+ * @param T type the consumer accepts
+ * @param action consumer the listeners will call when an event is posted
+ * @param target class of event that the listener will listen for
+ */
+@JvmOverloads
+inline fun <reified T : Any> listener(
+    action: Consumer<T>,
+    priority: Int = DEFAULT,
+    target: Class<T> = T::class.java
 ) : Listener<T> {
-    override operator fun invoke(param: T) {
-        this.action.invoke(this.parent, param)
-    }
+    return LambdaListener(action::accept, priority, target.kotlin)
 }
 
-inline fun <reified T : Any> Any.lambdaListener(
-    noinline action: (T) -> Unit
-): LambdaListener<T> {
-    return lambdaListener(action, Priority.DEFAULT)
+/**
+ * This is for making one line listeners in kotlin specifically non-verbose and probably volatile, but it works :D
+ *
+ * @param action lambda that the listener will call when its target event is posted
+ */
+inline fun <reified T : Any> listener(noinline action: (T) -> Unit): LambdaListener<T> {
+    return listener(action, DEFAULT, T::class)
 }
 
-inline fun <reified T : Any> Any.lambdaListener(
+/**
+ * This is for making listeners in Kotlin specifically, as it has less overhead
+ *
+ * @param T type the lambda will accept
+ * @param action consumer the listeners will call when an event is posted
+ * @param target class of event that the listener will listen for
+ */
+inline fun <reified T : Any> listener(
     noinline action: (T) -> Unit,
-    priority: Int
+    priority: Int = DEFAULT,
+    target: KClass<T> = T::class
 ): LambdaListener<T> {
-    return listener(action, priority, this, T::class.java)
-}
-
-fun <T : Any> listener(
-    action: (T) -> Unit,
-    priority: Int,
-    parent: Any,
-    target: Class<T>
-): LambdaListener<T> {
-    return LambdaListener(action, priority, parent, target)
+    return LambdaListener(action, priority, target)
 }
 
 /** Implementation of Listener that uses a lambda function as its target */
-class LambdaListener<T : Any>(
+open class LambdaListener<T : Any>(
     private val action: (T) -> Unit,
     override val priority: Int,
-    override val parent: Any,
-    override val target: Class<T>
+    override val target: KClass<T>
 ) : Listener<T> {
+
     override operator fun invoke(param: T) {
-        this.action.invoke(param)
+        return this.action(param)
     }
 }

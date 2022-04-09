@@ -10,7 +10,7 @@ public abstract class PacketEvent extends Cancellable {
         return this.packet;
     }
 
-    public final void setPacket(Packet<?> packet) {
+    protected final void setPacket(Packet<?> packet) {
         this.packet = packet;
     }
 

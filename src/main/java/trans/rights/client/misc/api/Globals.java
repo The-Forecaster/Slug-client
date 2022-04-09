@@ -1,6 +1,7 @@
 package trans.rights.client.misc.api;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 /**
  * This class contains the global variables for the client
@@ -16,5 +17,9 @@ public interface Globals {
 
     default MinecraftClient getMinecraft() {
         return MinecraftClient.getInstance();
+    }
+
+    default ClientPlayerEntity getPlayer() {
+        return mc.player;
     }
 }

@@ -2,88 +2,70 @@ package trans.rights.client.modules.hack.impl
 
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
+import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket
 import net.minecraft.util.math.Vec3d
+import trans.rights.client.TransRights
 import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.misc.api.Globals.mc
 import trans.rights.client.modules.hack.Hack
-import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.DoubleSetting
+import trans.rights.client.modules.setting.impl.BooleanSetting
+import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.event.annotation.EventHandler
+import trans.rights.event.listener.impl.listener
 import trans.rights.event.listener.impl.LambdaListener
-import trans.rights.event.listener.impl.lambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private val speed = DoubleSetting("Speed", "How fast you want to fly", 15.0)
-    private var cancelSpeed = BooleanSetting("Cancel-speed", "If you want speed to multiply as you go", true)
+    private val speed = settings.add(NumberSetting("Speed", 15.0))
+    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", true))
 
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
-        if (!nullCheck() || !event.isInWorld) {
-            this.doFlight()
-        }
+    val updateListener: LambdaListener<TickEvent.PostTick> = listener {
+        if (!nullCheck()) player.setFlySpeed(trueSpeed(), cancelSpeed.value)
     }
 
     @EventHandler
-    fun onPacketRecieve(event: PacketEvent) {
+    val packetReceiveListener: LambdaListener<PacketEvent.PostReceive> = listener { event ->
         if (event.packet is PlayerAbilitiesS2CPacket) {
-            val packet = event.packet as PlayerAbilitiesS2CPacket
-
-            packet.allowFlying = true
-            packet.flying = true
-            packet.flySpeed = this.trueSpeed()
+            (event.packet as PlayerAbilitiesS2CPacket).run {
+                allowFlying = true
+                flying = true
+                flySpeed = trueSpeed()
+            }
         }
     }
 
-    init {
-        settings.add(speed)
-        settings.add(cancelSpeed)
+    @EventHandler
+    val packetSendListener: LambdaListener<PacketEvent.PreSend> = listener { event ->
+        if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
+            (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
+        }
     }
 
     override fun onEnable() {
-        if (nullCheck())
-            disable()
+        // if (nullCheck()) disable()
+
+        TransRights.LOGGER.info("$name enabled")
     }
 
     override fun onDisable() {
-        if (nullCheck()) {
-            mc.player!!.abilities.allowFlying = false
-            mc.player!!.abilities.flySpeed = 0.05f
+        if (!nullCheck()) {
+            if (player.isCreative) player.abilities.allowFlying = false
+            player.abilities.flySpeed = 0.05f
+            player.abilities.flying = false
         }
     }
 
-    private fun doFlight() {
-        mc.player!!.run {
-            setFlySpeed(trueSpeed(), cancelSpeed.value)
-            setVelocity(trueSpeed(), cancelSpeed.value)
-        }
-    }
-
-    private fun trueSpeed(): Float {
-        return speed.value.toFloat() / 10f
-    }
+    private fun trueSpeed(): Float = speed.value.toFloat() / 10f
 }
 
-fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
+private fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {
     if (!this.isSpectator || mc.world != null) {
         if (cancelSpeed) this.velocity = Vec3d.ZERO
 
         this.abilities.allowFlying = true
+        this.abilities.flying = true
         this.abilities.flySpeed = speed
-    }
-}
-
-fun ClientPlayerEntity.setVelocity(speed: Float, cancelSpeed: Boolean) {
-    if (!this.isSpectator && mc.world != null) {
-
-        // this is retarded, but I don't think there's a better way than this
-        if (cancelSpeed) this.velocity = Vec3d.ZERO
-        if (mc.options.jumpKey.isPressed) this.addVelocity(0.0, 5.0, 0.0)
-        if (mc.options.sneakKey.isPressed) this.addVelocity(0.0, -5.0, 0.0)
-        if (mc.options.forwardKey.isPressed) this.addVelocity(speed.toDouble(), 0.0, 0.0)
-        if (mc.options.backKey.isPressed) this.addVelocity(-speed.toDouble(), 0.0, 0.0)
-        if (mc.options.leftKey.isPressed) this.addVelocity(0.0, 0.0, speed.toDouble())
-        if (mc.options.rightKey.isPressed) this.addVelocity(0.0, 0.0, -speed.toDouble())
     }
 }

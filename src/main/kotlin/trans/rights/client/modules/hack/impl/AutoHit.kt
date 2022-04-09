@@ -1,26 +1,35 @@
 package trans.rights.client.modules.hack.impl
 
+import net.minecraft.entity.player.PlayerEntity
 import trans.rights.client.events.TickEvent
+import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.hack.Hack
-import trans.rights.client.modules.setting.settings.BooleanSetting
-import trans.rights.client.modules.setting.settings.IntSetting
+import trans.rights.client.modules.setting.impl.BooleanSetting
+import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.event.annotation.EventHandler
+import trans.rights.event.listener.impl.LambdaListener
+import trans.rights.event.listener.impl.listener
 
-object AutoHit : Hack("Auto-hit", "Automatically hit people near you") {
-    private val waitForDelay = BooleanSetting("Wait", "If you want the client to spam click or wait for the attack delay", true)
-    private val swap = BooleanSetting("Swap", "If you want the client to swap to the highest damage weapon in your hotbar", true)
-    private val delay = IntSetting("tick-delay", "how long, in ticks, the client should wait before the next hit", 6)
+object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Globals {
+    private val waitForDelay = settings.add(BooleanSetting("Wait", true))
+    private val delay = settings.add(NumberSetting("tick-delay", 20))
 
-    init {
-        settings.add(waitForDelay)
-        settings.add(swap)
-        settings.add(delay)
-    }
+    private var ticks: Int = 0
 
     @EventHandler
-    fun onUpdate(event: TickEvent.PostTick) {
-        if (nullCheck() || !event.isInWorld) {
-            disable()
+    val updateListener: LambdaListener<TickEvent.PostTick> = listener { event ->
+        if (!event.isInWorld) {
+            if (waitForDelay.value && delay.value.toInt() != ticks) ticks ++
+
+            else if (getTarget() != null) minecraft.interactionManager!!.attackEntity(player, getTarget())
         }
+    }
+
+    private fun getTarget(): PlayerEntity? {
+        if (minecraft.networkHandler!!.playerList.isEmpty()) return null
+
+        return minecraft.world!!.players.stream().max(Comparator.comparingDouble { player ->
+            minecraft.player!!.distanceTo(player).toDouble()
+        }).get()
     }
 }

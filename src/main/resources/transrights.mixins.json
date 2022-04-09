@@ -7,8 +7,10 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockMixin",
     "ClientConnectionMixin",
     "ClientPlayNetworkHandlerMixin",
+    "KeyboardMixin",
     "MinecraftClientMixin"
   ]
 }

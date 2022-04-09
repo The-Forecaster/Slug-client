@@ -12,7 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 object FileHelper {
-    private val gson: Gson = GsonBuilder().setPrettyPrinting().setLenient().create()
+    private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
     fun writeToJson(element: JsonObject, path: Path) {
         val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
@@ -24,20 +24,17 @@ object FileHelper {
     fun read(path: Path): String {
         return try {
             Files.readString(path)
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             LOGGER.error("Couldn't read $path")
 
             ""
         }
     }
 
-
     fun fromJson(path: Path): JsonObject {
         return try {
             gson.fromJson(read(path), JsonObject::class.java)
-        }
-        catch (e: JsonSyntaxException) {
+        } catch (e: JsonSyntaxException) {
             JsonObject()
         }
     }
