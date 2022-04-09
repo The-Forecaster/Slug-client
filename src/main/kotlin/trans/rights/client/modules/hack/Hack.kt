@@ -15,11 +15,15 @@ import java.io.File
 
 abstract class Hack(
     name: String,
-    description: String,
-    val settings: Settings = Settings(),
-    val file: File = File(HackManager.directory.absolutePath + "$name.json"),
-    private var enabled: Boolean = false
+    description: String
 ) : Module(name, description) {
+    private var enabled: Boolean = false
+    private val settings: Settings = Settings()
+    private val file: File = File(HackManager.directory.absolutePath + "$name.json")
+
+    init {
+        if (!file.exists()) file.createNewFile()
+    }
 
     protected fun enable() {
         if (this.enabled) return
@@ -50,8 +54,6 @@ abstract class Hack(
     // TODO: Make this better / more streamlined
     fun load(file: File) {
         try {
-            if (!file.exists()) file.createNewFile()
-
             if (FileHelper.read(this.file.toPath()) == "") {
                 this.save(file)
                 return

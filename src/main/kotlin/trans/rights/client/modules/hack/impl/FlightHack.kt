@@ -39,9 +39,7 @@ object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
     @EventHandler
     val packetSendListener: LambdaListener<PacketEvent.PreSend> = lambdaListener { event ->
         if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
-            (event.packet as UpdatePlayerAbilitiesC2SPacket).run {
-                flying = true
-            }
+            (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
         }
     }
 
