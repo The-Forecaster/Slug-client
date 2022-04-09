@@ -4,6 +4,7 @@ import trans.rights.event.annotation.EventHandler
 import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
+import java.util.Arrays
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.stream.Stream
@@ -13,7 +14,11 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSuperclassOf
 import kotlin.reflect.full.memberProperties
 
-object BasicEventManager : EventManager(LambdaListener::class)
+object BasicEventManager : EventManager(LambdaListener::class) {
+    fun register(vararg listeners: Listener<*>) {
+        Arrays.stream(listeners).forEach(this::register)
+    }
+}
 
 open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     constructor(type: Class<out Listener<*>>) : this(type.kotlin)
