@@ -9,7 +9,6 @@ import trans.rights.client.manager.impl.HackManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.exists
 
 class TransRights : ClientModInitializer {
     companion object {
@@ -26,7 +25,7 @@ class TransRights : ClientModInitializer {
 
         LOGGER.info("Starting $NAME...")
 
-        if (!mainDirectory.exists()) Files.createDirectory(mainDirectory)
+        if (Files.exists(mainDirectory)) Files.createDirectory(mainDirectory)
 
         Manager.load()
 
