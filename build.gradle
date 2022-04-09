@@ -44,18 +44,9 @@ dependencies {
     modImplementation 'net.fabricmc:fabric-loader:0.13.3'
 
     // TR dependencies
-    include(modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1')) {
-        exclude module: 'kotlin-stdlib'
-        exclude module: 'kotlin-stdlib-jdk8'
-        exclude module: 'kotlin-stdlib-jdk7'
-        exclude module: 'kotlin-stdlib-common'
-    }
-    include(modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.6.20')) {
-        exclude module: 'kotlin-stdlib'
-        exclude module: 'kotlin-stdlib-jdk8'
-        exclude module: 'kotlin-stdlib-jdk7'
-        exclude module: 'kotlin-stdlib-common'
-    }
+    include(modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'))
+
+    include(modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.6.20'))
 }
 
 jar {
