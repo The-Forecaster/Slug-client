@@ -33,8 +33,7 @@ public final class Main {
                 default -> throw new IllegalStateException("Unknown OS: " + getOS());
             };
 
-            if (!modsFile.exists())
-                Files.createDirectories(modsFile.toPath());
+            if (!modsFile.exists()) Files.createDirectories(modsFile.toPath());
 
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }
@@ -42,12 +41,9 @@ public final class Main {
 
     private static OS getOS() {
         var osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        if (osName.contains("nux") || osName.contains("nix"))
-            return OS.NIX;
-        else if (osName.contains("darwin") || osName.contains("mac"))
-            return OS.OSX;
-        else if (osName.contains("win"))
-            return OS.WINDOWS;
+        if (osName.contains("nux") || osName.contains("nix")) return OS.NIX;
+        else if (osName.contains("darwin") || osName.contains("mac")) return OS.OSX;
+        else if (osName.contains("win")) return OS.WINDOWS;
         return OS.UNKNOWN;
     }
 
