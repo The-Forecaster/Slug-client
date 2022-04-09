@@ -17,9 +17,9 @@ abstract class Hack(
     name: String,
     description: String
 ) : Module(name, description) {
-    private var enabled: Boolean = false
-    private val settings: Settings = Settings()
-    private val file: File = File(HackManager.directory.absolutePath + "$name.json")
+    var enabled: Boolean = false
+    val settings: Settings = Settings()
+    val file: File = File(HackManager.directory.absolutePath + "$name.json")
 
     init {
         if (!file.exists()) file.createNewFile()

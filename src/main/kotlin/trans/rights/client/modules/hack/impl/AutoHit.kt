@@ -8,7 +8,7 @@ import trans.rights.client.modules.setting.impl.BooleanSetting
 import trans.rights.client.modules.setting.impl.NumberSetting
 import trans.rights.event.annotation.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
-import trans.rights.event.listener.impl.lambdaListener
+import trans.rights.event.listener.impl.listener
 
 object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Globals {
     private val waitForDelay = settings.add(BooleanSetting("Wait", true))
@@ -17,7 +17,7 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Globals 
     private var ticks: Int = 0
 
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = lambdaListener { event ->
+    val updateListener: LambdaListener<TickEvent.PostTick> = listener { event ->
         if (!event.isInWorld) {
             if (waitForDelay.value && delay.value.toInt() != ticks) ticks ++
 
