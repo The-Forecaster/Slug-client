@@ -12,13 +12,15 @@ import trans.rights.client.misc.api.Globals.mc
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.setting.impl.BooleanSetting
 import trans.rights.client.modules.setting.impl.NumberSetting
-import trans.rights.event.listener.EventHandler
+import trans.rights.event.commons.EventHandler
 import trans.rights.event.listener.impl.listener
 import trans.rights.event.listener.impl.LambdaListener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Globals {
-    private val speed = settings.add(NumberSetting("Speed", "How fast you want to fly.",15.0))
-    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
+    private val speed = settings.add(NumberSetting("Speed", "How fast you want to fly.", 15.0))
+    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed",
+        "Do you want to cancel current speed before doing adding speed?",
+        true))
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = listener {

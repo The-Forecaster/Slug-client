@@ -1,24 +1,18 @@
 package trans.rights.event.bus.impl
 
-import trans.rights.event.listener.EventHandler
+import trans.rights.event.commons.EventHandler
 import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
-import java.util.Arrays
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.stream.Stream
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
-import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSuperclassOf
 import kotlin.reflect.full.memberProperties
 
-object BasicEventManager : EventManager(LambdaListener::class) {
-    fun register(vararg listeners: Listener<*>) {
-        Arrays.stream(listeners).forEach(this::register)
-    }
-}
+object BasicEventManager : EventManager(LambdaListener::class)
 
 open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     constructor(type: Class<out Listener<*>>) : this(type.kotlin)
@@ -30,7 +24,7 @@ open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     override fun register(listener: Listener<*>) {
         this.registry.getOrPut(listener.target, ::CopyOnWriteArraySet).let {
             it.add(listener)
-            this.registry[listener.target] = it.toSortedSet()
+            this.registry[listener.target] = CopyOnWriteArraySet(it.sorted())
         }
     }
 
@@ -49,7 +43,7 @@ open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     override fun unregister(subscriber: Any) {
         if (!isRegistered(subscriber)) return
 
-        this.filter(subscriber::class.declaredMemberProperties).forEach(this::unregister)
+        this.filter(subscriber::class.memberProperties).forEach(this::unregister)
 
         this.subscribers.remove(subscriber)
     }

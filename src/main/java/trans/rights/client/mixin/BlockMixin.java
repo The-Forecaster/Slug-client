@@ -17,6 +17,6 @@ import trans.rights.event.bus.impl.BasicEventManager;
 public class BlockMixin {
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void shouldDrawSideModifier(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(!BasicEventManager.INSTANCE.dispatch(BlockSideDrawEvent.get(state.getBlock()).isCancelled()));
+        info.setReturnValue(!BasicEventManager.INSTANCE.dispatch(BlockSideDrawEvent.get(state.getBlock()).getCancelled()));
     }
 }

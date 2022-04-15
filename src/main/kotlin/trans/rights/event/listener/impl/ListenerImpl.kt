@@ -1,6 +1,6 @@
 package trans.rights.event.listener.impl
 
-import trans.rights.event.listener.DEFAULT
+import trans.rights.event.commons.DEFAULT
 import trans.rights.event.listener.Listener
 import java.util.function.Consumer
 import kotlin.reflect.KClass
@@ -10,19 +10,19 @@ import kotlin.reflect.KClass
  *
  * @param T type the consumer accepts
  * @param action consumer the listeners will call when an event is posted
- * @param target class of event that the listener will listen for
+ * @param target class that the listener will listen for
  */
 @JvmOverloads
 inline fun <reified T : Any> listener(
     action: Consumer<T>,
     priority: Int = DEFAULT,
-    target: Class<T> = T::class.java
-) : Listener<T> = LambdaListener(action::accept, priority, target.kotlin)
+    target: Class<T> = T::class.java,
+): Listener<T> = LambdaListener(action::accept, priority, target.kotlin)
 
 /**
- * This is for making one line listeners in kotlin specifically non-verbose and probably volatile, but it works :D
+ * This is for making simple, non-verbose listeners
  *
- * @param action lambda that the listener will call when its target event is posted
+ * @param action consumer the listeners will call when an event is posted
  */
 inline fun <reified T : Any> listener(noinline action: (T) -> Unit): LambdaListener<T> = listener(action, DEFAULT, T::class)
 
@@ -31,19 +31,19 @@ inline fun <reified T : Any> listener(noinline action: (T) -> Unit): LambdaListe
  *
  * @param T type the lambda will accept
  * @param action consumer the listeners will call when an event is posted
- * @param target class of event that the listener will listen for
+ * @param target class that the listener will listen for
  */
 inline fun <reified T : Any> listener(
     noinline action: (T) -> Unit,
     priority: Int = DEFAULT,
-    target: KClass<T> = T::class
+    target: KClass<T> = T::class,
 ): LambdaListener<T> = LambdaListener(action, priority, target)
 
 /** Implementation of Listener that uses a lambda function as its target */
 open class LambdaListener<T : Any>(
     private val action: (T) -> Unit,
     override val priority: Int,
-    override val target: KClass<T>
+    override val target: KClass<T>,
 ) : Listener<T> {
     override operator fun invoke(param: T) = this.action(param)
 }
