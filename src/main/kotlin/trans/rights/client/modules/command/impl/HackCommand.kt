@@ -20,7 +20,8 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
         HackManager.values.stream().forEach { hack ->
             dispatcher.register(
                 literal(hack.name.lowercase())
-                .executes { toggleHack(hack) }
+                .executes { toggleHack(hack) })
+                    /*
                 .then(argument("settingName", string()))
                 .then(argument("value", string()))
                 .executes { ctx ->
@@ -29,7 +30,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack") {
                         getSetting(getString(ctx, "settingName"), hack)
                     )
                 }
-            )
+            )*/
         }
     }
 

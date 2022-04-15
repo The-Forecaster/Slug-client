@@ -47,6 +47,6 @@ public class ClientConnectionMixin {
     }
     
     private static void postCancel(PacketEvent event, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled()) info.cancel();
+        if (BasicEventManager.INSTANCE.dispatch(event).getCancelled()) info.cancel();
     }
 }

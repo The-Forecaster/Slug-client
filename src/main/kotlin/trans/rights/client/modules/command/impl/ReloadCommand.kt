@@ -10,25 +10,27 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.manager.Manager
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.command.Command
+import trans.rights.client.util.chat.ChatHelper
 
 object ReloadCommand : Command("reload", "Reload parts of the client or mc"), Globals {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(literal(name).executes { reload() }.then(argument("type", string())).executes { ctx ->
-            reload(ctx)
-        })
+        dispatcher.register(literal(name).executes(this::reload))// .then(argument("type", string())).executes(this::reload))
     }
 
     private fun reloadClient() {
+        ChatHelper.send("Reloading the client...")
+
         Manager.unload()
         Manager.load()
     }
 
     private fun reloadMc() {
+        ChatHelper.send("Reloading minecraft...")
+
         minecraft.reloadResourcesConcurrently()
     }
 
     private fun reload(): Int {
-        reloadClient()
         reloadMc()
 
         return 0
