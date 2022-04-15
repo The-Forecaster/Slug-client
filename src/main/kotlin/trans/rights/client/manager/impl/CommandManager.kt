@@ -7,8 +7,10 @@ import trans.rights.client.modules.command.Command
 import trans.rights.client.modules.command.impl.*
 
 object CommandManager : Manager<Command>(mutableSetOf()) {
-    override fun load() {
-        this.add(CHelpCommand, HackCommand, ReloadCommand)
+    override fun invoke(): CommandManager {
+        add(CHelpCommand, HackCommand, ReloadCommand)
+
+        return this
     }
 
     @JvmStatic

@@ -20,17 +20,17 @@ public class MinecraftClientMixin {
     private Profiler profiler;
 
     @Shadow
-    private ClientWorld world;
+    public ClientWorld world;
 
     @Shadow
-    private ClientPlayerEntity player;
+    public ClientPlayerEntity player;
 
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"))
     private void beforeTick(CallbackInfo info) {
         BasicEventManager.INSTANCE.dispatch(PreTick.get(this.player != null && this.world != null));
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER))
     private void onTick(CallbackInfo info) {
         BasicEventManager.INSTANCE.dispatch(PostTick.get(this.player != null && this.world != null));
     }

@@ -2,7 +2,10 @@ package trans.rights.client.modules.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
-import trans.rights.client.TransRights.Companion.LOGGER
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.manager.impl.HackManager
 import trans.rights.client.modules.Module
 import trans.rights.client.modules.setting.Settings
@@ -15,32 +18,34 @@ import java.io.File
 
 abstract class Hack(
     name: String,
-    description: String
+    description: String,
 ) : Module(name, description) {
     var enabled: Boolean = false
     val settings: Settings = Settings()
-    val file: File = File(HackManager.directory.absolutePath + "$name.json")
+    val file: File
 
     init {
-        if (!file.exists()) file.createNewFile()
+        this.file = File(HackManager.directory.absolutePath + "$name.json")
+
+        if (!this.file.exists()) this.file.createNewFile()
     }
 
     protected fun enable() {
-        if (this.enabled) return
+        if (!this.enabled) {
+            BasicEventManager.register(this)
 
-        BasicEventManager.register(this)
-
-        this.onEnable()
-        this.enabled = true
+            this.onEnable()
+            this.enabled = true
+        }
     }
 
     protected fun disable() {
-        if (!this.enabled) return
+        if (this.enabled) {
+            BasicEventManager.unregister(this)
 
-        BasicEventManager.unregister(this)
-
-        this.onDisable()
-        this.enabled = false
+            this.onDisable()
+            this.enabled = false
+        }
     }
 
     fun toggle() {

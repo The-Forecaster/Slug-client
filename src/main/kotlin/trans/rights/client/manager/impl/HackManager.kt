@@ -1,6 +1,6 @@
 package trans.rights.client.manager.impl
 
-import trans.rights.client.TransRights.Companion.mainDirectory
+import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.manager.Manager
 import trans.rights.client.modules.hack.Hack
 import trans.rights.client.modules.hack.impl.AutoHit
@@ -13,24 +13,26 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
     val directory = File("$mainDirectory/hacks")
 
     fun save() {
-        this.values.stream().forEach { hack -> hack.save(hack.file) }
+        values.stream().forEach { hack -> hack.save(hack.file) }
     }
 
-    override fun load() {
+    override fun invoke(): HackManager {
+        add(AutoHit, FlightHack, WallHack)
+
         if (!directory.exists()) Files.createDirectory(directory.toPath())
 
-        this.add(AutoHit, FlightHack, WallHack)
+        this.values.stream().forEach { hack -> hack.load(hack.file) }
 
-        this.values.stream().forEach { hack ->
-            hack.load(hack.file)
-            hack.save(hack.file)
-        }
+        save()
 
-        this.values.toSortedSet(Comparator.comparing(Hack::name))
+        values.sortedWith(Comparator.comparing(Hack::name))
+
+        return this
     }
 
     override fun unload() {
-        this.values.stream().forEach { hack -> hack.save(hack.file) }
-        this.values.clear()
+        save()
+
+        values.clear()
     }
 }

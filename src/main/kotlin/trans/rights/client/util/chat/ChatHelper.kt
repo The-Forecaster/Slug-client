@@ -1,13 +1,18 @@
 package trans.rights.client.util.chat
 
 import net.minecraft.text.Text
-import trans.rights.client.TransRights.Companion.NAME
+import trans.rights.TransRights.Companion.NAME
 import trans.rights.client.misc.api.Globals
 
 object ChatHelper : Globals {
     private const val prefix = "\\u00A79[${NAME}]\\u00A79"
 
     fun send(text: String) {
-        minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix$text"))
+        send(text, true)
+    }
+
+    fun send(text: String, pre: Boolean) {
+        if (pre) minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix$text"))
+        minecraft.inGameHud.chatHud.addMessage(Text.of(text))
     }
 }

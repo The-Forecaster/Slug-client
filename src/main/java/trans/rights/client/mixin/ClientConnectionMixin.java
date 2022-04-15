@@ -30,12 +30,12 @@ public class ClientConnectionMixin {
         postCancel(PostReceive.get(packet), info);
     }
 
-    @Inject(method = "send", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "send*", at = @At("HEAD"), cancellable = true)
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
         postCancel(PreSend.get(packet), info);
     }
 
-    @Inject(at = @At("TAIL"), method = "send", cancellable = true)
+    @Inject(at = @At("TAIL"), method = "send*", cancellable = true)
     private void afterSend(Packet<?> packet, CallbackInfo info) {
         postCancel(PostSend.get(packet), info);
     }

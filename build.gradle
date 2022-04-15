@@ -6,8 +6,8 @@ plugins {
 sourceCompatibility = targetCompatibility = project.java_version as int
 
 archivesBaseName = project.mod_name
-version = project.mod_version
-group = project.mod_group
+version project.mod_version
+group project.mod_group
 
 java {
     withSourcesJar()
@@ -22,10 +22,8 @@ tasks.withType(JavaCompile).configureEach {
     it.options.encoding = 'UTF-8'
 }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = project.java_version as String
-    }
+compileKotlin.kotlinOptions {
+    jvmTarget = project.java_version as String
 }
 
 processResources {
@@ -50,11 +48,13 @@ dependencies {
 }
 
 jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+    from('LICENSE') {
+        rename {
+            "${it}_$project.archivesBaseName"
+        }
     }
 
     manifest {
-        attributes("Main-Class": "trans.rights.client.Main")
+        attributes('Main-Class': 'trans.rights.client.Main')
     }
 }

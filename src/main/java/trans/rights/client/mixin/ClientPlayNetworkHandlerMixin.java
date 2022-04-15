@@ -20,7 +20,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import trans.rights.client.manager.impl.CommandManager;
 
 /**
- *  this is (mostly) pasted from https://github.com/Earthcomputer/clientcommands
+ *  this is (mostly) pasted from <a href="https://github.com/Earthcomputer/clientcommands">https://github.com/Earthcomputer/clientcommands</a>
  *
  * Will improve in the future but this is how it is for now
  */

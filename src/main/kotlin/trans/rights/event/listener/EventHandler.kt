@@ -1,4 +1,4 @@
-package trans.rights.event.annotation
+package trans.rights.event.listener
 
 const val DEFAULT = -50
 const val LOWEST = -200

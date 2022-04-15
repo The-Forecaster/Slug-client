@@ -1,6 +1,6 @@
 package trans.rights.event.bus.impl
 
-import trans.rights.event.annotation.EventHandler
+import trans.rights.event.listener.EventHandler
 import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener

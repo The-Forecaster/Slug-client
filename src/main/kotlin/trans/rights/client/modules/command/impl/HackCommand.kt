@@ -17,9 +17,9 @@ import trans.rights.client.util.chat.ChatHelper
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        for (hack in HackManager.values) {
+        HackManager.values.stream().forEach { hack ->
             dispatcher.register(
-                literal("/${hack.name}")
+                literal(hack.name.lowercase())
                 .executes { toggleHack(hack) }
                 .then(argument("settingName", string()))
                 .then(argument("value", string()))

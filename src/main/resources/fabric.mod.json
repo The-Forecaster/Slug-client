@@ -18,7 +18,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "trans.rights.client.TransRights"
+      "trans.rights.TransRights"
     ]
   },
   "depends": {

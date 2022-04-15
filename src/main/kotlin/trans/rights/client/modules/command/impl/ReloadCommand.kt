@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
 import com.mojang.brigadier.context.CommandContext
-import kotlinx.coroutines.runBlocking
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
@@ -12,13 +11,11 @@ import trans.rights.client.manager.Manager
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.command.Command
 
-object ReloadCommand : Command("Reload", "Reload parts of the client or mc"), Globals {
+object ReloadCommand : Command("reload", "Reload parts of the client or mc"), Globals {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(
-            literal(name).executes { reload() }.then(argument("type", string())).executes { ctx ->
-                reload(ctx)
-            }
-        )
+        dispatcher.register(literal(name).executes { reload() }.then(argument("type", string())).executes { ctx ->
+            reload(ctx)
+        })
     }
 
     private fun reloadClient() {

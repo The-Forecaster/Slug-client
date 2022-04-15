@@ -7,7 +7,7 @@ import trans.rights.client.modules.command.Command
 
 object CHelpCommand : Command("chelp", "Informs you about the different features of this client") {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        dispatcher.register(literal(name).executes { helpMessage() })
+        dispatcher.register(literal(name.lowercase()).executes { helpMessage() })
     }
 
     private fun helpMessage(): Int {

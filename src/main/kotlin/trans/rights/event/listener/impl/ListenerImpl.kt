@@ -1,6 +1,6 @@
 package trans.rights.event.listener.impl
 
-import trans.rights.event.annotation.DEFAULT
+import trans.rights.event.listener.DEFAULT
 import trans.rights.event.listener.Listener
 import java.util.function.Consumer
 import kotlin.reflect.KClass
@@ -17,18 +17,14 @@ inline fun <reified T : Any> listener(
     action: Consumer<T>,
     priority: Int = DEFAULT,
     target: Class<T> = T::class.java
-) : Listener<T> {
-    return LambdaListener(action::accept, priority, target.kotlin)
-}
+) : Listener<T> = LambdaListener(action::accept, priority, target.kotlin)
 
 /**
  * This is for making one line listeners in kotlin specifically non-verbose and probably volatile, but it works :D
  *
  * @param action lambda that the listener will call when its target event is posted
  */
-inline fun <reified T : Any> listener(noinline action: (T) -> Unit): LambdaListener<T> {
-    return listener(action, DEFAULT, T::class)
-}
+inline fun <reified T : Any> listener(noinline action: (T) -> Unit): LambdaListener<T> = listener(action, DEFAULT, T::class)
 
 /**
  * This is for making listeners in Kotlin specifically, as it has less overhead
@@ -41,9 +37,7 @@ inline fun <reified T : Any> listener(
     noinline action: (T) -> Unit,
     priority: Int = DEFAULT,
     target: KClass<T> = T::class
-): LambdaListener<T> {
-    return LambdaListener(action, priority, target)
-}
+): LambdaListener<T> = LambdaListener(action, priority, target)
 
 /** Implementation of Listener that uses a lambda function as its target */
 open class LambdaListener<T : Any>(
@@ -51,8 +45,5 @@ open class LambdaListener<T : Any>(
     override val priority: Int,
     override val target: KClass<T>
 ) : Listener<T> {
-
-    override operator fun invoke(param: T) {
-        return this.action(param)
-    }
+    override operator fun invoke(param: T) = this.action(param)
 }

@@ -6,15 +6,15 @@ import net.minecraft.block.Blocks
 import trans.rights.client.events.BlockSideDrawEvent
 import trans.rights.client.misc.api.Globals
 import trans.rights.client.modules.hack.Hack
-import trans.rights.event.annotation.EventHandler
+import trans.rights.event.listener.EventHandler
 import trans.rights.event.listener.impl.listener
 
-object WallHack : Hack("Wallhacks", "Makes blocks see through and highlights players"), Globals {
+object WallHack : Hack("Wall-hacks", "Makes blocks see through and highlights players"), Globals {
     private val blocks = mutableSetOf<Block>()
 
     @EventHandler
-    val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event: BlockSideDrawEvent ->
-        if (!blocks.contains(event.block)) {
+    val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event ->
+        if (blocks.contains(event.block)) {
             event.isCancelled = true
         }
     }
