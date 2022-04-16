@@ -9,35 +9,19 @@ archivesBaseName = project.mod_name
 version project.mod_version
 group project.mod_group
 
-loom {
-    accessWidenerPath = file('src/main/resources/transrights.accesswidener')
-}
+loom.accessWidenerPath = file('src/main/resources/transrights.accesswidener')
+compileKotlin.kotlinOptions.jvmTarget = project.java_version as String
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(17)
 }
 
-compileKotlin.kotlinOptions {
-    jvmTarget = project.java_version as String
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    from sourceSets.main.allSource
-}
-
-processResources {
-    inputs.property 'version', project.version
-    inputs.property 'name', project.name
-
-    filesMatching('fabric.mod.json') {
-        expand 'version': project.mod_version, 'id': project.mod_name
-    }
-}
+java.withSourcesJar()
 
 dependencies {
     Set<String> libraries = [
             'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1',
-            'org.jetbrains.kotlin:kotlin-reflect:1.6.20'
+            "org.jetbrains.kotlin:kotlin-reflect:$project.kotlin_version"
     ]
 
     // fabric dependencies
@@ -46,8 +30,15 @@ dependencies {
     modImplementation 'net.fabricmc:fabric-loader:0.13.3'
 
     // TR dependencies
-    libraries.forEach {library ->
-        include modImplementation(library)
+    libraries.forEach { library -> include modImplementation(library)}
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'name', project.name
+
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.mod_version, 'id': project.mod_name
     }
 }
 
