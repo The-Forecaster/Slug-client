@@ -9,16 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.profiler.Profiler;
 import trans.rights.client.events.TickEvent.PostTick;
 import trans.rights.client.events.TickEvent.PreTick;
 import trans.rights.event.bus.impl.BasicEventManager;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Shadow
-    private Profiler profiler;
-
     @Shadow
     public ClientWorld world;
 

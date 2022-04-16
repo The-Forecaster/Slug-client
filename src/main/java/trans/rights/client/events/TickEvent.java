@@ -4,7 +4,7 @@ public abstract class TickEvent {
     private boolean inWorld;
 
     public final boolean isInWorld() {
-        return inWorld;
+        return this.inWorld;
     }
 
     protected final void setInWorld(boolean inWorld) {
