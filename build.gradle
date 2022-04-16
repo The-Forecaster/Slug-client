@@ -49,5 +49,5 @@ jar {
         }
     }
 
-    manifest.attributes('Main-Class': 'trans.rights.Main')
+    manifest.attributes('Main-class': 'trans.rights.Main')
 }
