@@ -2,9 +2,9 @@ package trans.rights.client.util.chat
 
 import net.minecraft.text.Text
 import trans.rights.TransRights.Companion.NAME
-import trans.rights.client.misc.api.Globals
+import trans.rights.client.api.Wrapper
 
-object ChatHelper : Globals {
+object ChatHelper : Wrapper {
     private const val prefix = "\\u00A79[${NAME}]\\u00A79"
 
     fun send(text: String) {

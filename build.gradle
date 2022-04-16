@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
 }
 
-sourceCompatibility = targetCompatibility = project.java_version as int
+sourceCompatibility = targetCompatibility = project.java_version
 
 archivesBaseName = project.mod_name
 version project.mod_version
@@ -54,7 +54,5 @@ jar {
         }
     }
 
-    manifest {
-        attributes('Main-Class': 'trans.rights.client.Main')
-    }
+    manifest.attributes('Main-Class': 'trans.rights.Main')
 }

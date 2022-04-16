@@ -4,8 +4,8 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.impl.FabricLoaderImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import trans.rights.client.manager.Manager
-import trans.rights.client.manager.impl.HackManager
+import trans.rights.client.api.Manager
+import trans.rights.client.api.hack.HackManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
