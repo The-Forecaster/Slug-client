@@ -8,7 +8,7 @@ import trans.rights.client.api.setting.Settings
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
-import trans.rights.client.util.file.FileHelper
+import trans.rights.client.util.FileHelper
 import trans.rights.event.bus.impl.BasicEventManager
 import java.io.File
 
@@ -19,7 +19,6 @@ abstract class Hack(
     var enabled: Boolean = false
     val settings: Settings = Settings()
     val file: File
-
     init {
         this.file = File(HackManager.directory.absolutePath + "$name.json")
 
@@ -52,7 +51,6 @@ abstract class Hack(
 
     open fun onDisable() {}
 
-    // TODO: Make this better / more streamlined
     fun load(file: File) {
         try {
             if (FileHelper.read(this.file.toPath()) == "") {
@@ -66,11 +64,13 @@ abstract class Hack(
 
             for (setting in settings.values) {
                 when (setting) {
-                    is BooleanSetting -> setting.value = json.get(setting.name).asBoolean
-                    is NumberSetting -> setting.value = json.get(setting.name).asDouble
+                    is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
+                    is NumberSetting -> setting.set(json.get(setting.name).asDouble)
+                    is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             FileHelper.clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -94,7 +94,8 @@ abstract class Hack(
             }
 
             FileHelper.writeToJson(json, file.toPath())
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             LOGGER.error("$name failed to save")
 
             e.printStackTrace()

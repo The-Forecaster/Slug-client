@@ -8,10 +8,9 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.api.Manager
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
-import trans.rights.client.util.chat.ChatHelper
+import trans.rights.client.util.ChatHelper
 
-object ReloadCommand : Command("reload", "Reload parts of the client or mc"),
-    Wrapper {
+object ReloadCommand : Command("reload", "Reload parts of the client or mc", "/reload <mc or client>"), Wrapper {
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         dispatcher.register(literal("creload").executes(this::reload))// .then(argument("type", string())).executes(this::reload))
     }

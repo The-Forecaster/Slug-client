@@ -1,4 +1,4 @@
-package trans.rights.client.util.file
+package trans.rights.client.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

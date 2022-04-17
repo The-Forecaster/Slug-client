@@ -1,11 +1,11 @@
-package trans.rights.client.util.chat
+package trans.rights.client.util
 
 import net.minecraft.text.Text
 import trans.rights.TransRights.Companion.NAME
 import trans.rights.client.api.Wrapper
 
 object ChatHelper : Wrapper {
-    private const val prefix = "\\u00A79[${NAME}]\\u00A79"
+    private const val prefix = "\\u00A79[$NAME]\\u00A7r"
 
     fun send(text: String) {
         send(text, true)
