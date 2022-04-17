@@ -2,19 +2,19 @@ package trans.rights.client.impl.hack
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientPlayerEntity
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket
+import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.util.math.Vec3d
 import trans.rights.TransRights
-import trans.rights.client.events.PacketEvent
-import trans.rights.client.events.TickEvent
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.hack.Hack
+import trans.rights.client.events.PacketEvent
+import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.event.commons.EventHandler
-import trans.rights.event.listener.impl.listener
 import trans.rights.event.listener.impl.LambdaListener
+import trans.rights.event.listener.impl.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks"), Wrapper {
     private val speed = settings.add(NumberSetting("Speed", "How fast you want to fly.", 15.0))

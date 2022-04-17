@@ -6,6 +6,7 @@ import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
+import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
@@ -24,7 +25,7 @@ open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     override fun register(listener: Listener<*>) {
         this.registry.getOrPut(listener.target, ::CopyOnWriteArraySet).let {
             it.add(listener)
-            this.registry[listener.target] = CopyOnWriteArraySet(it.sorted())
+            it.stream().sorted(Comparator.comparing(Listener<*>::priority)).collect(Collectors.toSet())
         }
     }
 

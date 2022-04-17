@@ -5,7 +5,7 @@ import trans.rights.TransRights.Companion.NAME
 import trans.rights.client.api.Wrapper
 
 object ChatHelper : Wrapper {
-    private const val prefix = "\\u00A79[$NAME]\\u00A7r"
+    private const val prefix = "\\u00A79[$NAME]\\u00A7r "
 
     fun send(text: String) {
         send(text, true)

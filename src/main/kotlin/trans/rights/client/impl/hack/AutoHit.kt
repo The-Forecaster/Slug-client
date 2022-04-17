@@ -22,7 +22,8 @@ object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Wrapper 
             if (waitForDelay.value && customDelay.value.toInt() != ticks) ticks++
             else if (getTarget() != null || waitForDelay.value && player.handSwinging) minecraft.interactionManager?.attackEntity(
                 player,
-                getTarget())
+                getTarget()
+            )
         }
     }
 

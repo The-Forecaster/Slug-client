@@ -1,20 +1,20 @@
 package trans.rights
 
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.loader.impl.FabricLoaderImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Manager
+import trans.rights.client.api.Wrapper
 import trans.rights.client.api.hack.HackManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
 class TransRights : ClientModInitializer {
-    companion object {
+    companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
-        val mainDirectory: Path = Paths.get("${FabricLoaderImpl.INSTANCE.configDir}/${NAME.lowercase()}")
+        val mainDirectory: Path = Paths.get("${minecraft.runDirectory}/${NAME.lowercase()}")
 
         @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
