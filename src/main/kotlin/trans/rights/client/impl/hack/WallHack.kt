@@ -9,7 +9,7 @@ import trans.rights.event.commons.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
 
-object WallHack : Hack("Wall-hacks", "Makes blocks see through and highlights players"), Wrapper {
+object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players"), Wrapper {
     private val blocks = mutableSetOf<Block>()
 
     @EventHandler

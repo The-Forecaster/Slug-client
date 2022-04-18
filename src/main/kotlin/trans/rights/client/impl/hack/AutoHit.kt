@@ -10,7 +10,7 @@ import trans.rights.event.commons.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
 
-object AutoHit : Hack("Auto-hit", "Automatically hit people near you"), Wrapper {
+object AutoHit : Hack("Aura", "Automatically hit people near you"), Wrapper {
     private val waitForDelay = settings.add(BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true))
     private val customDelay = settings.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 20))
 

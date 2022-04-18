@@ -20,7 +20,7 @@ abstract class Hack(
     val settings: Settings = Settings()
     val file: File
     init {
-        this.file = File(HackManager.directory.absolutePath + "$name.json")
+        this.file = File(HackManager.directory.absolutePath + "$name.json", HackManager.directory.absolutePath)
 
         if (!this.file.exists()) this.file.createNewFile()
     }
