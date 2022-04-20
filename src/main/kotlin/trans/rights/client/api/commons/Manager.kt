@@ -1,6 +1,5 @@
 package trans.rights.client.api.commons
 
-import kotlinx.coroutines.runBlocking
 import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
