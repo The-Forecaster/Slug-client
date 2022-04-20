@@ -1,4 +1,4 @@
-package trans.rights.event.commons
+package trans.rights.event.type
 
 const val DEFAULT = -50
 const val LOWEST = -200

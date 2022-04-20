@@ -1,4 +1,4 @@
-package trans.rights.event.commons
+package trans.rights.event.type
 
 open class Cancellable {
     var cancelled = false

@@ -1,7 +1,7 @@
 package trans.rights.client.events;
 
 import net.minecraft.block.Block;
-import trans.rights.event.commons.Cancellable;
+import trans.rights.event.type.Cancellable;
 
 public final class BlockSideDrawEvent extends Cancellable {
     private final Block block;

@@ -1,6 +1,6 @@
 package trans.rights.event.listener.impl
 
-import trans.rights.event.commons.DEFAULT
+import trans.rights.event.type.DEFAULT
 import trans.rights.event.listener.Listener
 import java.util.function.Consumer
 import kotlin.reflect.KClass

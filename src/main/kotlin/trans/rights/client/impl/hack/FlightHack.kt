@@ -11,7 +11,7 @@ import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.NumberSetting
-import trans.rights.event.commons.EventHandler
+import trans.rights.event.type.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
 
