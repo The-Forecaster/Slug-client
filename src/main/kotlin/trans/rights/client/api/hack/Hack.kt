@@ -3,7 +3,8 @@ package trans.rights.client.api.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import trans.rights.TransRights.Companion.LOGGER
-import trans.rights.client.api.Modular
+import trans.rights.client.api.Wrapper
+import trans.rights.client.api.commons.Modular
 import trans.rights.client.api.setting.Settings
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
@@ -15,12 +16,13 @@ import java.io.File
 abstract class Hack(
     name: String,
     description: String,
-) : Modular(name, description) {
+) : Modular(name, description), Wrapper {
     var enabled: Boolean = false
     val settings: Settings = Settings()
     val file: File
+
     init {
-        this.file = File(HackManager.directory.absolutePath + "$name.json", HackManager.directory.absolutePath)
+        this.file = File("${HackManager.directory}$name.json")
 
         if (!this.file.exists()) this.file.createNewFile()
     }
@@ -53,7 +55,7 @@ abstract class Hack(
 
     fun load(file: File) {
         try {
-            if (FileHelper.read(this.file.toPath()) == "") {
+            if (FileHelper.read(file.toPath()) == "") {
                 this.save(file)
                 return
             }

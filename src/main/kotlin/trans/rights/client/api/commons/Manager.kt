@@ -1,7 +1,8 @@
-package trans.rights.client.api
+package trans.rights.client.api.commons
 
 import kotlinx.coroutines.runBlocking
 import trans.rights.client.api.command.CommandManager
+import trans.rights.client.api.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
 
 abstract class Manager<T>(val values: MutableCollection<T>) {
@@ -9,13 +10,9 @@ abstract class Manager<T>(val values: MutableCollection<T>) {
         private val managers = mutableSetOf<Manager<*>>()
 
         fun load() {
-            managers.addAll(listOf(HackManager, CommandManager))
+            managers.addAll(listOf(FriendManager, HackManager, CommandManager))
 
-            runBlocking {
-                managers.stream().forEach { manager ->
-                    manager()
-                }
-            }
+            managers.stream().forEach(Manager<*>::load)
         }
 
         fun unload() {
@@ -23,7 +20,7 @@ abstract class Manager<T>(val values: MutableCollection<T>) {
         }
     }
 
-    abstract operator fun invoke(): Manager<T>
+    abstract fun load()
 
     fun add(value: T, vararg values: T) {
         this.values.add(value)

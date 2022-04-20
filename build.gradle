@@ -10,32 +10,38 @@ version project.mod_version
 group project.mod_group
 
 loom.accessWidenerPath = file('src/main/resources/transrights.accesswidener')
-compileKotlin.kotlinOptions.jvmTarget = project.java_version as String
+compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = project.java_version as String
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(17)
 }
 
-java.withSourcesJar()
+java {
+    withSourcesJar()
+
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
 
 dependencies {
-    Set<String> libraries = [
-            'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1',
-            'org.jetbrains.kotlin:kotlin-reflect:1.6.20'
-    ]
 
     // fabric dependencies
     minecraft "com.mojang:minecraft:$project.minecraft_version"
     mappings "net.fabricmc:yarn:$project.minecraft_version+$project.yarn_mappings:v2"
     modImplementation 'net.fabricmc:fabric-loader:0.13.3'
 
-    // TR dependencies
-    libraries.forEach { library -> include modImplementation(library)}
+    include(modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'))
+    include(modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.6.20'))
 }
 
 processResources {
+    inputs.property 'version', project.version
+
     filesMatching('fabric.mod.json') {
-        expand 'version': project.mod_version, 'id': project.archives_base_name
+        expand 'version': project.mod_version
     }
 }
 
@@ -46,5 +52,7 @@ jar {
         }
     }
 
-    manifest.attributes('Main-class': 'trans.rights.Main')
+    manifest {
+        attributes('Main-class': 'trans.rights.Main')
+    }
 }

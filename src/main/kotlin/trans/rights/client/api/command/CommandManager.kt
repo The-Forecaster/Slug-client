@@ -5,13 +5,11 @@ import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.impl.command.CHelpCommand
 import trans.rights.client.impl.command.HackCommand
 import trans.rights.client.impl.command.ReloadCommand
-import trans.rights.client.api.Manager
+import trans.rights.client.api.commons.Manager
 
 object CommandManager : Manager<Command>(mutableSetOf()) {
-    override fun invoke(): CommandManager {
+    override fun load() {
         add(CHelpCommand, HackCommand, ReloadCommand)
-
-        return this
     }
 
     @JvmStatic

@@ -17,11 +17,19 @@ class EnumSetting<T: Enum<*>>(name: String, description: String, default: T) : S
         this.value = this.values[this.values.indexOf(this.value) + 1]
     }
 
-    fun set(other: String) {
+    /**
+     * set function but accepts a string instead of an enum constant
+     *
+     * @param other string to set the enum value to
+     * @return true if the string is equal to one of the enum constants in the enum's base class, false otherwise
+     */
+    fun set(other: String) : Boolean {
         for (value in this.values) {
-            if (other.lowercase() == value.name) {
+            if (other.lowercase() == value.toString().lowercase()) {
                 this.set(value)
+                return true
             }
         }
+        return false
     }
 }

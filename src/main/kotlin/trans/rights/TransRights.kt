@@ -3,8 +3,9 @@ package trans.rights
 import net.fabricmc.api.ClientModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import trans.rights.client.api.Manager
+import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.Wrapper
+import trans.rights.client.api.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
 import java.nio.file.Files
 import java.nio.file.Path
@@ -29,7 +30,10 @@ class TransRights : ClientModInitializer {
 
         Manager.load()
 
-        Runtime.getRuntime().addShutdownHook(Thread { HackManager.save() })
+        Runtime.getRuntime().addShutdownHook(Thread {
+            HackManager.save()
+            FriendManager.save()
+        })
 
         LOGGER.info("$NAME has been started in " + (System.currentTimeMillis() - start) + " ms!")
     }

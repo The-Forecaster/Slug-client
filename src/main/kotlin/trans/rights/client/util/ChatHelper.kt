@@ -13,6 +13,6 @@ object ChatHelper : Wrapper {
 
     fun send(text: String, pre: Boolean) {
         if (pre) minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix$text"))
-        minecraft.inGameHud.chatHud.addMessage(Text.of(text))
+        else minecraft.inGameHud.chatHud.addMessage(Text.of(text))
     }
 }
