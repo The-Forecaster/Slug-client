@@ -5,7 +5,5 @@ import net.minecraft.text.Text
 import trans.rights.TransRights
 
 class ClickGuiScreen : Screen(Text.of(TransRights.NAME)) {
-    override fun shouldPause(): Boolean {
-        return false
-    }
+    override fun shouldPause() = false
 }

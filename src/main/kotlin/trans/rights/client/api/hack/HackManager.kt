@@ -9,7 +9,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-object HackManager : Manager<Hack>(mutableSetOf()) {
+object HackManager : Manager<Hack>(mutableListOf(AutoHit, FlightHack, WallHack)) {
     val directory: Path = Paths.get("$mainDirectory/hacks")
 
     fun save() {
@@ -17,8 +17,6 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
     }
 
     override fun load() {
-        add(AutoHit, FlightHack, WallHack)
-
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
         this.values.stream().forEach { hack -> hack.load(hack.file) }
@@ -30,7 +28,5 @@ object HackManager : Manager<Hack>(mutableSetOf()) {
 
     override fun unload() {
         save()
-
-        values.clear()
     }
 }

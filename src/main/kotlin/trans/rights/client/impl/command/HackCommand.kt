@@ -18,18 +18,6 @@ import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
 
 object HackCommand : Command("hack-command", "Change the settings of a Hack", "/<hack> <setting> <value>") {
-    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        HackManager.values.stream().forEach { hack ->
-            dispatcher.register(literal(hack.name.lowercase()).executes { toggleHack(hack) }.then(
-                argument(
-                    "setting", setting(hack)
-                )
-            ).then(argument("value", string())).executes { ctx ->
-                takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
-            })
-        }
-    }
-
     private fun toggleHack(hack: Hack): Int {
         TransRights.LOGGER.info("toggling hack ${hack.name}")
 
@@ -50,5 +38,17 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
         }
 
         return 0
+    }
+
+    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+        HackManager.values.stream().forEach { hack ->
+            dispatcher.register(literal(hack.name.lowercase()).executes { toggleHack(hack) }.then(
+                argument(
+                    "setting", setting(hack)
+                )
+            ).then(argument("value", string())).executes { ctx ->
+                takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
+            })
+        }
     }
 }

@@ -6,25 +6,18 @@ import trans.rights.client.api.hack.HackManager
 
 abstract class Manager<T>(val values: MutableCollection<T>) {
     companion object {
-        private val managers = mutableSetOf<Manager<*>>()
+        private val managers = listOf(FriendManager, HackManager, CommandManager)
 
         fun load() {
-            managers.addAll(listOf(FriendManager, HackManager, CommandManager))
-
-            managers.stream().forEach(Manager<*>::load)
+            managers.stream().forEach { load() }
         }
 
         fun unload() {
-            managers.clear()
+            managers.stream().forEach { unload() }
         }
     }
 
     abstract fun load()
-
-    fun add(value: T, vararg values: T) {
-        this.values.add(value)
-        this.values.addAll(values)
-    }
 
     open fun unload() {
         this.values.clear()

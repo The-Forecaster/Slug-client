@@ -7,13 +7,13 @@ import trans.rights.client.impl.command.HackCommand
 import trans.rights.client.impl.command.ReloadCommand
 import trans.rights.client.api.commons.Manager
 
-object CommandManager : Manager<Command>(mutableSetOf()) {
-    override fun load() {
-        add(CHelpCommand, HackCommand, ReloadCommand)
-    }
-
+object CommandManager : Manager<Command>(mutableListOf(CHelpCommand, HackCommand, ReloadCommand)) {
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
         values.stream().forEach { command -> command.register(dispatcher) }
     }
+
+    override fun load() {}
+
+    override fun unload() {}
 }

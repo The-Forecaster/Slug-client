@@ -17,9 +17,7 @@ import trans.rights.event.listener.impl.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = settings.add(NumberSetting("Speed", "How fast you want to fly.", 15.0))
-    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed",
-        "Do you want to cancel current speed before doing adding speed?",
-        true))
+    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = listener {
@@ -44,6 +42,8 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
         }
     }
 
+    private fun trueSpeed(): Float = speed.value.toFloat() / 10f
+
     override fun onEnable() {
         // if (nullCheck()) disable()
 
@@ -57,8 +57,6 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
             player.abilities.flying = false
         }
     }
-
-    private fun trueSpeed(): Float = speed.value.toFloat() / 10f
 }
 
 private fun ClientPlayerEntity.setFlySpeed(speed: Float, cancelSpeed: Boolean) {

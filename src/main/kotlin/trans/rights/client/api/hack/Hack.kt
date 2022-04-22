@@ -17,9 +17,9 @@ abstract class Hack(
     name: String,
     description: String,
 ) : Modular(name, description), Wrapper {
-    var enabled: Boolean = false
-    val settings: Settings = Settings()
+    private var enabled: Boolean = false
     val file: File
+    val settings: Settings = Settings()
 
     init {
         this.file = File("${HackManager.directory}$name.json")
@@ -71,8 +71,7 @@ abstract class Hack(
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             FileHelper.clearJson(file.toPath())
 
             LOGGER.error("$name failed to load")
@@ -96,8 +95,7 @@ abstract class Hack(
             }
 
             FileHelper.writeToJson(json, file.toPath())
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             LOGGER.error("$name failed to save")
 
             e.printStackTrace()

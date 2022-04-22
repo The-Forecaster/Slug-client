@@ -9,7 +9,7 @@ import trans.rights.client.api.hack.HackManager
 class HackArgumentType internal constructor() : ArgumentType<Hack> {
     override fun parse(reader: StringReader?): Hack? {
         for (hack in HackManager.values) {
-            if (reader!!.string.lowercase() == hack.name.lowercase()) {
+            if (reader?.string?.lowercase() == hack.name.lowercase()) {
                 return hack
             }
         }
