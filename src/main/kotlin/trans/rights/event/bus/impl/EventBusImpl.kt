@@ -5,6 +5,7 @@ import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.LambdaListener
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CopyOnWriteArraySet
 import java.util.stream.Collectors
 import java.util.stream.Stream
@@ -18,12 +19,12 @@ object BasicEventManager : EventManager(LambdaListener::class)
 open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
     constructor(type: Class<out Listener<*>>) : this(type.kotlin)
 
-    override val registry: MutableMap<KClass<*>, MutableSet<Listener<*>>> = ConcurrentHashMap()
+    override val registry: MutableMap<KClass<*>, MutableCollection<Listener<*>>> = ConcurrentHashMap()
 
-    private val subscribers: MutableSet<Any> = CopyOnWriteArraySet()
+    private val subscribers: MutableList<Any> = CopyOnWriteArrayList()
 
     override fun register(listener: Listener<*>) {
-        this.registry.getOrPut(listener.target, ::CopyOnWriteArraySet).let {
+        this.registry.getOrPut(listener.target, ::CopyOnWriteArrayList).let {
             it.add(listener)
             it.stream().sorted(Comparator.comparing(Listener<*>::priority)).collect(Collectors.toSet())
         }
@@ -65,8 +66,8 @@ open class EventManager(private val type: KClass<out Listener<*>>) : EventBus {
         return list.stream().filter(this::isValid) as Stream<out Listener<*>>
     }
 
-    private fun <T : Any> getList(clazz: Class<T>): CopyOnWriteArraySet<out Listener<T>>? {
-        return this.registry[clazz.kotlin] as CopyOnWriteArraySet<out Listener<T>>?
+    private fun <T : Any> getList(clazz: Class<T>): CopyOnWriteArrayList<out Listener<T>>? {
+        return this.registry[clazz.kotlin] as CopyOnWriteArrayList<out Listener<T>>?
     }
 
     private fun isValid(property: KProperty<*>): Boolean {

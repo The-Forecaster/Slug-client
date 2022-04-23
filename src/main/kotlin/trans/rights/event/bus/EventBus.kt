@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * @author Austin
  */
 interface EventBus {
-    val registry: MutableMap<KClass<*>, MutableSet<Listener<*>>>
+    val registry: MutableMap<KClass<*>, MutableCollection<Listener<*>>>
 
     /**
      * Adds the listener into the registry

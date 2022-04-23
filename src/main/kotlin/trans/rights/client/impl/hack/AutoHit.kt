@@ -21,7 +21,7 @@ object AutoHit : Hack("Aura", "Automatically hit people near you") {
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = listener { event ->
         if (event.isInWorld && getTarget() != null) {
-            if (waitForDelay.value && !player.handSwinging) minecraft.interactionManager?.attackEntity(
+            if ((waitForDelay.value && !player.handSwinging) || customDelay.value == ticks.toDouble()) minecraft.interactionManager?.attackEntity(
                 player,
                 getTarget()
             )
