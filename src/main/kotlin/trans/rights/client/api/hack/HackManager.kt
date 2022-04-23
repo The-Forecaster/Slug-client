@@ -9,7 +9,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-object HackManager : Manager<Hack>(mutableListOf(AutoHit, FlightHack, WallHack)) {
+object HackManager : Manager<Hack>(linkedSetOf(AutoHit, FlightHack, WallHack)) {
     val directory: Path = Paths.get("$mainDirectory/hacks")
 
     fun save() {

@@ -14,7 +14,7 @@ import java.util.*
 class Friend(override val name: String, val uuid: UUID) : Nameable
 
 object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
-    private val friendFile: File = File("${mainDirectory}friends.json")
+    private val friendFile: File = File("${mainDirectory}/friends.json")
 
     override fun load() {
         if (!friendFile.exists()) {
