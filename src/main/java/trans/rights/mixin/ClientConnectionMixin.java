@@ -45,7 +45,6 @@ public class ClientConnectionMixin {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
-        if (throwable instanceof IOException)
-            info.cancel();
+        if (throwable instanceof IOException) info.cancel();
     }
 }
