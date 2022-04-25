@@ -7,6 +7,7 @@ import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
+import trans.rights.event.bus.impl.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -20,6 +21,8 @@ class TransRights : ClientModInitializer {
         @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }
+
+    object BasicEventManager : EventManager()
 
     override fun onInitializeClient() {
         val start = System.currentTimeMillis()

@@ -13,7 +13,7 @@ import trans.rights.client.events.PacketEvent.PostReceive;
 import trans.rights.client.events.PacketEvent.PostSend;
 import trans.rights.client.events.PacketEvent.PreReceive;
 import trans.rights.client.events.PacketEvent.PreSend;
-import trans.rights.event.bus.impl.BasicEventManager;
+import trans.rights.TransRights.BasicEventManager;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class ClientConnectionMixin {
     }
 
     private static void postCancel(PacketEvent event, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(event).getCancelled()) info.cancel();
+        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled()) info.cancel();
     }
 
     @Inject(method = "send*", at = @At("HEAD"), cancellable = true)

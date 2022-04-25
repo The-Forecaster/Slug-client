@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  *
  * @author Austin
  */
-interface Listener<T : Any> : Comparable<Listener<T>> {
+interface Listener<T : Any> : Comparable<Listener<*>> {
 
     /** the priority that the listener will be called upon(use wisely) */
     val priority: Int
@@ -22,5 +22,5 @@ interface Listener<T : Any> : Comparable<Listener<T>> {
      */
     operator fun invoke(param: T)
 
-    override operator fun compareTo(other: Listener<T>): Int = if (priority > other.priority) 1 else if (priority == other.priority) 0 else -1
+    override operator fun compareTo(other: Listener<*>) = if (this.priority > other.priority) 1 else if (this.priority == other.priority) 0 else -1
 }

@@ -8,9 +8,11 @@ import trans.rights.client.impl.command.ReloadCommand
 import trans.rights.client.api.commons.Manager
 
 object CommandManager : Manager<Command>(linkedSetOf(CHelpCommand, HackCommand, ReloadCommand)) {
+    var prefix: String = "."
+
     @JvmStatic
     fun registerCommands(dispatcher: CommandDispatcher<ServerCommandSource>) {
-        values.stream().forEach { command -> command.register(dispatcher) }
+        values.forEach { command -> command.register(dispatcher) }
     }
 
     override fun load() {}

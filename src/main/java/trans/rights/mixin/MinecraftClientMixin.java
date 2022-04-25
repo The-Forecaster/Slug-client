@@ -11,7 +11,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import trans.rights.client.events.TickEvent.PostTick;
 import trans.rights.client.events.TickEvent.PreTick;
-import trans.rights.event.bus.impl.BasicEventManager;
+import trans.rights.TransRights.BasicEventManager;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {

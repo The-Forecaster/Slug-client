@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * @author Austin
  */
 interface EventBus {
-    val registry: MutableMap<KClass<*>, MutableCollection<Listener<*>>>
+    val registry: MutableMap<KClass<*>, MutableSet<Listener<*>>>
 
     /**
      * Adds the listener into the registry
@@ -21,14 +21,14 @@ interface EventBus {
     /**
      * Removes the listener into the registry
      *
-     * @param listener instance of listener<*> to unsubscribe
+     * @param listener listener object to unsubscribe
      */
     fun unregister(listener: Listener<*>)
 
     /**
      * Adds all annotated listeners into the registry
      *
-     * @param subscriber event Subscriber instance
+     * @param subscriber event subscriber instance
      */
     fun register(subscriber: Any)
 
@@ -54,5 +54,5 @@ interface EventBus {
      *
      * @return the event you passed
     </T> */
-    fun <T> dispatch(event: T): T
+    fun <T : Any> dispatch(event: T): T
 }

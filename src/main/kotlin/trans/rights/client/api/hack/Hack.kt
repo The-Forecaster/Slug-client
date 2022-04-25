@@ -10,7 +10,7 @@ import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.util.FileHelper
-import trans.rights.event.bus.impl.BasicEventManager
+import trans.rights.TransRights.BasicEventManager
 import java.io.File
 
 abstract class Hack(
@@ -32,6 +32,7 @@ abstract class Hack(
             BasicEventManager.register(this)
 
             this.onEnable()
+
             this.enabled = true
         }
     }
@@ -41,6 +42,7 @@ abstract class Hack(
             BasicEventManager.unregister(this)
 
             this.onDisable()
+
             this.enabled = false
         }
     }

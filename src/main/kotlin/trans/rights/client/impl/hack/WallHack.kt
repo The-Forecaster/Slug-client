@@ -4,7 +4,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.BlockSideDrawEvent
-import trans.rights.event.type.EventHandler
+import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
 
@@ -14,7 +14,7 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
     @EventHandler
     val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event: BlockSideDrawEvent ->
         if (blocks.contains(event.block)) {
-            event.cancelled = true
+            event.cancel()
         }
     }
 
