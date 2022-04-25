@@ -2,8 +2,8 @@ package trans.rights.client.impl.command
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.string
-import net.minecraft.server.command.CommandManager.argument
 import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
+import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.ServerCommandSource
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.command.CommandManager

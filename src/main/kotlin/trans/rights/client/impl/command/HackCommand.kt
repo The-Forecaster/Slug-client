@@ -3,6 +3,7 @@ package trans.rights.client.impl.command
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
+import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
@@ -42,13 +43,14 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
 
     override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         HackManager.values.stream().forEach { hack ->
-            dispatcher.register(literal(hack.name.lowercase()).executes { toggleHack(hack) }.then(
-                argument(
-                    "setting", setting(hack)
-                )
-            ).then(argument("value", string())).executes { ctx ->
-                takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
-            })
+            dispatcher.register(
+                literal(hack.name.lowercase())
+                .executes { toggleHack(hack) }
+                .then(argument("setting", setting(hack)))
+                .then(argument("value", string())).executes { ctx ->
+                    takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
+                }
+            )
         }
     }
 }
