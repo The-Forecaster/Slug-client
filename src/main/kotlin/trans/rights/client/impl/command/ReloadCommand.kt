@@ -3,10 +3,10 @@ package trans.rights.client.impl.command
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
-import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
-import net.minecraft.server.command.CommandManager.literal
-import net.minecraft.server.command.ServerCommandSource
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
@@ -32,7 +32,7 @@ object ReloadCommand : Command("reload", "Reload parts of the client or mc", "/c
         return 0
     }
 
-    private fun reload(context: CommandContext<ServerCommandSource>): Int {
+    private fun reload(context: CommandContext<FabricClientCommandSource>): Int {
         when (getString(context, "type")) {
             null -> reload()
             "client" -> reloadClient()
@@ -46,7 +46,7 @@ object ReloadCommand : Command("reload", "Reload parts of the client or mc", "/c
         return 0
     }
 
-    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(
             literal("creload").executes { reload() }.then(argument("type", string())).executes(this::reload)
         )

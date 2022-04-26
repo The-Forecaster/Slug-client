@@ -9,7 +9,6 @@
   "mixins": [
     "BlockMixin",
     "ClientConnectionMixin",
-    "ClientPlayNetworkHandlerMixin",
     "KeyboardMixin",
     "MinecraftClientMixin"
   ]

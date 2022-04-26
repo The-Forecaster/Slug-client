@@ -1,9 +1,8 @@
 package trans.rights.client.impl.command
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.context.CommandContext
-import net.minecraft.server.command.CommandManager.literal
-import net.minecraft.server.command.ServerCommandSource
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.util.Formatting
 import trans.rights.TransRights
 import trans.rights.client.api.command.Command
@@ -21,7 +20,7 @@ object CHelpCommand : Command("chelp", "Informs you about the different features
         return 0
     }
 
-    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(literal("chelp").executes { helpMessage() })
     }
 }

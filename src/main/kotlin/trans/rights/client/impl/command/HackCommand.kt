@@ -3,10 +3,9 @@ package trans.rights.client.impl.command
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
-import com.mojang.brigadier.exceptions.CommandSyntaxException
-import net.minecraft.server.command.CommandManager.argument
-import net.minecraft.server.command.CommandManager.literal
-import net.minecraft.server.command.ServerCommandSource
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import trans.rights.TransRights
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.hack.Hack
@@ -41,13 +40,10 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
         return 0
     }
 
-    override fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
+    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         HackManager.values.stream().forEach { hack ->
-            dispatcher.register(
-                literal(hack.name.lowercase())
-                .executes { toggleHack(hack) }
-                .then(argument("setting", setting(hack)))
-                .then(argument("value", string())).executes { ctx ->
+            dispatcher.register(literal(hack.name.lowercase()).executes { toggleHack(hack) }
+                .then(argument("setting", setting(hack))).then(argument("value", string())).executes { ctx ->
                     takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
                 }
             )

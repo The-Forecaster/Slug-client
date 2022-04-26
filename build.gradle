@@ -32,8 +32,10 @@ dependencies {
     minecraft "com.mojang:minecraft:$project.minecraft_version"
     mappings "net.fabricmc:yarn:$project.minecraft_version+$project.yarn_mappings:v2"
     modImplementation 'net.fabricmc:fabric-loader:0.13.3'
+    modImplementation fabricApi.module('fabric-command-api-v1', '0.51.1+1.18.2')
 
     include(modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'))
+
     include(modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.6.20'))
 }
 
