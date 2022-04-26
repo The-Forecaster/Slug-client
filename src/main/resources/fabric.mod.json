@@ -14,19 +14,24 @@
     "discord": "Austin the Forecaster#0760"
   },
 
+  "license": "MIT",
   "icon": "assets/transrights/transpride.png",
+
   "environment": "*",
   "entrypoints": {
     "client": [
       "trans.rights.TransRights"
     ]
   },
-  "depends": {
-    "minecraft": "1.18.x",
-    "java": ">=17"
-  },
   "mixins": [
     "transrights.mixins.json"
   ],
+
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
   "accessWidener": "transrights.accesswidener"
 }

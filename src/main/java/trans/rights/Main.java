@@ -13,6 +13,13 @@ public final class Main {
     /**
      * This opens a new Panel when you run the jar so idiots know what to do
      *
+     * @param args run arguments
+     *
+     * @throws ClassNotFoundException if the client is using an unsupported OS / has weird files
+     * @throws InstantiationException when the OS is not compatible with this jvm
+     * @throws IllegalAccessException when the client has the wrong security for this file to be run
+     * @throws UnsupportedLookAndFeelException if the current OS look style isn't compatible with this jvm
+     * @throws IOException if there was an error creating files or folders
      * @author Austin, Toxic
      */
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
@@ -33,7 +40,7 @@ public final class Main {
                 default -> throw new IllegalStateException("Unknown OS: " + getOS());
             };
 
-            if (!modsFile.exists()) Files.createDirectories(modsFile.toPath());
+            if (!modsFile.exists()) modsFile.mkdirs();
 
             Runtime.getRuntime().exec(getURLOpenCommand(modsFile.toURI().toURL()));
         }

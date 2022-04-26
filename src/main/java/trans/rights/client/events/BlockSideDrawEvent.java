@@ -1,15 +1,13 @@
 package trans.rights.client.events;
 
 import net.minecraft.block.Block;
+import org.jetbrains.annotations.NotNull;
 import trans.rights.event.type.Cancellable;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public final class BlockSideDrawEvent extends Cancellable {
     private final Block block;
 
-    @ParametersAreNonnullByDefault
-    public BlockSideDrawEvent(Block block) {
+    public BlockSideDrawEvent(@NotNull Block block) {
         this.block = block;
     }
 

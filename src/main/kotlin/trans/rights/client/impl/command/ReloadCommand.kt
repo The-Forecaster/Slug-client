@@ -12,7 +12,7 @@ import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.util.ChatHelper
 
-object ReloadCommand : Command("reload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
+object ReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
         ChatHelper.send("Reloading the client...")
 
@@ -48,7 +48,7 @@ object ReloadCommand : Command("reload", "Reload parts of the client or mc", "/c
 
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(
-            literal("creload").executes { reload() }.then(argument("type", string())).executes(this::reload)
+            literal(name).executes { reload() }.then(argument("type", string())).executes(this::reload)
         )
     }
 }

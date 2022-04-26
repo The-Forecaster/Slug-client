@@ -18,12 +18,10 @@ abstract class Hack(
     description: String,
 ) : Modular(name, description), Wrapper {
     private var enabled: Boolean = false
-    val file: File
+    val file: File = File("${HackManager.directory}/$name.json")
     val settings: Settings = Settings()
 
     init {
-        this.file = File("${HackManager.directory}/$name.json")
-
         if (!this.file.exists()) this.file.createNewFile()
     }
 

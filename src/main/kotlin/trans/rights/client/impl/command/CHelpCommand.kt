@@ -21,6 +21,6 @@ object CHelpCommand : Command("chelp", "Informs you about the different features
     }
 
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-        dispatcher.register(literal("chelp").executes { helpMessage() })
+        dispatcher.register(literal(name).executes { helpMessage() })
     }
 }
