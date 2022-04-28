@@ -7,6 +7,13 @@ import trans.rights.client.api.setting.Setting
 class Settings : Manager<ModularSettingContainer>(linkedSetOf()) {
     val settings = mutableListOf<Setting<*>>()
 
+    fun <T> add(setting: Setting<T>): Setting<T> {
+        this.values.add(setting)
+
+        return setting
+    }
+
+
     override fun load() {
         this.values.forEach {
             if (it is Setting<*>) this.settings.add(it)
