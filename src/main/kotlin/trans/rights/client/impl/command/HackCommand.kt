@@ -35,7 +35,8 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
             dispatcher.register(literal(hack.name.lowercase()).then(argument("setting", setting(hack)))
                 .then(argument("value", string())).executes { ctx ->
                     takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
-                })
+                }
+            )
         }
     }
 }

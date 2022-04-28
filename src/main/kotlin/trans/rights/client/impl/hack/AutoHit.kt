@@ -7,9 +7,7 @@ import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.event.listener.impl.EventHandler
-import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
-import kotlin.Comparator
 
 object AutoHit : Hack("Aura", "Automatically hit people near you") {
     private val waitForDelay = settings.add(BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true))
@@ -19,19 +17,17 @@ object AutoHit : Hack("Aura", "Automatically hit people near you") {
     private var ticks: Int = 0
 
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = listener { event ->
+    val updateListener = listener<TickEvent.PostTick> { event ->
         if (event.isInWorld && getTarget() != null) {
             if ((waitForDelay.value && !player.handSwinging) || customDelay.value == ticks.toDouble()) minecraft.interactionManager?.attackEntity(
                 player,
                 getTarget()
             )
-
             else if (customDelay.value == ticks.toDouble()) minecraft.interactionManager?.attackEntity(
                 player,
                 getTarget()
             )
-
-            else ticks ++
+            else ticks++
         }
     }
 
@@ -40,6 +36,6 @@ object AutoHit : Hack("Aura", "Automatically hit people near you") {
 
         return minecraft.world!!.players.stream().sorted(Comparator.comparingDouble { player ->
             minecraft.player!!.distanceTo(player).toDouble()
-        }).filter { !player.isFriend() || !hitFriends.value}.findFirst().orElse(null)
+        }).filter { !player.isFriend() || !hitFriends.value }.findFirst().orElse(null)
     }
 }

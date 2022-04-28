@@ -9,15 +9,15 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-object HackManager : Manager<Hack>(linkedSetOf(AutoHit, FlightHack, WallHack)) {
+object HackManager : Manager<Hack>(linkedSetOf()) {
     val directory: Path = Paths.get("$mainDirectory/hacks")
 
-    fun save() {
-        values.stream().forEach { hack -> hack.save(hack.file) }
-    }
+    fun save() = values.stream().forEach { hack -> hack.save(hack.file) }
 
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
+
+        this.values.addAll(listOf(AutoHit, FlightHack, WallHack))
 
         values.stream().forEach { hack -> hack.load(hack.file) }
 
@@ -26,5 +26,7 @@ object HackManager : Manager<Hack>(linkedSetOf(AutoHit, FlightHack, WallHack)) {
 
     override fun unload() {
         save()
+
+        super.unload()
     }
 }

@@ -6,6 +6,7 @@ import trans.rights.client.api.commons.Manager
 import trans.rights.client.impl.command.*
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.reflect.KClass
 
 object CommandManager : Manager<Command>(linkedSetOf(CHelpCommand, HackCommand, PrefixCommand, ReloadCommand, ToggleCommand)) {
     val file: Path = Paths.get("${TransRights.mainDirectory}/prefix.json")

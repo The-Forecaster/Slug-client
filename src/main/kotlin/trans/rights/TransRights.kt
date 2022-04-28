@@ -33,9 +33,11 @@ class TransRights : ClientModInitializer {
 
         Manager.load()
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            HackManager.save()
-            FriendManager.save()
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() {
+                HackManager.save()
+                FriendManager.save()
+            }
         })
 
         LOGGER.info("$NAME has been started in ${System.currentTimeMillis() - start} ms!")

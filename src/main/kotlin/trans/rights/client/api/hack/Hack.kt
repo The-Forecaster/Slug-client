@@ -2,15 +2,15 @@ package trans.rights.client.api.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
+import trans.rights.TransRights.BasicEventManager
 import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
-import trans.rights.client.api.setting.Settings
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
+import trans.rights.client.impl.setting.Settings
 import trans.rights.client.util.FileHelper
-import trans.rights.TransRights.BasicEventManager
 import java.io.File
 
 abstract class Hack(
@@ -64,7 +64,7 @@ abstract class Hack(
 
             this.enabled = json.get("enabled").asBoolean
 
-            for (setting in settings.values) {
+            for (setting in settings.settings) {
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is NumberSetting -> setting.set(json.get(setting.name).asDouble)
@@ -86,7 +86,7 @@ abstract class Hack(
 
             json.add("enabled", JsonPrimitive(enabled))
 
-            for (setting in settings.values) {
+            for (setting in settings.settings) {
                 when (setting) {
                     is BooleanSetting -> json.add(setting.name, JsonPrimitive(setting.value))
                     is NumberSetting -> json.add(setting.name, JsonPrimitive(setting.value))

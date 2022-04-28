@@ -9,22 +9,12 @@ abstract class Manager<T>(val values: MutableCollection<T>) {
     companion object {
         private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager))
 
-        fun load() {
-            managers.stream().forEach { manager ->
-                manager.load()
-            }
-        }
+        fun load() = managers.stream().forEach(Manager<*>::load)
 
-        fun unload() {
-            managers.stream().forEach { manager ->
-                manager.unload()
-            }
-        }
+        fun unload() = managers.stream().forEach(Manager<*>::unload)
     }
 
     abstract fun load()
 
-    open fun unload() {
-        this.values.clear()
-    }
+    open fun unload() = this.values.clear()
 }

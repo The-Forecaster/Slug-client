@@ -12,6 +12,6 @@ import trans.rights.TransRights.BasicEventManager;
 public class KeyboardMixin {
     @Inject(method = "onKey", at = @At("HEAD"))
     private void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo info) {
-        BasicEventManager.INSTANCE.dispatch(KeyEvent.get(key));
+        // BasicEventManager.INSTANCE.dispatch(KeyEvent.get(key));
     }
 }
