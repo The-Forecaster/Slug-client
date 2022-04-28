@@ -8,8 +8,8 @@ import trans.rights.client.api.setting.Setting
 
 class SettingArgumentType internal constructor(private val parent: Hack) : ArgumentType<Setting<*>> {
     override fun parse(reader: StringReader?): Setting<*>? {
-        for (setting in parent.settings.values) {
-            if (setting.name.lowercase() == reader!!.string.lowercase()) return setting
+        if (reader != null) {
+            if (parent.settings.get(reader.string.lowercase()) != null) parent.settings.get(reader.string.lowercase())
         }
 
         return null

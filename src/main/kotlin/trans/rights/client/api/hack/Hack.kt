@@ -53,18 +53,18 @@ abstract class Hack(
 
     open fun onDisable() {}
 
-    fun load(file: File) {
+    fun load(file: File = this.file) {
         try {
             if (FileHelper.read(file.toPath()) == "") {
                 this.save(file)
                 return
             }
 
-            val json = FileHelper.fromJson(file.toPath())
+            val json = FileHelper.fromJson(file.toPath(), true)
 
             this.enabled = json.get("enabled").asBoolean
 
-            for (setting in settings.settings) {
+            settings.settings.forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is NumberSetting -> setting.set(json.get(setting.name).asDouble)
@@ -80,7 +80,7 @@ abstract class Hack(
         }
     }
 
-    fun save(file: File) {
+    fun save(file: File = this.file) {
         try {
             val json = JsonObject()
 

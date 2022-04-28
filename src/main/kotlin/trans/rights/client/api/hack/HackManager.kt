@@ -12,14 +12,14 @@ import java.nio.file.Paths
 object HackManager : Manager<Hack>(linkedSetOf()) {
     val directory: Path = Paths.get("$mainDirectory/hacks")
 
-    fun save() = values.stream().forEach { hack -> hack.save(hack.file) }
+    fun save() = values.stream().forEach(Hack::save)
 
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
-        this.values.addAll(listOf(AutoHit, FlightHack, WallHack))
+        values.addAll(listOf(AutoHit, FlightHack, WallHack))
 
-        values.stream().forEach { hack -> hack.load(hack.file) }
+        values.stream().forEach(Hack::load)
 
         values.sortedWith(Comparator.comparing(Hack::name))
     }

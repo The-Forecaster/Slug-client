@@ -30,11 +30,7 @@ object FileHelper {
         }
     }
 
-    fun fromJson(path: Path): JsonObject {
-        return fromJson(path, true)
-    }
-
-    fun fromJson(path: Path, clearIfException: Boolean): JsonObject {
+    fun fromJson(path: Path, clearIfException: Boolean = false): JsonObject {
         return try {
             gson.fromJson(read(path), JsonObject::class.java)
         } catch (e: RuntimeException) {

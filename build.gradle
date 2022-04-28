@@ -70,10 +70,8 @@ processResources {
 }
 
 jar {
-    from('LICENSE') {
-        rename {
-            "${it}_$archivesBaseName"
-        }
+    from('LICENSE').rename {
+        "${it}_$archivesBaseName"
     }
 
     manifest.attributes('Main-Class': 'trans.rights.Main')

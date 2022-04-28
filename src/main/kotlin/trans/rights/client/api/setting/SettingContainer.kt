@@ -18,4 +18,5 @@ internal interface SettingContainer {
     }
 }
 
+// This is kind of dumb, but we have to do it
 abstract class ModularSettingContainer(name: String, description: String) : Modular(name, description), SettingContainer
