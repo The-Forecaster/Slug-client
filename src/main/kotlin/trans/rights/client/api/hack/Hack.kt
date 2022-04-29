@@ -10,7 +10,10 @@ import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.client.util.FileHelper
+import trans.rights.client.util.clearJson
+import trans.rights.client.util.fromJson
+import trans.rights.client.util.readString
+import trans.rights.client.util.writeToJson
 import java.io.File
 
 abstract class Hack(
@@ -18,7 +21,7 @@ abstract class Hack(
     description: String,
 ) : Modular(name, description), Wrapper {
     private var enabled: Boolean = false
-    val file: File = File("${HackManager.directory}/$name.json")
+    private val file: File = File("${HackManager.directory}/$name.json")
     val settings: Settings = Settings()
 
     init {
@@ -55,12 +58,12 @@ abstract class Hack(
 
     fun load(file: File = this.file) {
         try {
-            if (FileHelper.read(file.toPath()) == "") {
+            if (file.toPath().readString == "") {
                 this.save(file)
                 return
             }
 
-            val json = FileHelper.fromJson(file.toPath(), true)
+            val json = file.toPath().fromJson(true)
 
             this.enabled = json.get("enabled").asBoolean
 
@@ -72,7 +75,7 @@ abstract class Hack(
                 }
             }
         } catch (e: Exception) {
-            FileHelper.clearJson(file.toPath())
+            file.toPath().clearJson()
 
             LOGGER.error("$name failed to load")
 
@@ -94,7 +97,7 @@ abstract class Hack(
                 }
             }
 
-            FileHelper.writeToJson(json, file.toPath())
+            file.toPath().writeToJson(json)
         } catch (e: Exception) {
             LOGGER.error("$name failed to save")
 

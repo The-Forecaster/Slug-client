@@ -7,10 +7,9 @@ import trans.rights.client.impl.hack.FlightHack
 import trans.rights.client.impl.hack.WallHack
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 object HackManager : Manager<Hack>(linkedSetOf()) {
-    val directory: Path = Paths.get("$mainDirectory/hacks")
+    val directory: Path = Path.of("$mainDirectory/hacks")
 
     fun save() = values.stream().forEach(Hack::save)
 

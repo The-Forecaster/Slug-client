@@ -1,6 +1,6 @@
 package trans.rights
 
-import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
@@ -12,7 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class TransRights : ClientModInitializer {
+class TransRights : ModInitializer {
     companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
@@ -24,7 +24,7 @@ class TransRights : ClientModInitializer {
 
     object BasicEventManager : EventManager()
 
-    override fun onInitializeClient() {
+    override fun onInitialize() {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")

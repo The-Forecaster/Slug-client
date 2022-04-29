@@ -3,6 +3,7 @@ package trans.rights.client.util
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
+import com.google.gson.JsonSyntaxException
 import trans.rights.TransRights.Companion.LOGGER
 import java.io.BufferedWriter
 import java.io.IOException
@@ -10,35 +11,49 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-object FileHelper {
-    private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
+private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
-    fun writeToJson(element: JsonObject, path: Path) {
-        val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(path)))
-
-        writer.write(gson.toJson(element))
-        writer.close()
-    }
-
-    fun read(path: Path): String {
-        return try {
-            Files.readString(path)
-        } catch (e: IOException) {
-            LOGGER.error("Couldn't read $path")
-
-            ""
+internal val Path.readString: String
+    get() = try {
+        Files.readString(this)
+    } catch (e: Exception) {
+        when (e) {
+            is IOException, is SecurityException -> LOGGER.error("Couldn't read $this")
+            else -> throw e
         }
+
+        ""
     }
 
-    fun fromJson(path: Path, clearIfException: Boolean = false): JsonObject {
-        return try {
-            gson.fromJson(read(path), JsonObject::class.java)
-        } catch (e: RuntimeException) {
-            if (clearIfException) clearJson(path)
+@kotlin.jvm.Throws(
+    IOException::class,
+    IllegalArgumentException::class,
+    UnsupportedOperationException::class,
+    FileAlreadyExistsException::class,
+    SecurityException::class
+)
+fun Path.writeToJson(element: JsonObject) {
+    val writer = BufferedWriter(OutputStreamWriter(Files.newOutputStream(this)))
 
-            JsonObject()
-        }
-    }
-
-    fun clearJson(path: Path) = writeToJson(JsonObject(), path)
+    writer.write(gson.toJson(element))
+    writer.close()
 }
+
+fun Path.fromJson(clearIfException: Boolean = false): JsonObject {
+    return try {
+        gson.fromJson(this.readString, JsonObject::class.java)
+    } catch (e: JsonSyntaxException) {
+        if (clearIfException) this.clearJson()
+
+        JsonObject()
+    }
+}
+
+@kotlin.jvm.Throws(
+    IOException::class,
+    IllegalArgumentException::class,
+    UnsupportedOperationException::class,
+    FileAlreadyExistsException::class,
+    SecurityException::class
+)
+fun Path.clearJson() = this.writeToJson(JsonObject())

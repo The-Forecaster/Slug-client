@@ -7,7 +7,8 @@ import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.commons.Nameable
-import trans.rights.client.util.FileHelper
+import trans.rights.client.util.fromJson
+import trans.rights.client.util.writeToJson
 import java.io.File
 import java.util.*
 
@@ -22,7 +23,7 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
             return
         }
 
-        for (entry in FileHelper.fromJson(friendFile.toPath()).keySet()) {
+        for (entry in friendFile.toPath().fromJson().keySet()) {
             values.add(Friend(entry, minecraft.socialInteractionsManager.getUuid(entry)))
         }
     }
@@ -40,7 +41,7 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
             obj.add(friend.name, JsonPrimitive(friend.uuid.toString()))
         }
 
-        FileHelper.writeToJson(obj, friendFile.toPath())
+        friendFile.toPath().writeToJson(obj)
     }
 }
 
