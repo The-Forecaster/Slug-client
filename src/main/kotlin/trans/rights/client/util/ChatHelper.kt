@@ -1,11 +1,12 @@
 package trans.rights.client.util
 
 import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import trans.rights.TransRights.Companion.NAME
 import trans.rights.client.api.Wrapper
 
 object ChatHelper : Wrapper {
-    private const val prefix = "\\u00A79[$NAME]\\u00A7r "
+    private val prefix = "${Formatting.BLUE}[$NAME]${Formatting.RESET} "
 
     fun send(text: String) {
         send(text, true)

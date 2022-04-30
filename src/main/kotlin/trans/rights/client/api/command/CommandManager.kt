@@ -11,16 +11,16 @@ import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.listener
 import java.nio.file.Path
 
-object CommandManager :
-    Manager<Command>(linkedSetOf(CHelpCommand, HackCommand, PrefixCommand, ReloadCommand, ToggleCommand)), Wrapper {
+object CommandManager : Manager<Command>(linkedSetOf(CHelpCommand, CReloadCommand, HackCommand, PrefixCommand, ToggleCommand)), Wrapper {
     val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
 
     var prefix: String = "."
 
     @EventHandler
     val chatListener = listener<KeyEvent> { event ->
-        if (this.prefix.toCharArray()[0].code == event.key) {
+        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) {
             minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
+            (minecraft.currentScreen as ChatScreen)
         }
     }
 

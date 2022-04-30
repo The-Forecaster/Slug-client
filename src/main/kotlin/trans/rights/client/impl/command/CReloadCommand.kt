@@ -1,5 +1,6 @@
 package trans.rights.client.impl.command
 
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.string
@@ -12,7 +13,7 @@ import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.util.ChatHelper
 
-object ReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
+object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
         ChatHelper.send("Reloading the client...")
 
@@ -28,22 +29,20 @@ object ReloadCommand : Command("creload", "Reload parts of the client or mc", "/
 
     private fun reload(): Int {
         reloadMc()
+        reloadClient()
 
-        return 0
+        return SINGLE_SUCCESS
     }
 
     private fun reload(context: CommandContext<FabricClientCommandSource>): Int {
         when (getString(context, "type")) {
-            null -> reload()
+            null, "mc", "minecraft" -> reloadMc()
             "client" -> reloadClient()
-            "mc" -> reloadMc()
-            "minecraft" -> reloadMc()
-            "all" -> reload()
-            "full" -> reload()
+            "all", "full" -> reload()
             else -> throw builtin.dispatcherUnknownArgument().create()
         }
 
-        return 0
+        return SINGLE_SUCCESS
     }
 
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {

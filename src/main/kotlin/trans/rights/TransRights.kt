@@ -1,6 +1,6 @@
 package trans.rights
 
-import net.fabricmc.api.ModInitializer
+import net.fabricmc.api.ClientModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
@@ -12,10 +12,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class TransRights : ModInitializer {
+class TransRights : ClientModInitializer {
     companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
+        // Dumb implementation but it works for now
         val mainDirectory: Path = Paths.get("${minecraft.runDirectory}/${NAME.lowercase()}")
 
         @JvmField
@@ -24,7 +25,7 @@ class TransRights : ModInitializer {
 
     object BasicEventManager : EventManager()
 
-    override fun onInitialize() {
+    override fun onInitializeClient() {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")

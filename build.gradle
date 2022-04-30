@@ -17,7 +17,7 @@ compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarge
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(17)
-    it.options.encoding = 'UTF-8'
+    it.options.encoding 'UTF-8'
 }
 
 java {
@@ -61,22 +61,15 @@ dependencies {
     apiModules.forEach {
         include modImplementation(fabricApi.module(it, "0.51.1+$minecraft_version")) { transitive = false }
     }
-
-    compileOnly 'org.jetbrains:annotations:23.0.0'
 }
 
 processResources {
-    inputs.property 'version', project.version
+    duplicatesStrategy DuplicatesStrategy.WARN
 
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'fabric.mod.json'
-        expand 'version': project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'fabric.mod.json'
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
     }
 }
 
