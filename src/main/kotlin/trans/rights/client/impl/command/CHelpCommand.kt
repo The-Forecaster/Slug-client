@@ -13,7 +13,7 @@ import trans.rights.client.util.ChatHelper
 object CHelpCommand : Command("chelp", "Informs you about the different features of this client", "/chelp") {
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(literal(name).executes {
-            ChatHelper.send(TransRights.NAME)
+            ChatHelper.send(TransRights.NAME, true)
 
             CommandManager.values.forEach { command ->
                 ChatHelper.send("${Formatting.GREEN}${command.name} : ${command.description} : ${command.syntax}", false)

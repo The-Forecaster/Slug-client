@@ -2,11 +2,18 @@ package trans.rights.client.api.command
 
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
 import net.minecraft.client.gui.screen.ChatScreen
+import net.minecraft.command.argument.ArgumentTypes
+import net.minecraft.command.argument.serialize.ArgumentSerializer
+import net.minecraft.command.argument.serialize.ConstantArgumentSerializer
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.events.KeyEvent
 import trans.rights.client.impl.command.*
+import trans.rights.client.impl.command.arguments.HackArgumentType
+import trans.rights.client.impl.command.arguments.SettingArgumentType
+import trans.rights.client.impl.command.arguments.hack
+import trans.rights.client.impl.command.arguments.setting
 import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.listener
 import java.nio.file.Path

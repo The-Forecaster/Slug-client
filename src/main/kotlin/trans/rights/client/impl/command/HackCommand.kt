@@ -32,13 +32,15 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
 
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         HackManager.values.stream().forEach { hack ->
-            dispatcher.register(literal(hack.name.lowercase()).then(argument("setting", setting(hack))
-                .then(argument("value", word())).executes { ctx ->
-                    takeInput(getString(ctx, "value"), getSetting(ctx, "setting"))
+            dispatcher.register(
+                literal(hack.name.lowercase()).then(argument("setting", setting()).then(argument("value", word()))
+                    .executes { ctx ->
+                        takeInput(getString(ctx, "value"), getSetting(ctx, "setting")!!)
 
-                    SINGLE_SUCCESS
-                }
-            ))
+                        SINGLE_SUCCESS
+                    }
+                )
+            )
         }
     }
 }

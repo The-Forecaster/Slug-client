@@ -6,16 +6,12 @@ import com.mojang.brigadier.context.CommandContext
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.setting.Setting
 
-class SettingArgumentType internal constructor(private val parent: Hack) : ArgumentType<Setting<*>> {
-    override fun parse(reader: StringReader?): Setting<*>? {
-        if (reader != null) {
-            if (parent.settings.get(reader.string.lowercase()) != null) parent.settings.get(reader.string.lowercase())
-        }
-
-        return null
+class SettingArgumentType internal constructor() : ArgumentType<String> {
+    override fun parse(reader: StringReader): String {
+        return reader.readString()
     }
 }
 
-fun setting(hack: Hack): SettingArgumentType = SettingArgumentType(hack)
+fun setting(): SettingArgumentType = SettingArgumentType()
 
-fun getSetting(context: CommandContext<*>, name: String): Setting<*> = context.getArgument(name, Setting::class.java)
+fun getSetting(context: CommandContext<*>, name: String): Setting<*>? = context.getArgument("hack", Hack::class.java).settings.get(name)
