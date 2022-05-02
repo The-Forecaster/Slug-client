@@ -23,8 +23,13 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
             return
         }
 
-        for (entry in friendFile.toPath().fromJson().keySet()) {
-            values.add(Friend(entry, minecraft.socialInteractionsManager.getUuid(entry)))
+        friendFile.fromJson().keySet().stream().forEach {
+            values.add(
+                Friend(
+                    it,
+                    minecraft.socialInteractionsManager.getUuid(it)
+                )
+            )
         }
     }
 
@@ -37,21 +42,14 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
     fun save() {
         val obj = JsonObject()
 
-        for (friend in values) {
-            obj.add(friend.name, JsonPrimitive(friend.uuid.toString()))
+        values.stream().forEach {
+            obj.add(it.name, JsonPrimitive(it.uuid.toString()))
         }
 
-        friendFile.toPath().writeToJson(obj)
+        friendFile.writeToJson(obj)
     }
 }
 
-fun ClientPlayerEntity.isFriend(): Boolean {
-    for (friend in FriendManager.values) {
-        if (this.uuid == friend.uuid) {
-            return true
-        }
-    }
-    return false
-}
+fun ClientPlayerEntity.isFriend() = FriendManager.values.map(Friend::uuid).contains(this.uuid)
 
 

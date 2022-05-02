@@ -17,11 +17,11 @@ import trans.rights.event.listener.impl.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = settings.add(NumberSetting("Speed", "How fast you want to fly.", 15.0))
-    private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
+    // private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = listener {
-        if (!nullCheck()) player.setFlySpeed(trueSpeed(), cancelSpeed.value)
+        if (!nullCheck()) player.setFlySpeed(trueSpeed(), true)
     }
 
     @EventHandler
@@ -42,10 +42,10 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
         }
     }
 
-    private fun trueSpeed(): Float = speed.value.toFloat() / 10f
+    private fun trueSpeed() = (speed.value / 10).toFloat()
 
     override fun onEnable() {
-        // if (nullCheck()) disable()
+        if (nullCheck()) disable()
 
         TransRights.LOGGER.info("$name enabled")
     }

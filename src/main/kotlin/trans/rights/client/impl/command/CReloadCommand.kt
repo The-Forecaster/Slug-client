@@ -3,7 +3,7 @@ package trans.rights.client.impl.command
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
-import com.mojang.brigadier.arguments.StringArgumentType.string
+import com.mojang.brigadier.arguments.StringArgumentType.word
 import com.mojang.brigadier.context.CommandContext
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
@@ -11,18 +11,18 @@ import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
-import trans.rights.client.util.ChatHelper
+import trans.rights.client.util.clientSend
 
 object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
-        ChatHelper.send("Reloading the client...")
+        minecraft.inGameHud.chatHud.clientSend("Reloading the client...")
 
         Manager.unload()
         Manager.load()
     }
 
     private fun reloadMc() {
-        ChatHelper.send("Reloading minecraft...")
+        minecraft.inGameHud.chatHud.clientSend("Reloading minecraft...")
 
         minecraft.reloadResourcesConcurrently()
     }
@@ -47,7 +47,7 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
 
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(
-            literal(name).executes { reload() }.then(argument("type", string())).executes(this::reload)
+            literal(name).executes { reload() }.then(argument("type", word())).executes(this::reload)
         )
     }
 }

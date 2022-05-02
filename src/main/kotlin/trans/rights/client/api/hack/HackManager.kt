@@ -1,7 +1,9 @@
 package trans.rights.client.api.hack
 
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
 import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.commons.Manager
+import trans.rights.client.impl.command.HackCommand
 import trans.rights.client.impl.hack.AutoHit
 import trans.rights.client.impl.hack.FlightHack
 import trans.rights.client.impl.hack.WallHack
@@ -21,6 +23,8 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
         values.stream().forEach(Hack::load)
 
         values.sortedWith(Comparator.comparing(Hack::name))
+
+        HackCommand.register(ClientCommandManager.DISPATCHER)
     }
 
     override fun unload() {

@@ -6,13 +6,19 @@ import com.mojang.brigadier.arguments.StringArgumentType.word
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
+import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.command.CommandManager
+import trans.rights.client.util.clientSend
 
-object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/prefix <value>") {
+object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/prefix <value>"), Wrapper {
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(literal(name).then(argument("value", word())).executes { ctx ->
-            CommandManager.prefix = ctx.getArgument("value", String::class.java)
+            ctx.getArgument("value", String::class.java).let {
+                CommandManager.prefix = it
+
+                minecraft.inGameHud.chatHud.clientSend("Prefix set to $it")
+            }
 
             SINGLE_SUCCESS
         })

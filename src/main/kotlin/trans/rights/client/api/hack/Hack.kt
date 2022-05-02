@@ -58,16 +58,16 @@ abstract class Hack(
 
     fun load(file: File = this.file) {
         try {
-            if (file.toPath().readString == "") {
+            if (file.readString == "") {
                 this.save(file)
                 return
             }
 
-            val json = file.toPath().fromJson(true)
+            val json = file.fromJson(true)
 
             this.enabled = json.get("enabled").asBoolean
 
-            settings.settings.forEach { setting ->
+            this.settings.settings.stream().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is NumberSetting -> setting.set(json.get(setting.name).asDouble)
@@ -75,7 +75,7 @@ abstract class Hack(
                 }
             }
         } catch (e: Exception) {
-            file.toPath().clearJson()
+            file.clearJson()
 
             LOGGER.error("$name failed to load")
 
@@ -89,7 +89,7 @@ abstract class Hack(
 
             json.add("enabled", JsonPrimitive(enabled))
 
-            for (setting in settings.settings) {
+            this.settings.settings.stream().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> json.add(setting.name, JsonPrimitive(setting.value))
                     is NumberSetting -> json.add(setting.name, JsonPrimitive(setting.value))
@@ -97,7 +97,7 @@ abstract class Hack(
                 }
             }
 
-            file.toPath().writeToJson(json)
+            file.writeToJson(json)
         } catch (e: Exception) {
             LOGGER.error("$name failed to save")
 

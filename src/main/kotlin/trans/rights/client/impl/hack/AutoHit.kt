@@ -10,8 +10,8 @@ import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.listener
 
 object AutoHit : Hack("Aura", "Automatically hit people near you") {
-    private val waitForDelay = settings.add(BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true))
-    private val customDelay = settings.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 20))
+    private val customDelay = settings.add(BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true))
+    private val customTick = customDelay.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 20))
     private val hitFriends = settings.add(BooleanSetting("Friends", "Whether to attack friends or not", false))
 
     private var ticks: Int = 0
@@ -19,15 +19,17 @@ object AutoHit : Hack("Aura", "Automatically hit people near you") {
     @EventHandler
     val updateListener = listener<TickEvent.PostTick> { event ->
         if (event.isInWorld && getTarget() != null) {
-            if ((waitForDelay.value && !player.handSwinging) || customDelay.value == ticks.toDouble()) minecraft.interactionManager?.attackEntity(
-                player,
-                getTarget()
-            )
-            else if (customDelay.value == ticks.toDouble()) minecraft.interactionManager?.attackEntity(
-                player,
-                getTarget()
-            )
-            else ticks++
+            if (!customDelay.value && !player.handSwinging) {
+                minecraft.interactionManager?.attackEntity(
+                    player, getTarget()
+                )
+            } else if (customDelay.value && customTick.value == ticks.toDouble()) {
+                minecraft.interactionManager?.attackEntity(
+                    player, getTarget()
+                )
+
+                ticks = 0
+            } else if (customDelay.value) ticks++
         }
     }
 

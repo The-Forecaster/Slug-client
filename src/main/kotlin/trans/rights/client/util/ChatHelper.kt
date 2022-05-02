@@ -1,19 +1,16 @@
 package trans.rights.client.util
 
+import net.minecraft.client.gui.hud.ChatHud
 import net.minecraft.text.Text
-import net.minecraft.util.Formatting
 import trans.rights.TransRights.Companion.NAME
-import trans.rights.client.api.Wrapper
 
-object ChatHelper : Wrapper {
-    private val prefix = "${Formatting.BLUE}[$NAME]${Formatting.RESET} "
+internal const val prefix = "§9[$NAME]§r "
 
-    fun send(text: String) {
-        send(text, true)
-    }
+fun ChatHud.clientSend(text: String) {
+    this.clientSend(text)
+}
 
-    fun send(text: String, pre: Boolean) {
-        if (pre) minecraft.inGameHud.chatHud.addMessage(Text.of("$prefix$text"))
-        else minecraft.inGameHud.chatHud.addMessage(Text.of(text))
-    }
+fun ChatHud.clientSend(text: String, pre: Boolean) {
+    if (pre) this.addMessage(Text.of("${prefix}$text"))
+    else this.addMessage(Text.of(text))
 }

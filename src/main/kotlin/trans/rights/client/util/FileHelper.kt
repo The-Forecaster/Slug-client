@@ -6,6 +6,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import trans.rights.TransRights.Companion.LOGGER
 import java.io.BufferedWriter
+import java.io.File
 import java.io.IOException
 import java.io.OutputStreamWriter
 import java.nio.file.Files
@@ -13,7 +14,7 @@ import java.nio.file.Path
 
 private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
-internal val Path.readString: String
+inline val Path.readString: String
     get() = try {
         Files.readString(this)
     } catch (e: Exception) {
@@ -24,6 +25,9 @@ internal val Path.readString: String
 
         ""
     }
+
+inline val File.readString: String
+    get() = this.toPath().readString
 
 @kotlin.jvm.Throws(
     IOException::class,
@@ -39,15 +43,19 @@ fun Path.writeToJson(element: JsonObject) {
     writer.close()
 }
 
-fun Path.fromJson(clearIfException: Boolean = false): JsonObject {
-    return try {
-        gson.fromJson(this.readString, JsonObject::class.java)
-    } catch (e: JsonSyntaxException) {
-        if (clearIfException) this.clearJson()
+fun File.writeToJson(element: JsonObject) = this.toPath().writeToJson(element)
 
-        JsonObject()
+fun Path.fromJson(clearIfException: Boolean = false): JsonObject = try {
+    gson.fromJson(this.readString, JsonObject::class.java)
+} catch (e: JsonSyntaxException) {
+    if (clearIfException) runCatching {
+        clearJson()
     }
+
+    JsonObject()
 }
+
+fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(clearIfException)
 
 @kotlin.jvm.Throws(
     IOException::class,
@@ -57,3 +65,12 @@ fun Path.fromJson(clearIfException: Boolean = false): JsonObject {
     SecurityException::class
 )
 fun Path.clearJson() = this.writeToJson(JsonObject())
+
+@kotlin.jvm.Throws(
+    IOException::class,
+    IllegalArgumentException::class,
+    UnsupportedOperationException::class,
+    FileAlreadyExistsException::class,
+    SecurityException::class
+)
+fun File.clearJson() = this.toPath().clearJson()

@@ -5,18 +5,20 @@ import com.mojang.brigadier.CommandDispatcher
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.util.Formatting
-import trans.rights.TransRights
+import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.command.CommandManager
-import trans.rights.client.util.ChatHelper
+import trans.rights.client.util.clientSend
 
-object CHelpCommand : Command("chelp", "Informs you about the different features of this client", "/chelp") {
+object CHelpCommand : Command("chelp", "Informs you about the different features of this client", "/chelp"), Wrapper {
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(literal(name).executes {
-            ChatHelper.send(TransRights.NAME, true)
+            minecraft.inGameHud.chatHud.clientSend("Commands", true)
 
             CommandManager.values.forEach { command ->
-                ChatHelper.send("${Formatting.GREEN}${command.name} : ${command.description} : ${command.syntax}", false)
+                minecraft.inGameHud.chatHud.clientSend(
+                    "${Formatting.GREEN}${command.name} : ${command.description} : ${command.syntax}", false
+                )
             }
 
             SINGLE_SUCCESS

@@ -1,8 +1,8 @@
 package trans.rights.event.bus.impl
 
-import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
+import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArraySet
@@ -60,5 +60,6 @@ open class EventManager(private val type: KClass<out Listener<*>> = LambdaListen
 
     private fun filter(list: Collection<KProperty<*>>) = list.stream().filter(this::isValid) as Stream<out Listener<*>>
 
-    private fun isValid(property: KProperty<*>) = property.annotations.contains(EventHandler()) && (type.isSuperclassOf(property::class) || type::class == property::class)
+    private fun isValid(property: KProperty<*>) =
+        property.annotations.contains(EventHandler()) && (type.isSuperclassOf(property::class) || type::class == property::class)
 }

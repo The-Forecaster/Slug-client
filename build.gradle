@@ -16,7 +16,7 @@ loom {
 compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '17'
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release.set(17)
+    it.options.release.set 17
     it.options.encoding 'UTF-8'
 }
 
@@ -26,9 +26,7 @@ java {
     withJavadocJar()
 }
 
-repositories {
-    mavenCentral()
-}
+repositories.mavenCentral()
 
 dependencies {
     var apiModules = [
