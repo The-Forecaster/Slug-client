@@ -6,10 +6,10 @@ import trans.rights.client.api.setting.Setting
 import trans.rights.client.api.setting.SettingContainer
 
 class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<ModularSettingContainer> {
-    val allSettings = this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children}.toMutableList()
+    fun allSettings() = this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children}.toMutableList()
 
     fun add(setting: ModularSettingContainer): ModularSettingContainer {
-        if (setting is Setting<*> && setting.isParentSetting) this.allSettings.addAll(setting.children)
+        if (setting is Setting<*> && setting.isParentSetting) this.allSettings().addAll(setting.children)
         this.values.add(setting)
 
         this.values.add(setting)
@@ -17,15 +17,14 @@ class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<Modul
         return setting
     }
 
-    fun get(setting: String): Setting<*>? = this.allSettings.find {
+    fun get(setting: String): Setting<*>? = this.allSettings().find {
         it.name.lowercase() == setting.lowercase()
     }
 
-
     override fun load() {
         this.values.forEach {
-            if (it is Setting<*>) this.allSettings.add(it)
-            this.allSettings.addAll(it.children)
+            if (it is Setting<*>) this.allSettings().add(it)
+            this.allSettings().addAll(it.children)
         }
 
         this.values.sortedWith(Comparator.comparing(ModularSettingContainer::name))
