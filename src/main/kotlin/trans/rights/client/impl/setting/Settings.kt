@@ -3,31 +3,29 @@ package trans.rights.client.impl.setting
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.setting.ModularSettingContainer
 import trans.rights.client.api.setting.Setting
+import trans.rights.client.api.setting.SettingContainer
 
 class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<ModularSettingContainer> {
-    val settings = mutableListOf<Setting<*>>()
+    val allSettings = this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children}.toMutableList()
 
-    fun <T> add(setting: Setting<T>): Setting<T> {
-        if (setting.isParentSetting) this.settings.addAll(setting.children)
-        this.settings.add(setting)
+    fun add(setting: ModularSettingContainer): ModularSettingContainer {
+        if (setting is Setting<*> && setting.isParentSetting) this.allSettings.addAll(setting.children)
+        this.values.add(setting)
 
         this.values.add(setting)
 
         return setting
     }
 
-    fun get(setting: String): Setting<*>? {
-        this.settings.forEach {
-            if (it.name.lowercase() == setting.lowercase()) return it
-        }
-        return null
+    fun get(setting: String): Setting<*>? = this.allSettings.find {
+        it.name.lowercase() == setting.lowercase()
     }
 
 
     override fun load() {
         this.values.forEach {
-            if (it is Setting<*>) this.settings.add(it)
-            this.settings.addAll(it.children)
+            if (it is Setting<*>) this.allSettings.add(it)
+            this.allSettings.addAll(it.children)
         }
 
         this.values.sortedWith(Comparator.comparing(ModularSettingContainer::name))

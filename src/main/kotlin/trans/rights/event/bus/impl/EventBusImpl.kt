@@ -38,7 +38,7 @@ open class EventManager(private val type: KClass<out Listener<*>> = LambdaListen
     }
 
     override fun register(subscriber: Any) {
-        this.cache.computeIfAbsent(subscriber) {
+        this.cache.getOrPut(subscriber) {
             subscriber::class.declaredMemberProperties.stream().filter(this::isValid).map(this::asListener).collect(
                 Collectors.toList()
             )
@@ -57,6 +57,5 @@ open class EventManager(private val type: KClass<out Listener<*>> = LambdaListen
 
     private fun asListener(property: KProperty<*>) = property as Listener<*>
 
-    private fun isValid(property: KProperty<*>) = property.annotations.contains(EventHandler()) && property::class.superclasses.contains(
-        Listener::class)
+    private fun isValid(property: KProperty<*>) = property.annotations.contains(EventHandler()) && property::class.superclasses.contains(Listener::class)
 }

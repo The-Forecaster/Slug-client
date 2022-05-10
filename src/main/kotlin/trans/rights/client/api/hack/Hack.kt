@@ -67,7 +67,7 @@ abstract class Hack(
 
             this.enabled = json.get("enabled").asBoolean
 
-            this.settings.settings.stream().forEach { setting ->
+            this.settings.allSettings.stream().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is NumberSetting -> setting.set(json.get(setting.name).asDouble)
@@ -89,7 +89,7 @@ abstract class Hack(
 
             json.add("enabled", JsonPrimitive(enabled))
 
-            this.settings.settings.stream().forEach { setting ->
+            this.settings.allSettings.stream().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> json.add(setting.name, JsonPrimitive(setting.value))
                     is NumberSetting -> json.add(setting.name, JsonPrimitive(setting.value))

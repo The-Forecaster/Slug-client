@@ -7,6 +7,12 @@ abstract class Setting<T>(name: String, description: String, default: T, val isP
     var value: T = default
     override var children: LinkedList<Setting<*>> = LinkedList()
 
+    override fun <T : Setting<*>> add(setting: T): T {
+        if (this.isParentSetting) return super.add(setting)
+
+        throw RuntimeException("$name is not a parent setting!")
+    }
+
     open fun set(other: T) {
         this.value = other
     }

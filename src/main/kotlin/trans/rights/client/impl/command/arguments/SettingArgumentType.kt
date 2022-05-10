@@ -14,4 +14,5 @@ class SettingArgumentType internal constructor() : ArgumentType<String> {
 
 fun setting(): SettingArgumentType = SettingArgumentType()
 
-fun getSetting(context: CommandContext<*>, name: String): Setting<*>? = context.getArgument("hack", Hack::class.java).settings.get(name)
+fun getSetting(context: CommandContext<*>, name: String, hack: Hack = getHack(context, "hack")): Setting<*>? =
+    hack.settings.get(name)
