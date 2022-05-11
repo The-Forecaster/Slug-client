@@ -3,12 +3,13 @@ package trans.rights.client.impl.setting
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.setting.ModularSettingContainer
 import trans.rights.client.api.setting.Setting
-import trans.rights.client.api.setting.SettingContainer
 
 class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<ModularSettingContainer> {
-    fun allSettings() = this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children}.toMutableList()
+    fun allSettings() =
+        this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children }
+            .toMutableList()
 
-    fun add(setting: ModularSettingContainer): ModularSettingContainer {
+    fun <T : ModularSettingContainer> add(setting: T): T {
         if (setting is Setting<*> && setting.isParentSetting) this.allSettings().addAll(setting.children)
         this.values.add(setting)
 

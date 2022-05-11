@@ -1,5 +1,6 @@
 package trans.rights.client.util
 
+
 import net.minecraft.client.gui.hud.ChatHud
 import net.minecraft.text.Text
 import trans.rights.TransRights.Companion.NAME
@@ -7,7 +8,7 @@ import trans.rights.TransRights.Companion.NAME
 internal const val prefix = "§9[$NAME]§r "
 
 fun ChatHud.clientSend(text: String) {
-    this.clientSend(text)
+    this.clientSend(text, true)
 }
 
 fun ChatHud.clientSend(text: String, pre: Boolean) {

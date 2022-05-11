@@ -2,11 +2,13 @@ package trans.rights.client.impl.command
 
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
+import net.minecraft.command.argument.serialize.StringArgumentSerializer
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.hack.HackManager
@@ -40,7 +42,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
                     ).then(argument("value", word()).executes { ctx ->
                         takeInput(getString(ctx, "value"), getSetting(ctx, "setting", hack)!!)
 
-                        minecraft.inGameHud.chatHud.clientSend("${getSetting(ctx, "setting", hack)!!.name} set to ${getString(ctx, "value")}", true)
+                        minecraft.inGameHud.chatHud.clientSend("§a${getSetting(ctx, "setting", hack)!!.name} set to ${getString(ctx, "value")}", true)
 
                         SINGLE_SUCCESS
                     })
