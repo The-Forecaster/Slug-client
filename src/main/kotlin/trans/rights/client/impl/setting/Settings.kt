@@ -11,8 +11,7 @@ class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<Modul
 
     fun <T : ModularSettingContainer> add(setting: T): T {
         if (setting is Setting<*> && setting.isParentSetting) this.allSettings().addAll(setting.children)
-        this.values.add(setting)
-
+        
         this.values.add(setting)
 
         return setting
