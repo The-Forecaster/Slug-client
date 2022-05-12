@@ -11,15 +11,13 @@ class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<Modul
 
     fun <T : ModularSettingContainer> add(setting: T): T {
         if (setting is Setting<*> && setting.isParentSetting) this.allSettings().addAll(setting.children)
-        
+
         this.values.add(setting)
 
         return setting
     }
 
-    fun get(setting: String): Setting<*>? = this.allSettings().find {
-        it.name.lowercase() == setting.lowercase()
-    }
+    fun get(setting: String): Setting<*>? = this.allSettings().find { it.name.lowercase() == setting.lowercase() }
 
     override fun load() {
         this.values.forEach {
@@ -30,7 +28,7 @@ class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<Modul
         this.values.sortedWith(Comparator.comparing(ModularSettingContainer::name))
     }
 
-    override fun iterator() = this.values.iterator()
+    override fun iterator() = this.allSettings().iterator()
 }
 
 class SettingGroup(name: String, description: String) : ModularSettingContainer(name, description) {
