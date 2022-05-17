@@ -20,9 +20,7 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
 
         values.addAll(listOf(AutoHit, FlightHack, WallHack))
 
-        values.stream().forEach(Hack::load)
-
-        values.sortedWith(Comparator.comparing(Hack::name))
+        values.stream().forEach(Hack::load) 
 
         HackCommand.register(ClientCommandManager.DISPATCHER)
     }

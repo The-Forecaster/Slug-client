@@ -11,7 +11,7 @@ import trans.rights.event.listener.impl.listener
 
 object AutoHit : Hack("Aura", "Automatically hit people near you") {
     private val customDelay = BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true, true)
-    private val customTick = customDelay.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 20))
+    private val customTick = customDelay.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 4))
     private val hitFriends = BooleanSetting("Friends", "Whether to attack friends or not", false)
 
     private var ticks: Int = 0

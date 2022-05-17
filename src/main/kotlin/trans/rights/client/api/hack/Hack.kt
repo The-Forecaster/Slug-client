@@ -2,7 +2,7 @@ package trans.rights.client.api.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
-import trans.rights.TransRights.BasicEventManager
+import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
@@ -20,7 +20,7 @@ abstract class Hack(
     name: String,
     description: String,
 ) : Modular(name, description), Wrapper {
-    private var enabled: Boolean = false
+    var enabled: Boolean = false
     private val file: File = File("${HackManager.directory}/$name.json")
     val settings: Settings = Settings()
 

@@ -22,8 +22,6 @@ class TransRights : ClientModInitializer {
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }
 
-    object BasicEventManager : EventManager()
-
     override fun onInitializeClient() {
         val start = System.currentTimeMillis()
 
@@ -41,3 +39,5 @@ class TransRights : ClientModInitializer {
         LOGGER.info("$NAME has been started in ${System.currentTimeMillis() - start} ms!")
     }
 }
+
+object BasicEventManager : EventManager()

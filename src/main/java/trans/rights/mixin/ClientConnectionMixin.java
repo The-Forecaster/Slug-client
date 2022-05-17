@@ -8,12 +8,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import trans.rights.BasicEventManager;
 import trans.rights.client.events.PacketEvent;
 import trans.rights.client.events.PacketEvent.PostReceive;
 import trans.rights.client.events.PacketEvent.PostSend;
 import trans.rights.client.events.PacketEvent.PreReceive;
 import trans.rights.client.events.PacketEvent.PreSend;
-import trans.rights.TransRights.BasicEventManager;
+import trans.rights.client.impl.hack.AntiKick;
 
 import java.io.IOException;
 
@@ -45,6 +46,6 @@ public class ClientConnectionMixin {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
-        if (throwable instanceof IOException) info.cancel();
+        if (throwable instanceof IOException && AntiKick.INSTANCE.getEnabled()) info.cancel();
     }
 }

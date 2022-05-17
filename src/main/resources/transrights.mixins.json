@@ -8,6 +8,7 @@
   },
   "mixins": [
     "BlockMixin",
+    "ClientBrandRetrieverMixin",
     "ClientConnectionMixin",
     "KeyboardMixin",
     "MinecraftClientMixin"

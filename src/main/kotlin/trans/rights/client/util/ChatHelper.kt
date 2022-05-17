@@ -1,6 +1,5 @@
 package trans.rights.client.util
 
-
 import net.minecraft.client.gui.hud.ChatHud
 import net.minecraft.text.Text
 import trans.rights.TransRights.Companion.NAME

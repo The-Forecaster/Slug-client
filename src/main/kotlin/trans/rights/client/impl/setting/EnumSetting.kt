@@ -28,4 +28,8 @@ class EnumSetting<T: Enum<*>>(name: String, description: String, default: T, isP
         }
         return false
     }
+
+    fun typeIs(other: T) {
+
+    }
 }

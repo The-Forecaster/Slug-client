@@ -1,4 +1,4 @@
-package trans.rights.client.impl.gui
+package trans.rights.client.impl.command.gui
 
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
@@ -14,5 +14,5 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)) {
 
     override fun shouldPause() = false
 
-    override fun shouldCloseOnEsc() = this.shouldCloseOnEsc
+    override fun shouldCloseOnEsc() = shouldCloseOnEsc
 }

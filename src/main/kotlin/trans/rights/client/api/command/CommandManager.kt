@@ -2,6 +2,7 @@ package trans.rights.client.api.command
 
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
 import net.minecraft.client.gui.screen.ChatScreen
+import trans.rights.BasicEventManager
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
@@ -12,7 +13,7 @@ import trans.rights.event.listener.impl.listener
 import java.nio.file.Path
 
 object CommandManager :
-    // We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
+// We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
     Manager<Command>(linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)), Wrapper {
     val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
 
@@ -22,12 +23,11 @@ object CommandManager :
     val chatListener = listener<KeyEvent> { event ->
         if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) {
             minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
-            (minecraft.currentScreen as ChatScreen)
         }
     }
 
     override fun load() {
-        TransRights.BasicEventManager.register(this)
+        BasicEventManager.register(this)
 
         values.forEach { command -> command.register(ClientCommandManager.DISPATCHER) }
 
@@ -35,6 +35,6 @@ object CommandManager :
     }
 
     override fun unload() {
-        TransRights.BasicEventManager.unregister(this)
+        BasicEventManager.unregister(this)
     }
 }

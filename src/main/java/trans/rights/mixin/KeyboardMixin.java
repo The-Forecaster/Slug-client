@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import trans.rights.TransRights.BasicEventManager;
+import trans.rights.BasicEventManager;
 import trans.rights.client.events.KeyEvent;
 
 @Mixin(Keyboard.class)

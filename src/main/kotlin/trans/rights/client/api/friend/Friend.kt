@@ -25,10 +25,7 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
 
         friendFile.fromJson().keySet().stream().forEach {
             values.add(
-                Friend(
-                    it,
-                    minecraft.socialInteractionsManager.getUuid(it)
-                )
+                Friend(it, minecraft.socialInteractionsManager.getUuid(it))
             )
         }
     }
@@ -51,5 +48,3 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
 }
 
 fun ClientPlayerEntity.isFriend() = FriendManager.values.map(Friend::uuid).contains(this.uuid)
-
-
