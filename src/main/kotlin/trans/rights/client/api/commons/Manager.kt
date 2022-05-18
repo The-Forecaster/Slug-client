@@ -16,5 +16,5 @@ abstract class Manager<T>(val values: MutableCollection<T>) {
 
     abstract fun load()
 
-    open fun unload() = this.values.clear()
+    open fun unload() = this.values.clear() 
 }

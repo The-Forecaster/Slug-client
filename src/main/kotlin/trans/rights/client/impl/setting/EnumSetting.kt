@@ -6,11 +6,7 @@ class EnumSetting<T: Enum<*>>(name: String, description: String, default: T, isP
     private val values = default.javaClass.enumConstants
 
     fun cycle() {
-        if (this.value == this.values[this.values.size - 1]) {
-            this.value = this.values[0]
-            return
-        }
-        this.value = this.values[this.values.indexOf(this.value) + 1]
+        this.value = this.values[(this.values.indexOf(this.value) + 1) % this.values.size]
     }
 
     /**
@@ -29,7 +25,10 @@ class EnumSetting<T: Enum<*>>(name: String, description: String, default: T, isP
         return false
     }
 
-    fun typeIs(other: T) {
-
+    fun typeIs(other: String): Boolean {
+        for (value in this.values) {
+            if (value.toString().contentEquals(other, true)) return true
+        }
+        return false
     }
 }

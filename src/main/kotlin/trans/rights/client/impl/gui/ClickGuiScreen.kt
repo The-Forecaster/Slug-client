@@ -1,4 +1,4 @@
-package trans.rights.client.impl.command.gui
+package trans.rights.client.impl.gui
 
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
