@@ -1,4 +1,4 @@
-package trans.rights.client.api.friend
+package trans.rights.client.impl.friend
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
@@ -24,27 +24,26 @@ object FriendManager : Manager<Friend>(mutableListOf()), Wrapper {
         }
 
         friendFile.fromJson().keySet().stream().forEach {
-            values.add(
-                Friend(it, minecraft.socialInteractionsManager.getUuid(it))
-            )
+            values.add(Friend(it, minecraft.socialInteractionsManager.getUuid(it)))
         }
     }
 
     override fun unload() {
         save()
 
-        super.unload()
+        values.clear()
     }
 
     fun save() {
-        val obj = JsonObject()
+        JsonObject().let { obj ->
+            values.forEach {
+                obj.add(it.name, JsonPrimitive(it.uuid.toString()))
+            }
 
-        values.stream().forEach {
-            obj.add(it.name, JsonPrimitive(it.uuid.toString()))
+            friendFile.writeToJson(obj)
         }
-
-        friendFile.writeToJson(obj)
     }
 }
 
-fun ClientPlayerEntity.isFriend() = FriendManager.values.map(Friend::uuid).contains(this.uuid)
+val ClientPlayerEntity.isFriend: Boolean
+    get() = FriendManager.values.map(Friend::uuid).contains(this.uuid)

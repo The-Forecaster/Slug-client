@@ -1,7 +1,7 @@
 package trans.rights.client.api.commons
 
 import trans.rights.client.api.command.CommandManager
-import trans.rights.client.api.friend.FriendManager
+import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
 import java.util.*
 
@@ -16,5 +16,5 @@ abstract class Manager<T>(val values: MutableCollection<T>) {
 
     abstract fun load()
 
-    open fun unload() = this.values.clear() 
+    abstract fun unload()
 }

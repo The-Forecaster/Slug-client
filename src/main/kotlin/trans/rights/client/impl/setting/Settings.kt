@@ -28,6 +28,8 @@ class Settings : Manager<ModularSettingContainer>(linkedSetOf()), Iterable<Modul
         this.values.sortedWith(Comparator.comparing(ModularSettingContainer::name))
     }
 
+    override fun unload() {}
+
     override fun iterator() = this.allSettings().iterator()
 }
 

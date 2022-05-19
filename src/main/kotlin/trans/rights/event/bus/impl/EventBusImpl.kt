@@ -57,5 +57,5 @@ open class EventManager(private val type: KClass<out Listener<*>> = LambdaListen
 
     private fun asListener(property: KProperty<*>) = property as Listener<*>
 
-    private fun isValid(property: KProperty<*>) = property.annotations.contains(EventHandler()) && property::class.superclasses.contains(Listener::class)
+    private fun isValid(property: KProperty<*>) = property.annotations.contains(EventHandler()) && property::class == type
 }

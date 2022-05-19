@@ -48,9 +48,7 @@ abstract class Hack(
         }
     }
 
-    fun toggle() {
-        if (this.enabled) disable() else enable()
-    }
+    fun toggle() = if (this.enabled) disable() else enable()
 
     open fun onEnable() {}
 
@@ -83,25 +81,24 @@ abstract class Hack(
         }
     }
 
-    fun save(file: File = this.file) {
-        try {
-            val json = JsonObject()
+    fun save(file: File = this.file) = try {
+        JsonObject().let {
 
-            json.add("enabled", JsonPrimitive(enabled))
+            it.add("enabled", JsonPrimitive(enabled))
 
             this.settings.allSettings().stream().forEach { setting ->
                 when (setting) {
-                    is BooleanSetting -> json.add(setting.name, JsonPrimitive(setting.value))
-                    is NumberSetting -> json.add(setting.name, JsonPrimitive(setting.value))
-                    is EnumSetting -> json.add(setting.name, JsonPrimitive(setting.value.toString()))
+                    is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
+                    is NumberSetting -> it.add(setting.name, JsonPrimitive(setting.value))
+                    is EnumSetting -> it.add(setting.name, JsonPrimitive(setting.value.toString()))
                 }
             }
 
-            file.writeToJson(json)
-        } catch (e: Exception) {
-            LOGGER.error("$name failed to save")
-
-            e.printStackTrace()
+            file.writeToJson(it)
         }
+    } catch (e: Exception) {
+        LOGGER.error("$name failed to save")
+
+        e.printStackTrace()
     }
 }

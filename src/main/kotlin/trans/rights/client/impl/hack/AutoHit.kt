@@ -1,7 +1,7 @@
 package trans.rights.client.impl.hack
 
 import net.minecraft.entity.player.PlayerEntity
-import trans.rights.client.api.friend.isFriend
+import trans.rights.client.impl.friend.isFriend
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.BooleanSetting
@@ -43,6 +43,6 @@ object AutoHit : Hack("Aura", "Automatically hit people near you") {
 
         return minecraft.world!!.players.stream().sorted(Comparator.comparingDouble { player ->
             minecraft.player!!.distanceTo(player).toDouble()
-        }).filter { !player.isFriend() || !hitFriends.value }.findFirst().orElse(null)
+        }).filter { !player.isFriend || !hitFriends.value }.findFirst().orElse(null)
     }
 }

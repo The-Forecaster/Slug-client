@@ -34,7 +34,5 @@ object CommandManager :
         values.sortedWith(Comparator.comparing(Command::name))
     }
 
-    override fun unload() {
-        BasicEventManager.unregister(this)
-    }
+    override fun unload() = BasicEventManager.unregister(this)
 }

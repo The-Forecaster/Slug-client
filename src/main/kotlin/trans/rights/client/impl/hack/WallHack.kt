@@ -9,28 +9,23 @@ import trans.rights.event.listener.impl.LambdaListener
 import trans.rights.event.listener.impl.listener
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
-    private val blocks = mutableSetOf<Block>()
+    private val blocks = mutableSetOf(Blocks.DIAMOND_ORE, Blocks.ANCIENT_DEBRIS, Blocks.ENDER_CHEST, Blocks.BEDROCK)
 
     @EventHandler
-    val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event: BlockSideDrawEvent ->
-        if (blocks.contains(event.block)) {
+    val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event ->
+        if (nullCheck()) return@listener
+
+        if (!blocks.contains(event.block)) {
             event.cancel()
         }
     }
 
-    init {
-        blocks.add(Blocks.DIAMOND_ORE)
-        blocks.add(Blocks.ANCIENT_DEBRIS)
-        blocks.add(Blocks.ENDER_CHEST)
-        blocks.add(Blocks.BEDROCK)
-    }
-
     override fun onEnable() {
-        if (nullCheck()) {
+        /** if (nullCheck()) {
             disable()
             return
         }
-        minecraft.worldRenderer.reload()
+        minecraft.worldRenderer.reload() **/
     }
 
     override fun onDisable() {
