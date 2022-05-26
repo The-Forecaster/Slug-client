@@ -57,7 +57,7 @@ dependencies {
     }
 
     apiModules.forEach {
-        include modImplementation(fabricApi.module(it, "0.51.1+$minecraft_version")) { transitive = false }
+        include modImplementation(fabricApi.module(it, "0.53.4+$minecraft_version")) { transitive = false }
     }
 }
 
