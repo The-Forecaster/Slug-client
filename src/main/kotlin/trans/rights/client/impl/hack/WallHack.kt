@@ -1,6 +1,5 @@
 package trans.rights.client.impl.hack
 
-import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.BlockSideDrawEvent
@@ -15,22 +14,18 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
     val blockDrawListener: LambdaListener<BlockSideDrawEvent> = listener { event ->
         if (nullCheck()) return@listener
 
-        if (!blocks.contains(event.block)) {
-            event.cancel()
-        }
+        if (!blocks.contains(event.block)) event.cancel()
     }
 
     override fun onEnable() {
         /** if (nullCheck()) {
-            disable()
-            return
+        disable()
+        return
         }
         minecraft.worldRenderer.reload() **/
     }
 
     override fun onDisable() {
-        if (!nullCheck()) {
-            minecraft.worldRenderer.reload()
-        }
+        if (!nullCheck()) minecraft.worldRenderer.reload()
     }
 }

@@ -10,7 +10,8 @@ import trans.rights.client.api.command.Command
 import trans.rights.client.api.command.CommandManager
 import trans.rights.client.util.clientSend
 
-object CHelpCommand : Command("chelp", "Informs you about the different features of this client", "/chelp"), Wrapper {
+object CHelpCommand : Command("chelp", "Informs you about the different features of this client", "/chelp"),
+    Wrapper {
     override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(literal(name).executes {
             minecraft.inGameHud.chatHud.clientSend("Commands", true)

@@ -5,7 +5,7 @@ import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.impl.command.HackCommand
-import trans.rights.client.impl.hack.AutoHit
+import trans.rights.client.impl.hack.AuraHack
 import trans.rights.client.impl.hack.FlightHack
 import trans.rights.client.impl.hack.WallHack
 import java.nio.file.Files
@@ -19,7 +19,7 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
-        values.addAll(listOf(AutoHit, FlightHack, WallHack))
+        values.addAll(listOf(AuraHack, FlightHack, WallHack))
 
         values.stream().forEach(Hack::load)
 

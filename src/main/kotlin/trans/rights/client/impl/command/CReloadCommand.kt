@@ -13,7 +13,8 @@ import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.util.clientSend
 
-object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
+object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"),
+    Wrapper {
     private fun reloadClient() {
         minecraft.inGameHud.chatHud.clientSend("Reloading the client...")
 
