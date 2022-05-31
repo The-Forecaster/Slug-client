@@ -5,9 +5,7 @@ import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.impl.command.HackCommand
-import trans.rights.client.impl.hack.AuraHack
-import trans.rights.client.impl.hack.FlightHack
-import trans.rights.client.impl.hack.WallHack
+import trans.rights.client.impl.hack.*
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -19,7 +17,7 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
-        values.addAll(listOf(AuraHack, FlightHack, WallHack))
+        values.addAll(listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack))
 
         values.stream().forEach(Hack::load)
 
@@ -30,7 +28,7 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
         values.forEach(BasicEventManager::unregister)
 
         values.stream().forEach(Hack::save)
-        
+
         values.clear()
     }
 }
