@@ -1,5 +1,8 @@
 package trans.rights.client.api;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 
@@ -14,11 +17,11 @@ public interface Wrapper {
         return MinecraftClient.getInstance().player == null && MinecraftClient.getInstance().world == null;
     }
 
-    default MinecraftClient getMinecraft() {
+    default @NotNull MinecraftClient getMinecraft() {
         return MinecraftClient.getInstance();
     }
 
-    default ClientPlayerEntity getPlayer() {
+    default @Nullable ClientPlayerEntity getPlayer() {
         return MinecraftClient.getInstance().player;
     }
 }
