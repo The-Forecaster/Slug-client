@@ -9,15 +9,13 @@ import trans.rights.client.impl.hack.*
 import java.nio.file.Files
 import java.nio.file.Path
 
-object HackManager : Manager<Hack>(linkedSetOf()) {
+object HackManager : Manager<Hack, List<Hack>>(listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)) {
     val directory: Path = Path.of("$mainDirectory/hacks")
 
     fun save() = values.forEach(Hack::save)
 
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
-
-        values.addAll(listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack))
 
         values.stream().forEach(Hack::load)
 
@@ -28,7 +26,5 @@ object HackManager : Manager<Hack>(linkedSetOf()) {
         values.forEach(BasicEventManager::unregister)
 
         values.stream().forEach(Hack::save)
-
-        values.clear()
     }
 }

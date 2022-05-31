@@ -2,7 +2,7 @@ package trans.rights.client.api.setting
 
 import trans.rights.client.api.commons.Modular
 
-internal interface SettingContainer {
+interface SettingContainer {
     val children: MutableList<Setting<*>>
 
     fun <T : Setting<*>> add(setting: T): T {

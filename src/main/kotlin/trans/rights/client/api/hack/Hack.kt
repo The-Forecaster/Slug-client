@@ -3,9 +3,12 @@ package trans.rights.client.api.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import trans.rights.BasicEventManager
+import trans.rights.TransRights
 import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
+import trans.rights.client.api.setting.ModularSettingContainer
+import trans.rights.client.api.setting.Setting
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
@@ -18,11 +21,12 @@ import java.io.File
 
 abstract class Hack(
     name: String,
-    description: String,
+    description: String
 ) : Modular(name, description), Wrapper {
+    private val file: File = File("${TransRights.mainDirectory}/hacks/$name.json")
+    abstract val settings: Settings
+
     var enabled: Boolean = false
-    private val file: File = File("${HackManager.directory}/$name.json")
-    val settings: Settings = Settings()
 
     init {
         if (!this.file.exists()) this.file.createNewFile()

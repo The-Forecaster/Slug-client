@@ -14,6 +14,7 @@ import java.nio.file.Path
 
 private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
+@get:Throws(OutOfMemoryError::class)
 inline val Path.readString: String
     get() = try {
         Files.readString(this)
@@ -26,10 +27,11 @@ inline val Path.readString: String
         ""
     }
 
+@get:Throws(OutOfMemoryError::class)
 inline val File.readString: String
     get() = this.toPath().readString
 
-@kotlin.jvm.Throws(
+@Throws(
     IOException::class,
     IllegalArgumentException::class,
     UnsupportedOperationException::class,
@@ -48,16 +50,14 @@ fun File.writeToJson(element: JsonObject) = this.toPath().writeToJson(element)
 fun Path.fromJson(clearIfException: Boolean = false): JsonObject = try {
     gson.fromJson(this.readString, JsonObject::class.java)
 } catch (e: JsonSyntaxException) {
-    if (clearIfException) runCatching {
-        clearJson()
-    }
+    if (clearIfException) runCatching(Path::clearJson).onFailure(Throwable::printStackTrace)
 
     JsonObject()
 }
 
 fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(clearIfException)
 
-@kotlin.jvm.Throws(
+@Throws(
     IOException::class,
     IllegalArgumentException::class,
     UnsupportedOperationException::class,
@@ -66,7 +66,7 @@ fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(cl
 )
 fun Path.clearJson() = this.writeToJson(JsonObject())
 
-@kotlin.jvm.Throws(
+@Throws(
     IOException::class,
     IllegalArgumentException::class,
     UnsupportedOperationException::class,

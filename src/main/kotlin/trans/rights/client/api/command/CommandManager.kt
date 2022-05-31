@@ -14,7 +14,7 @@ import java.nio.file.Path
 
 object CommandManager :
 // We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
-    Manager<Command>(linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)),
+    Manager<Command, LinkedHashSet<Command>>(linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)),
     Wrapper {
     val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
 

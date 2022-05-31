@@ -6,6 +6,7 @@ import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.friend.isFriend
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.NumberSetting
+import trans.rights.client.impl.setting.Settings
 import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.listener
 
@@ -14,12 +15,9 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
     private val customTick = customDelay.add(NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 4))
     private val hitFriends = BooleanSetting("Friends", "Whether to attack friends or not", false)
 
-    private var ticks: Int = 0
+    override val settings = Settings(customDelay, hitFriends)
 
-    init {
-        settings.add(customDelay)
-        settings.add(hitFriends)
-    }
+    private var ticks: Int = 0
 
     @EventHandler
     val updateListener = listener<TickEvent.PostTick> { event ->
@@ -31,7 +29,9 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
                     minecraft.interactionManager?.attackEntity(player, getTarget())
 
                     ticks = 0
-                } else ticks++
+                    return@listener
+                }
+                ticks++
             }
         }
     }

@@ -32,8 +32,6 @@ class TransRights : ClientModInitializer {
 
         Manager.load()
 
-        WallHack.toggle()
-
         Runtime.getRuntime().addShutdownHook(Thread {
             HackManager.save()
             FriendManager.save()
