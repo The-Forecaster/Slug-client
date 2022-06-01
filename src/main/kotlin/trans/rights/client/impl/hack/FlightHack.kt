@@ -23,7 +23,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     @EventHandler
     val updateListener: LambdaListener<TickEvent.PostTick> = listener {
-        if (!nullCheck()) player.setFlySpeed(trueSpeed(), true)
+        if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
     }
 
     @EventHandler
@@ -54,9 +54,9 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     override fun onDisable() {
         if (!nullCheck()) {
-            if (player.isCreative) player.abilities.allowFlying = false
-            player.abilities.flySpeed = 0.05f
-            player.abilities.flying = false
+            if (player!!.isCreative) player!!.abilities.allowFlying = false
+            player!!.abilities.flySpeed = 0.05f
+            player!!.abilities.flying = false
         }
     }
 }

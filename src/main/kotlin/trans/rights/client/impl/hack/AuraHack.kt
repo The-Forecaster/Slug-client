@@ -22,7 +22,7 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
     @EventHandler
     val updateListener = listener<TickEvent.PostTick> { event ->
         if (event.isInWorld && getTarget() != null) {
-            if (!customDelay.value && !player.handSwinging) {
+            if (!customDelay.value && !player!!.handSwinging) {
                 minecraft.interactionManager?.attackEntity(player, getTarget())
             } else if (customDelay.value) {
                 if (customTick.value == ticks.toDouble()) {
@@ -41,6 +41,6 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
 
         return minecraft.world!!.players.stream().sorted(Comparator.comparingDouble { player ->
             minecraft.player!!.distanceTo(player).toDouble()
-        }).filter { !player.isFriend || !hitFriends.value }.findFirst().orElse(null)
+        }).filter { !player!!.isFriend || !hitFriends.value }.findFirst().orElse(null)
     }
 }
