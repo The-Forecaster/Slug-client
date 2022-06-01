@@ -32,8 +32,6 @@ dependencies {
     var apiModules = [
             'fabric-api-base',
             'fabric-command-api-v1',
-            'fabric-renderer-indigo',
-            'fabric-renderer-api-v1'
     ]
 
     // fabric dependencies
@@ -57,7 +55,7 @@ dependencies {
     }
 
     apiModules.forEach {
-        include modImplementation(fabricApi.module(it, "0.53.4+$minecraft_version")) { transitive = false }
+        include modImplementation(fabricApi.module(it, "0.54.0+$minecraft_version")) { transitive = false }
     }
 }
 
