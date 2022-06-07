@@ -29,19 +29,15 @@ object FriendManager : Manager<Friend, MutableList<Friend>>(mutableListOf()), Wr
     }
 
     override fun unload() {
-        save()
-
-        values.clear()
+        save(); values.clear()
     }
 
-    fun save() {
-        JsonObject().let { obj ->
-            values.forEach {
-                obj.add(it.name, JsonPrimitive(it.uuid.toString()))
-            }
-
-            friendFile.writeToJson(obj)
+    fun save() = JsonObject().let { obj ->
+        values.forEach {
+            obj.add(it.name, JsonPrimitive(it.uuid.toString()))
         }
+
+        friendFile.writeToJson(obj)
     }
 }
 

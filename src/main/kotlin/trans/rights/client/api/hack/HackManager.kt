@@ -10,7 +10,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 object HackManager : Manager<Hack, List<Hack>>(listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)) {
-    val directory: Path = Path.of("$mainDirectory/hacks")
+    private val directory: Path = Path.of("$mainDirectory/hacks")
 
     fun save() = values.forEach(Hack::save)
 

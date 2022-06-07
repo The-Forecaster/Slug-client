@@ -28,12 +28,10 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     @EventHandler
     val packetReceiveListener: LambdaListener<PacketEvent.PostReceive> = listener { event ->
-        if (event.packet is PlayerAbilitiesS2CPacket) {
-            (event.packet as PlayerAbilitiesS2CPacket).let { packet ->
-                packet.allowFlying = true
-                packet.flying = true
-                packet.flySpeed = trueSpeed()
-            }
+        if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
+            it.allowFlying = true
+            it.flying = true
+            it.flySpeed = trueSpeed()
         }
     }
 

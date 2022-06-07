@@ -4,7 +4,6 @@ import trans.rights.event.bus.EventBus
 import trans.rights.event.listener.Listener
 import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.LambdaListener
-import trans.rights.event.type.Cancellable
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.stream.Collectors
@@ -37,20 +36,13 @@ open class EventManager(private val type: KClass<out Listener<*>> = LambdaListen
 
     override fun register(subscriber: Any) {
         this.cache.getOrPut(subscriber) {
-            subscriber::class.declaredMemberProperties
-                .stream()
-                .filter(this::isValid)
-                .map(this::asListener)
+            subscriber::class.declaredMemberProperties.stream().filter(::isValid).map(::asListener)
                 .collect(Collectors.toList())
-        }.forEach(this::register)
+        }.forEach(::register)
     }
 
     override fun unregister(subscriber: Any) {
-        subscriber::class.declaredMemberProperties
-            .stream()
-            .filter(this::isValid)
-            .map(this::asListener)
-            .forEach(this::unregister)
+        subscriber::class.declaredMemberProperties.stream().filter(::isValid).map(::asListener).forEach(::unregister)
     }
 
     override fun <T : Any> dispatch(event: T): T {

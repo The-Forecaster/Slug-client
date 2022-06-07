@@ -7,8 +7,6 @@ import trans.rights.TransRights
 import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
-import trans.rights.client.api.setting.ModularSettingContainer
-import trans.rights.client.api.setting.Setting
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.EnumSetting
 import trans.rights.client.impl.setting.NumberSetting
@@ -19,11 +17,9 @@ import trans.rights.client.util.readString
 import trans.rights.client.util.writeToJson
 import java.io.File
 
-abstract class Hack(
-    name: String,
-    description: String
-) : Modular(name, description), Wrapper {
+abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val file: File = File("${TransRights.mainDirectory}/hacks/$name.json")
+
     abstract val settings: Settings
 
     var enabled: Boolean = false

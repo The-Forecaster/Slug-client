@@ -5,9 +5,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
-import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
-import trans.rights.client.impl.hack.WallHack
+import trans.rights.client.impl.friend.FriendManager
 import trans.rights.event.bus.impl.EventManager
 import java.nio.file.Path
 import kotlin.io.path.createDirectory

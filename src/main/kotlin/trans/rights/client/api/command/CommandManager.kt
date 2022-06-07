@@ -22,9 +22,7 @@ object CommandManager :
 
     @EventHandler
     val chatListener = listener<KeyEvent> { event ->
-        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) {
-            minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
-        }
+        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
     }
 
     override fun load() {

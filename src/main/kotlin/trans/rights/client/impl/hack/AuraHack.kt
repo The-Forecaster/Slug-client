@@ -29,9 +29,8 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
                     minecraft.interactionManager?.attackEntity(player, getTarget())
 
                     ticks = 0
-                    return@listener
                 }
-                ticks++
+                else ticks++
             }
         }
     }
