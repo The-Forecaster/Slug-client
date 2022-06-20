@@ -1,5 +1,7 @@
 package trans.rights.client.api.gui
 
+import net.minecraft.client.util.math.MatrixStack
+
 abstract class Component(var xPos: Int, var yPos: Int, var width: Int, var height: Int) {
     fun isOver(mouseX: Int, mouseY: Int) = mouseX > xPos && mouseX < xPos + width && mouseY > yPos && mouseY < yPos + height
 
@@ -7,4 +9,6 @@ abstract class Component(var xPos: Int, var yPos: Int, var width: Int, var heigh
         this.xPos = x
         this.yPos = y
     }
+
+    abstract fun render(stack: MatrixStack)
 }
