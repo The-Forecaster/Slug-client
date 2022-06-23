@@ -2,9 +2,9 @@ package trans.rights.client.impl.command
 
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import trans.rights.client.api.command.Command
 import trans.rights.client.impl.command.arguments.getHack
 import trans.rights.client.impl.command.arguments.hack

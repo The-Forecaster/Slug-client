@@ -1,6 +1,6 @@
 package trans.rights.client.api.command
 
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.client.gui.screen.ChatScreen
 import trans.rights.BasicEventManager
 import trans.rights.TransRights
@@ -28,7 +28,7 @@ object CommandManager :
     override fun load() {
         BasicEventManager.register(this)
 
-        values.forEach { command -> command.register(ClientCommandManager.DISPATCHER) }
+        values.forEach { command -> command.register(ClientCommandManager.getActiveDispatcher()!!) }
 
         values.sortedWith(Comparator.comparing(Command::name))
     }

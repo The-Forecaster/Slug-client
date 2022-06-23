@@ -1,6 +1,6 @@
 package trans.rights.client.api.hack
 
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.commons.Manager
@@ -19,7 +19,7 @@ object HackManager : Manager<Hack, List<Hack>>(listOf(AntiFabric, AntiKick, Aura
 
         values.stream().forEach(Hack::load)
 
-        HackCommand.register(ClientCommandManager.DISPATCHER)
+        HackCommand.register(ClientCommandManager.getActiveDispatcher()!!)
     }
 
     override fun unload() {
