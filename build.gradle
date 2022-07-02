@@ -62,8 +62,6 @@ dependencies {
 }
 
 processResources {
-    duplicatesStrategy DuplicatesStrategy.WARN
-
     inputs.property "version", project.version
 
     filesMatching("fabric.mod.json") {

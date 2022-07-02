@@ -14,7 +14,9 @@ import java.util.*
 
 class Friend(override val name: String, val uuid: UUID) : Nameable
 
-object FriendManager : Manager<Friend, MutableList<Friend>>(mutableListOf()), Wrapper {
+object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
+    override val values = mutableListOf<Friend>()
+
     private val friendFile: File = File("${mainDirectory}/friends.json")
 
     override fun load() {
@@ -32,7 +34,7 @@ object FriendManager : Manager<Friend, MutableList<Friend>>(mutableListOf()), Wr
         save(); values.clear()
     }
 
-    fun save() = JsonObject().let { obj ->
+    private fun save() = JsonObject().let { obj ->
         values.forEach {
             obj.add(it.name, JsonPrimitive(it.uuid.toString()))
         }

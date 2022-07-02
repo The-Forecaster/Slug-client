@@ -9,8 +9,7 @@ import trans.rights.client.api.setting.Setting
  *
  * Use only once per module
  */
-class Settings(settings: List<ModularSettingContainer>) :
-    Manager<ModularSettingContainer, List<ModularSettingContainer>>(settings), Iterable<ModularSettingContainer> {
+class Settings(override val values: List<ModularSettingContainer>) : Manager<ModularSettingContainer, List<ModularSettingContainer>>, Iterable<ModularSettingContainer> {
     constructor(vararg settings: ModularSettingContainer) : this(settings.asList())
 
     fun allSettings() =

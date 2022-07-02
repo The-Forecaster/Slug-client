@@ -5,8 +5,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
-import trans.rights.client.api.hack.HackManager
-import trans.rights.client.impl.friend.FriendManager
+import trans.rights.client.impl.gui.ClickGuiScreen
 import trans.rights.event.bus.impl.EventManager
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
@@ -30,6 +29,8 @@ class TransRights : ClientModInitializer {
         if (!mainDirectory.exists()) mainDirectory.createDirectory()
 
         Manager.load()
+
+        BasicEventManager.register(ClickGuiScreen.keyListener)
 
         Runtime.getRuntime().addShutdownHook(Thread { Manager.unload() })
 

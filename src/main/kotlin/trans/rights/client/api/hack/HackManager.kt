@@ -9,10 +9,10 @@ import trans.rights.client.impl.hack.*
 import java.nio.file.Files
 import java.nio.file.Path
 
-object HackManager : Manager<Hack, List<Hack>>(listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)) {
-    private val directory: Path = Path.of("$mainDirectory/hacks")
+object HackManager : Manager<Hack, List<Hack>> {
+    override val values = listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)
 
-    fun save() = values.forEach(Hack::save)
+    private val directory: Path = Path.of("$mainDirectory/hacks")
 
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)

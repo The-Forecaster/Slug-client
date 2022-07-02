@@ -1,6 +1,8 @@
 package trans.rights.client.events;
 
-public final class KeyEvent {
+import trans.rights.event.type.Cancellable;
+
+public final class KeyEvent extends Cancellable {
     private static final KeyEvent INSTANCE = new KeyEvent();
 
     private int key;

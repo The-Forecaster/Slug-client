@@ -5,7 +5,7 @@ import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.api.hack.HackManager
 import java.util.*
 
-abstract class Manager<T, L : Collection<T>>(val values: L) {
+interface Manager<T, L : Collection<T>> {
     companion object {
         private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager))
 
@@ -14,7 +14,9 @@ abstract class Manager<T, L : Collection<T>>(val values: L) {
         fun unload() = managers.stream().forEach(Manager<*, *>::unload)
     }
 
-    abstract fun load()
+    val values: L
 
-    abstract fun unload()
+    fun load()
+
+    fun unload()
 }

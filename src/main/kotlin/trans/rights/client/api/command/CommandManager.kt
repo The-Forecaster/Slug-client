@@ -7,22 +7,28 @@ import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.events.KeyEvent
-import trans.rights.client.impl.command.*
+import trans.rights.client.impl.command.CHelpCommand
+import trans.rights.client.impl.command.CReloadCommand
+import trans.rights.client.impl.command.PrefixCommand
+import trans.rights.client.impl.command.ToggleCommand
 import trans.rights.event.listener.impl.EventHandler
 import trans.rights.event.listener.impl.listener
 import java.nio.file.Path
 
-object CommandManager :
 // We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
-    Manager<Command, LinkedHashSet<Command>>(linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)),
-    Wrapper {
+object CommandManager : Manager<Command, LinkedHashSet<Command>>, Wrapper {
+    override val values = linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)
     val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
 
     var prefix: String = "."
 
     @EventHandler
     val chatListener = listener<KeyEvent> { event ->
-        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
+        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) minecraft.setScreen(
+            ChatScreen(
+                minecraft.inGameHud.chatHud.messageHistory.toString()
+            )
+        )
     }
 
     override fun load() {
