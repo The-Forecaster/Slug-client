@@ -1,5 +1,7 @@
 package trans.rights.client.events;
 
+import org.jetbrains.annotations.NotNull;
+
 public abstract class TickEvent {
     private boolean inWorld;
 
@@ -11,23 +13,19 @@ public abstract class TickEvent {
         this.inWorld = inWorld;
     }
 
-    public static final class PreTick extends TickEvent {
-        private static final PreTick INSTANCE = new PreTick();
+    public TickEvent(boolean inWorld) {
+        this.inWorld = inWorld;
+    }
 
-        public static PreTick get(boolean inWorld) {
-            INSTANCE.setInWorld(inWorld);
-
-            return INSTANCE;
+    public static final class Pre extends TickEvent {
+        public Pre(boolean inWorld) {
+            super(inWorld);
         }
     }
 
-    public static final class PostTick extends TickEvent {
-        private static final PostTick INSTANCE = new PostTick();
-
-        public static PostTick get(boolean inWorld) {
-            INSTANCE.setInWorld(inWorld);
-
-            return INSTANCE;
+    public static final class Post extends TickEvent {
+        public Post(boolean inWorld) {
+            super(inWorld);
         }
     }
 }

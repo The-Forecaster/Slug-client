@@ -86,7 +86,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
             it.add("enabled", JsonPrimitive(enabled))
 
-            this.settings.allSettings().stream().forEach { setting ->
+            this.settings.allSettings().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
                     is NumberSetting -> it.add(setting.name, JsonPrimitive(setting.value))

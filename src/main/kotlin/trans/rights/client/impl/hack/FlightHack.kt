@@ -21,7 +21,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     override val settings = Settings(speed)
 
     @EventHandler
-    val updateListener = listener<TickEvent.PostTick> {
+    val updateListener = listener<TickEvent.Post> {
         if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
     }
 
@@ -36,9 +36,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     @EventHandler
     val packetSendListener = listener<PacketEvent.PreSend> { event ->
-        if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
-            (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
-        }
+        if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
     }
 
     private fun trueSpeed() = (speed.value / 10).toFloat()
@@ -51,9 +49,11 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     override fun onDisable() {
         if (!nullCheck()) {
-            if (player!!.isCreative) player!!.abilities.allowFlying = false
-            player!!.abilities.flySpeed = 0.05f
-            player!!.abilities.flying = false
+            player!!.run {
+                if (!this.isCreative) this.abilities.allowFlying = false
+                this.abilities.flySpeed = 0.05f
+                this.abilities.flying = false
+            }
         }
     }
 }

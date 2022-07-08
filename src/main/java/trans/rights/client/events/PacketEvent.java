@@ -7,6 +7,11 @@ import trans.rights.event.type.Cancellable;
 public abstract class PacketEvent extends Cancellable {
     private Packet<?> packet;
 
+    public PacketEvent(Packet<?> packet) {
+        this.packet = packet;
+    }
+
+    @NotNull
     public final Packet<?> getPacket() {
         return this.packet;
     }
@@ -16,46 +21,26 @@ public abstract class PacketEvent extends Cancellable {
     }
 
     public static final class PreSend extends PacketEvent {
-        private static final PreSend INSTANCE = new PreSend();
-
-        public static PreSend get(@NotNull Packet<?> packet) {
-            INSTANCE.setCancelled(false);
-            INSTANCE.setPacket(packet);
-
-            return INSTANCE;
+        public PreSend(Packet<?> packet) {
+            super(packet);
         }
     }
 
     public static final class PreReceive extends PacketEvent {
-        private static final PreReceive INSTANCE = new PreReceive();
-
-        public static PreReceive get(@NotNull Packet<?> packet) {
-            INSTANCE.setCancelled(false);
-            INSTANCE.setPacket(packet);
-
-            return INSTANCE;
+        public PreReceive(Packet<?> packet) {
+            super(packet);
         }
     }
 
     public static final class PostSend extends PacketEvent {
-        private static final PostSend INSTANCE = new PostSend();
-
-        public static PostSend get(@NotNull Packet<?> packet) {
-            INSTANCE.setCancelled(false);
-            INSTANCE.setPacket(packet);
-
-            return INSTANCE;
+        public PostSend(Packet<?> packet) {
+            super(packet);
         }
     }
 
     public static final class PostReceive extends PacketEvent {
-        private static final PostReceive INSTANCE = new PostReceive();
-
-        public static PostReceive get(@NotNull Packet<?> packet) {
-            INSTANCE.setCancelled(false);
-            INSTANCE.setPacket(packet);
-
-            return INSTANCE;
+        public PostReceive(Packet<?> packet) {
+            super(packet);
         }
     }
 }

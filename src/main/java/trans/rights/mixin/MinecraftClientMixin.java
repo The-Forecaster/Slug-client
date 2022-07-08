@@ -9,8 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import trans.rights.BasicEventManager;
-import trans.rights.client.events.TickEvent.PostTick;
-import trans.rights.client.events.TickEvent.PreTick;
+import trans.rights.client.events.TickEvent;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
@@ -20,13 +19,14 @@ public class MinecraftClientMixin {
     @Shadow
     public ClientPlayerEntity player;
 
+    /*
     @Inject(method = "tick", at = @At("HEAD"))
     private void beforeTick(CallbackInfo info) {
-        BasicEventManager.INSTANCE.dispatch(PreTick.get(this.player != null && this.world != null));
-    }
+        BasicEventManager.INSTANCE.dispatch(new TickEvent.Pre(this.player != null && this.world != null));
+    } */
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER))
     private void onTick(CallbackInfo info) {
-        BasicEventManager.INSTANCE.dispatch(PostTick.get(this.player != null && this.world != null));
+        BasicEventManager.INSTANCE.dispatch(new TickEvent.Post(this.player != null && this.world != null));
     }
 }

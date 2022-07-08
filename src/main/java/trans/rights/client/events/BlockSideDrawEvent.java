@@ -11,6 +11,7 @@ public final class BlockSideDrawEvent extends Cancellable {
         this.block = block;
     }
 
+    @NotNull
     public Block getBlock() {
         return this.block;
     }

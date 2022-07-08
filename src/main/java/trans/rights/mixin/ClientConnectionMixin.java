@@ -10,24 +10,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import trans.rights.BasicEventManager;
 import trans.rights.client.events.PacketEvent;
-import trans.rights.client.events.PacketEvent.PostReceive;
-import trans.rights.client.events.PacketEvent.PostSend;
-import trans.rights.client.events.PacketEvent.PreReceive;
-import trans.rights.client.events.PacketEvent.PreSend;
 import trans.rights.client.impl.hack.AntiKick;
 
 import java.io.IOException;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
+    /*
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        postCancel(PreReceive.get(packet), info);
-    }
+        postCancel(new PacketEvent.PreReceive(packet), info);
+    } */
 
     @Inject(method = "handlePacket", at = @At("TAIL"), cancellable = true)
     private static void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        postCancel(PostReceive.get(packet), info);
+        postCancel(new PacketEvent.PostReceive(packet), info);
     }
 
     private static void postCancel(PacketEvent event, CallbackInfo info) {
@@ -36,13 +33,14 @@ public class ClientConnectionMixin {
 
     @Inject(method = "send*", at = @At("HEAD"), cancellable = true)
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
-        postCancel(PreSend.get(packet), info);
+        postCancel(new PacketEvent.PreSend(packet), info);
     }
 
+    /*
     @Inject(at = @At("TAIL"), method = "send*", cancellable = true)
     private void afterSend(Packet<?> packet, CallbackInfo info) {
-        postCancel(PostSend.get(packet), info);
-    }
+        postCancel(new PacketEvent.PostSend(packet), info);
+    } */
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {

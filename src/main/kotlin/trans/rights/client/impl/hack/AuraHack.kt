@@ -20,7 +20,7 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
     private var ticks: Int = 0
 
     @EventHandler
-    val updateListener = listener<TickEvent.PostTick> { event ->
+    val updateListener = listener<TickEvent.Post> { event ->
         if (event.isInWorld && getTarget() != null) {
             if (!customDelay.value && !player!!.handSwinging) {
                 minecraft.interactionManager?.attackEntity(player, getTarget())
