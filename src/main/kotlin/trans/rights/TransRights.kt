@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.impl.gui.ClickGuiScreen
-import trans.rights.event.bus.impl.EventManager
+import trans.rights.event.bus.EventManager
 import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import kotlin.io.path.exists

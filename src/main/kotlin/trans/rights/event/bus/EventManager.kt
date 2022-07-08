@@ -4,17 +4,17 @@ import trans.rights.event.listener.EventHandler
 import trans.rights.event.listener.Listener
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
-import kotlin.reflect.KCallable
-import kotlin.reflect.KClass
+import kotlin.reflect.*
 import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.typeOf
 
 /**
  * Basic implementation of [EventBus]
  */
 open class EventManager : EventBus {
+
     override val registry = ConcurrentHashMap<KClass<*>, MutableList<Listener<*>>>()
 
     private val cache = ConcurrentHashMap<Any, MutableList<Listener<*>>>()
@@ -49,9 +49,9 @@ open class EventManager : EventBus {
 // Most of this is pasted from bush https://github.com/therealbush/eventbus-kotlin, check him out if you want to see actually good code
 
 private inline val KCallable<*>.isListener
-    get() = this.findAnnotation<EventHandler>() != null && this.returnType == typeOf<Listener<*>>()
+    get() = this.findAnnotation<EventHandler>() != null && this.returnType.isSubtypeOf(typeOf<Listener<*>>())
 
-private inline val <T: Any> KClass<T>.listeners
+private inline val <T : Any> KClass<T>.listeners
     get() = this.declaredMembers.filter(KCallable<*>::isListener) as List<KCallable<Listener<*>>>
 
 private inline val Any.listeners

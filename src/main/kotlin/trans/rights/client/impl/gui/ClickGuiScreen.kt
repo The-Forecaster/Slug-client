@@ -12,8 +12,8 @@ import trans.rights.client.events.KeyEvent
 import trans.rights.client.impl.gui.components.Frame
 import trans.rights.client.impl.gui.components.buttons.Button
 import trans.rights.client.util.fromJson
-import trans.rights.event.listener.impl.EventHandler
-import trans.rights.event.listener.impl.listener
+import trans.rights.event.listener.EventHandler
+import trans.rights.event.listener.listener
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.exists

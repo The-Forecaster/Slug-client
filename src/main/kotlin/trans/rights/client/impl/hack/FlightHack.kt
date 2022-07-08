@@ -11,9 +11,8 @@ import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.listener.impl.EventHandler
-import trans.rights.event.listener.impl.LambdaListener
-import trans.rights.event.listener.impl.listener
+import trans.rights.event.listener.EventHandler
+import trans.rights.event.listener.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = NumberSetting("Speed", "How fast you want to fly.", 15.0)
@@ -22,12 +21,12 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     override val settings = Settings(speed)
 
     @EventHandler
-    val updateListener: LambdaListener<TickEvent.PostTick> = listener {
+    val updateListener = listener<TickEvent.PostTick> {
         if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
     }
 
     @EventHandler
-    val packetReceiveListener: LambdaListener<PacketEvent.PostReceive> = listener { event ->
+    val packetReceiveListener = listener<PacketEvent.PostReceive> { event ->
         if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
             it.allowFlying = true
             it.flying = true
@@ -36,7 +35,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     }
 
     @EventHandler
-    val packetSendListener: LambdaListener<PacketEvent.PreSend> = listener { event ->
+    val packetSendListener = listener<PacketEvent.PreSend> { event ->
         if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
             (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
         }

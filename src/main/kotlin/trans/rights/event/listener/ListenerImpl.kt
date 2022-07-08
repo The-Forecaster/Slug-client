@@ -7,17 +7,19 @@ import kotlin.reflect.KClass
  *
  * @param action consumer the listeners will call when an event is posted
  */
-inline fun <reified T : Any> listener(noinline action: (T) -> Unit) = listener(T::class, DEFAULT, action)
+inline fun <reified T : Any> listener(noinline action: (T) -> Unit) = listener(action, DEFAULT, T::class)
 
 /**
  * This is for making listeners in Kotlin specifically, as it has less overhead
  *
  * @param T type the lambda will accept
- * @param action consumer the listeners will call when an event is posted
  * @param target class that the listener will listen for
+ * @param action consumer the listeners will call when an event is posted
  */
 inline fun <reified T : Any> listener(
-    target: KClass<T> = T::class, priority: Int = DEFAULT, noinline action: (T) -> Unit
+    noinline action: (T) -> Unit,
+    priority: Int = DEFAULT,
+    target: KClass<T> = T::class
 ) = LambdaListener(target, priority, action)
 
 /** Implementation of Listener that uses a lambda function as its target */
