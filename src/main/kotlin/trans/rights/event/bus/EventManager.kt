@@ -2,6 +2,7 @@ package trans.rights.event.bus
 
 import trans.rights.event.listener.EventHandler
 import trans.rights.event.listener.Listener
+import trans.rights.event.type.Cancellable
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.reflect.*
@@ -36,12 +37,21 @@ open class EventManager : EventBus {
 
     override fun unregister(listener: Listener<*>) = this.registry[listener.target]?.remove(listener) ?: false
 
-    override fun register(subscriber: Any): Boolean = this.cache.getOrPut(subscriber, subscriber::listeners).map(::register).all()
+    override fun register(subscriber: Any): Boolean =
+        this.cache.getOrPut(subscriber, subscriber::listeners).map(::register).all()
 
     override fun unregister(subscriber: Any): Boolean = subscriber.listeners.map(::unregister).all()
 
     override fun <T : Any> dispatch(event: T): T {
         (registry[event::class] as MutableList<Listener<T>>?)?.forEach { it(event) }
+        return event
+    }
+
+    fun <T : Cancellable> dispatch(event: T): T {
+        (registry[event::class] as MutableList<Listener<T>>?)?.forEach {
+            if (event.isCancelled) return@forEach else it(event)
+        }
+
         return event
     }
 }

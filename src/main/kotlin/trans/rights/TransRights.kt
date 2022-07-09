@@ -1,6 +1,6 @@
 package trans.rights
 
-import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
@@ -11,7 +11,7 @@ import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 
-class TransRights : ClientModInitializer {
+class TransRights : ModInitializer {
     companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
@@ -21,7 +21,7 @@ class TransRights : ClientModInitializer {
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }
 
-    override fun onInitializeClient() {
+    override fun onInitialize() {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")

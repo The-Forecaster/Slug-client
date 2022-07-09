@@ -6,11 +6,4 @@ import trans.rights.TransRights.Companion.NAME
 
 internal const val prefix = "§9[$NAME]§r "
 
-fun ChatHud.clientSend(text: String) {
-    this.clientSend(text, true)
-}
-
-fun ChatHud.clientSend(text: String, pre: Boolean) {
-    if (pre) this.addMessage(Text.of("${prefix}$text"))
-    else this.addMessage(Text.of(text))
-}
+fun ChatHud.clientSend(text: String, pre: Boolean = true) = this.addMessage(Text.of(if (pre)"${prefix}$text" else text))
