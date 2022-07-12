@@ -1,5 +1,7 @@
 package trans.rights.client.api.command
 
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.minecraft.client.gui.screen.ChatScreen
 import trans.rights.BasicEventManager
@@ -11,25 +13,30 @@ import trans.rights.client.impl.command.CHelpCommand
 import trans.rights.client.impl.command.CReloadCommand
 import trans.rights.client.impl.command.PrefixCommand
 import trans.rights.client.impl.command.ToggleCommand
+import trans.rights.client.util.readString
+import trans.rights.client.util.writeToJson
 import trans.rights.event.listener.EventHandler
 import trans.rights.event.listener.HIGHEST
 import trans.rights.event.listener.listener
 import java.nio.file.Path
+import kotlin.io.path.createFile
+import kotlin.io.path.exists
 
 // We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
 object CommandManager : Manager<Command, LinkedHashSet<Command>>, Wrapper {
     override val values = linkedSetOf(CHelpCommand, CReloadCommand, PrefixCommand, ToggleCommand)
-    val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
+    private val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
 
-    var prefix: String = "."
+    var prefix: Char = '.'
+
+    init {
+        if (!file.exists()) file.createFile()
+    }
 
     @EventHandler
     val chatListener = listener<KeyEvent>({ event ->
-        if (this.prefix.toCharArray()[0].code == event.key && prefix.length == 1) minecraft.setScreen(
-            ChatScreen(
-                minecraft.inGameHud.chatHud.messageHistory.toString()
-            )
-        )
+        if (this.prefix.code == event.key) minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
+        event.cancel()
     }, priority = HIGHEST)
 
     override fun load() {

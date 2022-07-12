@@ -10,8 +10,17 @@ open class NumberSetting(
     isParentSetting: Boolean = false,
     private val increment: Double = 0.1
 ) : Setting<Double>(name, description, default, isParentSetting) {
-    constructor(name: String, description: String, default: Int, isParentSetting: Boolean = false) : this(
-        name, description, default.toDouble(), isParentSetting, 1.0
+    constructor(
+        name: String,
+        description: String,
+        default: Int,
+        isParentSetting: Boolean = false
+    ) : this(
+        name,
+        description,
+        default.toDouble(),
+        isParentSetting,
+        1.0
     )
 
     override fun set(other: Double) = this.set(other, true)

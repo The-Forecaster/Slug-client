@@ -17,14 +17,15 @@ object HackManager : Manager<Hack, List<Hack>> {
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
-        values.stream().forEach(Hack::load)
+        for (hack in values) hack.load()
 
         HackCommand.register(ClientCommandManager.getActiveDispatcher()!!)
     }
 
     override fun unload() {
-        values.forEach(BasicEventManager::unregister)
-
-        values.stream().forEach(Hack::save)
+        for (hack in values) {
+            BasicEventManager.unregister(hack)
+            hack.save()
+        }
     }
 }

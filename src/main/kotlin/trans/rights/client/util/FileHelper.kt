@@ -12,7 +12,8 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-private val gson: Gson = GsonBuilder().setLenient().setPrettyPrinting().create()
+private inline val gson: Gson
+    get() = GsonBuilder().setLenient().setPrettyPrinting().create()
 
 @get:Throws(OutOfMemoryError::class)
 inline val Path.readString: String

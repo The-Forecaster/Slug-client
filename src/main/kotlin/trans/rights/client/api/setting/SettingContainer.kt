@@ -3,13 +3,7 @@ package trans.rights.client.api.setting
 import trans.rights.client.api.commons.Modular
 
 interface SettingContainer {
-    val children: MutableList<Setting<*>>
-
-    fun <T : Setting<*>> add(setting: T): T {
-        this.children.add(setting)
-
-        return setting
-    }
+    val children: List<Setting<*>>
 
     fun get(name: String): Setting<*>? {
         for (setting in this.children) if (setting.name.lowercase() == name.lowercase()) return setting

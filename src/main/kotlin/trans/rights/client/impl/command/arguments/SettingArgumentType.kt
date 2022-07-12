@@ -15,8 +15,7 @@ class SettingArgumentType internal constructor(internal val hack: Hack?) : Argum
 
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>, builder: SuggestionsBuilder?
-    ): CompletableFuture<Suggestions> =
-        CommandSource.suggestMatching(this.hack?.settings?.allSettings()?.stream()?.map(Setting<*>::name), builder)
+    ): CompletableFuture<Suggestions> = CommandSource.suggestMatching(this.hack?.settings?.allSettings?.map(Setting<*>::name), builder)
 }
 
 fun setting(hack: Hack? = null): SettingArgumentType = SettingArgumentType(hack)
