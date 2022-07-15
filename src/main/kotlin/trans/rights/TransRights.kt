@@ -1,5 +1,6 @@
 package trans.rights
 
+import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,22 +12,24 @@ import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 
-class TransRights : ModInitializer {
+class TransRights : ClientModInitializer {
     companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
 
-        @JvmField
+        @JvmStatic
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
     }
 
-    override fun onInitialize() {
+    init {
+        if (!mainDirectory.exists()) mainDirectory.createDirectory()
+    }
+
+    override fun onInitializeClient() {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")
-
-        if (!mainDirectory.exists()) mainDirectory.createDirectory()
 
         Manager.load()
 

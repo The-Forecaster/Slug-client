@@ -10,13 +10,12 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Austin
  */
-
 public interface Wrapper {
     default boolean nullCheck() {
         return MinecraftClient.getInstance().player == null && MinecraftClient.getInstance().world == null;
     }
 
-    default @NotNull MinecraftClient getMinecraft() {
+    default MinecraftClient getMinecraft() {
         return MinecraftClient.getInstance();
     }
 

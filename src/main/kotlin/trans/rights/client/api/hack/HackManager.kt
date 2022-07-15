@@ -1,8 +1,8 @@
 package trans.rights.client.api.hack
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.mainDirectory
+import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.impl.command.HackCommand
 import trans.rights.client.impl.hack.*
@@ -14,12 +14,16 @@ object HackManager : Manager<Hack, List<Hack>> {
 
     private val directory: Path = Path.of("$mainDirectory/hacks")
 
+    init {
+        if (!Files.exists(directory)) Files.createDirectory(directory)
+    }
+
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
         for (hack in values) hack.load()
 
-        HackCommand.register(ClientCommandManager.getActiveDispatcher()!!)
+        HackCommand.build(CommandManager.dispatcher)
     }
 
     override fun unload() {

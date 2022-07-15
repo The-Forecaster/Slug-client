@@ -23,14 +23,14 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
 
     private val file: Path = Path.of("${TransRights.mainDirectory}/clickguiscreen.json")
 
-    private var key: Int = file.fromJson().get("key").asInt
+//     private var key: Int = file.fromJson().get("key").asInt
     private var shouldCloseOnEsc: Boolean = true
 
     @EventHandler
     val keyListener = listener<KeyEvent>({
-        if (it.key == key) minecraft.setScreen(this)
+        // if (it.key == key) minecraft.setScreen(this)
 
-        it.cancel()
+        // it.cancel()
     }, Integer.MAX_VALUE)
 
     init {

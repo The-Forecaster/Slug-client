@@ -1,7 +1,5 @@
 package trans.rights.client.events;
 
-import org.jetbrains.annotations.NotNull;
-
 public abstract class TickEvent {
     private boolean inWorld;
 

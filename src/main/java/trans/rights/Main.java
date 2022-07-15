@@ -10,6 +10,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.Locale;
 
+/**
+ * This is the main class used to let people know not to run this file
+ */
 public final class Main {
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/transrights/transpride.png");
 
@@ -43,6 +46,11 @@ public final class Main {
         }
     }
 
+    /**
+     * Gets the OS of the system the file runs on
+     *
+     * @return the Operating System that the program is run on
+     */
     private static OS getOS() {
         var osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
@@ -66,10 +74,22 @@ public final class Main {
             }
         }, NIX, UNKNOWN;
 
+        /**
+         * Runs a script based on the operating system that is currently running
+         *
+         * @param uri the local file path to the target folder
+         * @throws IOException if an IO error occurs
+         */
         public void open(@NotNull URI uri) throws IOException {
             Runtime.getRuntime().exec(this.getCommand(uri.toURL()));
         }
 
+        /**
+         * Gets the file opening command for this specific operating system
+         *
+         * @param url the file path to the target folder
+         * @return the command needed to open that folder
+         */
         protected String[] getCommand(@NotNull URL url) {
             var string = url.toString();
 

@@ -7,12 +7,11 @@ import trans.rights.event.type.Cancellable;
 public abstract class PacketEvent extends Cancellable {
     private Packet<?> packet;
 
-    public PacketEvent(Packet<?> packet) {
+    public PacketEvent(@NotNull Packet<?> packet) {
         this.packet = packet;
     }
 
-    @NotNull
-    public final Packet<?> getPacket() {
+    public final @NotNull Packet<?> getPacket() {
         return this.packet;
     }
 
@@ -21,25 +20,25 @@ public abstract class PacketEvent extends Cancellable {
     }
 
     public static final class PreSend extends PacketEvent {
-        public PreSend(Packet<?> packet) {
+        public PreSend(@NotNull Packet<?> packet) {
             super(packet);
         }
     }
 
     public static final class PreReceive extends PacketEvent {
-        public PreReceive(Packet<?> packet) {
+        public PreReceive(@NotNull Packet<?> packet) {
             super(packet);
         }
     }
 
     public static final class PostSend extends PacketEvent {
-        public PostSend(Packet<?> packet) {
+        public PostSend(@NotNull Packet<?> packet) {
             super(packet);
         }
     }
 
     public static final class PostReceive extends PacketEvent {
-        public PostReceive(Packet<?> packet) {
+        public PostReceive(@NotNull Packet<?> packet) {
             super(packet);
         }
     }

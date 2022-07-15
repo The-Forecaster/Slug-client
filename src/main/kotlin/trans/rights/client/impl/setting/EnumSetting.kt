@@ -2,7 +2,9 @@ package trans.rights.client.impl.setting
 
 import trans.rights.client.api.setting.Setting
 
-class EnumSetting<T : Enum<*>>(name: String, description: String, default: T, isParentSetting: Boolean = false) : Setting<T>(name, description, default, isParentSetting) {
+class EnumSetting<T : Enum<*>>(
+    name: String, description: String, default: T, vararg children: Setting<*>
+) : Setting<T>(name, description, default, *children) {
     private val values = default.javaClass.enumConstants
 
     fun cycle() {

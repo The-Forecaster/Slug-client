@@ -12,7 +12,7 @@ import trans.rights.client.api.setting.Setting
 class Settings(override val values: List<ModularSettingContainer>) : Manager<ModularSettingContainer, List<ModularSettingContainer>>, Iterable<ModularSettingContainer> {
     constructor(vararg settings: ModularSettingContainer) : this(settings.asList())
 
-    val allSettings = this.values.flatMap { if (it is Setting<*> && it.isParentSetting) (it.children + it) else it.children }
+    val allSettings = this.values.flatMap { if (it is Setting<*> && it.children.isNotEmpty()) (it.children + it) else it.children }
 
     fun get(setting: String): Setting<*>? = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
 

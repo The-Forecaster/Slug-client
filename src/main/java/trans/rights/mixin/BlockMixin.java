@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import trans.rights.BasicEventManager;
 import trans.rights.client.events.BlockSideDrawEvent;
 
-// need to find an actually good way of doing an x-ray cause this eats up ram
+/**
+ * This modifies the Block class, used to xray with the {@link trans.rights.client.impl.hack.WallHack}
+ */
 @Mixin(Block.class)
 public class BlockMixin {
     @Inject(method = "shouldDrawSide", at = @At("RETURN"), cancellable = true)

@@ -1,16 +1,16 @@
 package trans.rights.client.impl.command
 
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.command.CommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.commons.Manager
+import trans.rights.client.events.PacketEvent
 import trans.rights.client.util.clientSend
 
 object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"),
@@ -35,7 +35,7 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
-    private fun reload(context: CommandContext<FabricClientCommandSource>): Int {
+    private fun reload(context: CommandContext<CommandSource>): Int {
         when (getString(context, "type")) {
             null, "mc", "minecraft" -> reloadMc()
             "client" -> reloadClient()
@@ -46,9 +46,5 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
-    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-        dispatcher.register(
-            literal(name).executes { reload() }.then(argument("type", word())).executes(this::reload)
-        )
-    }
+    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder.executes { reload() }.then(argument("type", word())).executes(this::reload)
 }

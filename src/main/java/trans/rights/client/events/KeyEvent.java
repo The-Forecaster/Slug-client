@@ -15,4 +15,16 @@ public final class KeyEvent extends Cancellable {
     public int getKey() {
         return this.key;
     }
+
+    public int getScancode() {
+        return this.scancode;
+    }
+
+    public int getAction() {
+        return this.action;
+    }
+
+    public int getModifiers() {
+        return this.modifiers;
+    }
 }

@@ -1,12 +1,11 @@
 package trans.rights.client.impl.command
 
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
+import net.minecraft.command.CommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.hack.HackManager
@@ -31,19 +30,22 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
         }
     }
 
-    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
+    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
         HackManager.values.stream().forEach { hack ->
-            dispatcher.register(literal(hack.name.lowercase()).then(
-                argument("setting", setting(hack)).then(argument("value", word()).executes { ctx ->
-                    takeInput(getString(ctx, "value"), getSetting(ctx, "setting", hack)!!)
+            builder.then(argument("setting", setting(hack))).then(argument("value", word())).executes {
+                takeInput(getString(it, "value"), getSetting(it, "setting", hack)!!)
 
-                    minecraft.inGameHud.chatHud.clientSend(
-                        "§a${getSetting(ctx, "setting", hack)!!.name} set to ${getString(ctx, "value")}", true
-                    )
+                minecraft.inGameHud.chatHud.clientSend(
+                    "§a${
+                        getSetting(
+                            it, "setting", hack
+                        )!!.name
+                    } set to ${getString(it, "value")}"
+                )
 
-                    SINGLE_SUCCESS
-                })
-            ))
+                SINGLE_SUCCESS
+            }
         }
+        return builder
     }
 }

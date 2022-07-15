@@ -10,15 +10,15 @@ import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.setting.Setting
 import java.util.concurrent.CompletableFuture
 
-class SettingArgumentType internal constructor(internal val hack: Hack?) : ArgumentType<String> {
+class SettingArgumentType internal constructor(private val hack: Hack) : ArgumentType<String> {
     override fun parse(reader: StringReader): String = reader.readString()
 
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>, builder: SuggestionsBuilder?
-    ): CompletableFuture<Suggestions> = CommandSource.suggestMatching(this.hack?.settings?.allSettings?.map(Setting<*>::name), builder)
+    ): CompletableFuture<Suggestions> = CommandSource.suggestMatching(this.hack.settings.allSettings.map(Setting<*>::name), builder)
 }
 
-fun setting(hack: Hack? = null): SettingArgumentType = SettingArgumentType(hack)
+fun setting(hack: Hack) = SettingArgumentType(hack)
 
 fun getSetting(context: CommandContext<*>, name: String, hack: Hack = getHack(context, "hack")): Setting<*>? =
     hack.settings.get(name)

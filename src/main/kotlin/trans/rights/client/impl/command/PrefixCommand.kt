@@ -1,26 +1,26 @@
 package trans.rights.client.impl.command
 
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
-import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.word
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
+import com.mojang.brigadier.context.CommandContext
+import net.minecraft.command.CommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.api.command.CommandManager
 import trans.rights.client.util.clientSend
 
 object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/prefix <value>"), Wrapper {
-    override fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
-        dispatcher.register(literal(name).then(argument("value", word())).executes { ctx ->
+    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
+        return builder.then(argument("value", word())).executes { ctx: CommandContext<CommandSource> ->
             ctx.getArgument("value", String::class.java).let {
-                CommandManager.prefix = it
+                CommandManager.prefix = it[0]
 
                 minecraft.inGameHud.chatHud.clientSend("Prefix set to $it")
             }
 
             SINGLE_SUCCESS
-        })
+        }
     }
 }
