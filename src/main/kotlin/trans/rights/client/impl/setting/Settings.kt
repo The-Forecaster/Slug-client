@@ -9,10 +9,10 @@ import trans.rights.client.api.setting.Setting
  *
  * Use only once per module
  */
-class Settings(override val values: List<ModularSettingContainer>) : Manager<ModularSettingContainer, List<ModularSettingContainer>>, Iterable<ModularSettingContainer> {
+class Settings(override val values: List<ModularSettingContainer>) : Manager<ModularSettingContainer, List<ModularSettingContainer>> {
     constructor(vararg settings: ModularSettingContainer) : this(settings.asList())
 
-    val allSettings = this.values.flatMap { if (it is Setting<*> && it.children.isNotEmpty()) (it.children + it) else it.children }
+    val allSettings = this.values.flatMap { if (it is Setting<*>) (it.children + it) else it.children }
 
     fun get(setting: String): Setting<*>? = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
 
@@ -21,8 +21,6 @@ class Settings(override val values: List<ModularSettingContainer>) : Manager<Mod
     }
 
     override fun unload() {}
-
-    override fun iterator() = this.allSettings.iterator()
 }
 
 /**

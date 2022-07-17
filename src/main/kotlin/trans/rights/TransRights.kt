@@ -12,7 +12,7 @@ import java.nio.file.Path
 import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 
-class TransRights : ClientModInitializer {
+class TransRights : ModInitializer {
     companion object : Wrapper {
         const val NAME: String = "Trans-Rights"
 
@@ -26,7 +26,7 @@ class TransRights : ClientModInitializer {
         if (!mainDirectory.exists()) mainDirectory.createDirectory()
     }
 
-    override fun onInitializeClient() {
+    override fun onInitialize() {
         val start = System.currentTimeMillis()
 
         LOGGER.info("Starting $NAME...")

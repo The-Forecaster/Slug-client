@@ -1,6 +1,5 @@
 package trans.rights.client.util
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
@@ -12,7 +11,7 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-private inline val gson: Gson
+private inline val gson
     get() = GsonBuilder().setLenient().setPrettyPrinting().create()
 
 @get:Throws(OutOfMemoryError::class)

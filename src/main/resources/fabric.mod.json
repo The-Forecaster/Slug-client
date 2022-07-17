@@ -19,7 +19,7 @@
 
   "environment": "*",
   "entrypoints": {
-    "client": [
+    "main": [
       "trans.rights.TransRights"
     ]
   },
@@ -29,9 +29,7 @@
 
   "depends": {
     "fabricloader": ">=0.14.7",
-    "fabric": "*",
-    "minecraft": "~1.19",
-    "java": ">=17"
+    "minecraft": "~1.19"
   },
   "accessWidener": "transrights.accesswidener"
 }

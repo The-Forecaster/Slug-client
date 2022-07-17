@@ -8,6 +8,7 @@ import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.commons.Nameable
 import trans.rights.client.util.fromJson
+import trans.rights.client.util.readString
 import trans.rights.client.util.writeToJson
 import java.io.File
 import java.util.*
@@ -23,9 +24,12 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
         if (!friendFile.exists()) {
             friendFile.createNewFile()
             return
+        } else if (friendFile.readString == "") {
+            save()
+            return
         }
 
-        friendFile.fromJson().keySet().stream().forEach {
+        friendFile.fromJson().keySet().forEach {
             values.add(Friend(it, minecraft.socialInteractionsManager.getUuid(it)))
         }
     }
@@ -43,5 +47,5 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     }
 }
 
-val ClientPlayerEntity.isFriend: Boolean
+val ClientPlayerEntity.isFriend
     get() = FriendManager.values.map(Friend::uuid).contains(this.uuid)

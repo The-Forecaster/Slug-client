@@ -7,7 +7,7 @@ import java.util.*
 
 interface Manager<T, L : Collection<T>> {
     companion object {
-        private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager))
+        private val managers = listOf(FriendManager, HackManager, CommandManager)
 
         fun load() = managers.stream().forEach(Manager<*, *>::load)
 

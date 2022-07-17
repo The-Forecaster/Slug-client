@@ -24,10 +24,6 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     var enabled: Boolean = false
 
-    init {
-        if (!this.file.exists()) this.file.createNewFile()
-    }
-
     protected fun enable() {
         if (!this.enabled) {
             BasicEventManager.register(this)
@@ -56,7 +52,12 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     fun load(file: File = this.file) {
         try {
-            if (file.readString == "") {
+            if (!this.file.exists()) {
+                this.file.createNewFile()
+                return
+            }
+
+            if (file.readString == "{}") {
                 this.save(file)
                 return
             }
