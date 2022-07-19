@@ -10,8 +10,14 @@ import trans.rights.client.api.command.CommandManager;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayEntityMixin {
-    @Inject(method = "sendChatMessage(Ljava/lang/String;Lnet/minecraft/text/Text;)V", at = @At("HEAD"))
+
+    // This is pasted from meteor https://github.com/MeteorDevelopment/meteor-client
+    // go check them out for a better implementation of a command system
+    @Inject(method = "sendChatMessage(Ljava/lang/String;Lnet/minecraft/text/Text;)V", at = @At("HEAD"), cancellable = true)
     private void onSendChatMessage(String message, Text preview, CallbackInfo info) {
-        if (message.startsWith(String.valueOf(CommandManager.INSTANCE.getPrefix()))) CommandManager.INSTANCE.dispatch(message);
+        if (message.startsWith(String.valueOf(CommandManager.INSTANCE.getPrefix()))) {
+            CommandManager.INSTANCE.dispatch(message);
+            info.cancel();
+        }
     }
 }

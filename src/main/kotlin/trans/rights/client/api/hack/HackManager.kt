@@ -12,18 +12,14 @@ import java.nio.file.Path
 object HackManager : Manager<Hack, List<Hack>> {
     override val values = listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)
 
-    private val directory: Path = Path.of("$mainDirectory/hacks")
-
-    init {
-        if (!Files.exists(directory)) Files.createDirectory(directory)
-    }
+    internal val directory: Path = Path.of("$mainDirectory/hacks")
 
     override fun load() {
         if (!Files.exists(directory)) Files.createDirectory(directory)
 
         for (hack in values) hack.load()
 
-        HackCommand.build(CommandManager.dispatcher)
+        HackCommand.register(CommandManager.dispatcher)
     }
 
     override fun unload() {

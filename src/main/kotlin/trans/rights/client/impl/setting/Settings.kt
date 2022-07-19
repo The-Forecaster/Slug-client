@@ -14,7 +14,7 @@ class Settings(override val values: List<ModularSettingContainer>) : Manager<Mod
 
     val allSettings = this.values.flatMap { if (it is Setting<*>) (it.children + it) else it.children }
 
-    fun get(setting: String): Setting<*>? = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
+    fun get(setting: String) = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
 
     override fun load() {
         this.values.stream().sorted(Comparator.comparing(ModularSettingContainer::name))

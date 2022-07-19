@@ -7,19 +7,17 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
 import net.minecraft.command.CommandSource
+import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
-import trans.rights.client.api.commons.Manager
-import trans.rights.client.events.PacketEvent
 import trans.rights.client.util.clientSend
 
-object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"),
-    Wrapper {
+object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
         minecraft.inGameHud.chatHud.clientSend("Reloading the client...")
 
-        Manager.unload()
-        Manager.load()
+        TransRights.unload()
+        TransRights.load()
     }
 
     private fun reloadMc() {
@@ -46,5 +44,6 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
-    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder.executes { reload() }.then(argument("type", word())).executes(this::reload)
+    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
+        builder.executes { reload() }.then(argument("type", word())).executes(::reload)
 }

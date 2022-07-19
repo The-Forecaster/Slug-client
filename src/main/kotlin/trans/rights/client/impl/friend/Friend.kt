@@ -8,7 +8,6 @@ import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.commons.Nameable
 import trans.rights.client.util.fromJson
-import trans.rights.client.util.readString
 import trans.rights.client.util.writeToJson
 import java.io.File
 import java.util.*
@@ -24,9 +23,6 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
         if (!friendFile.exists()) {
             friendFile.createNewFile()
             return
-        } else if (friendFile.readString == "") {
-            save()
-            return
         }
 
         friendFile.fromJson().keySet().forEach {
@@ -35,7 +31,8 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     }
 
     override fun unload() {
-        save(); values.clear()
+        save()
+        values.clear()
     }
 
     private fun save() = JsonObject().let { obj ->
@@ -47,5 +44,5 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     }
 }
 
-val ClientPlayerEntity.isFriend
+internal inline val ClientPlayerEntity.isFriend
     get() = FriendManager.values.map(Friend::uuid).contains(this.uuid)

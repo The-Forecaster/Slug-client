@@ -17,7 +17,7 @@ private inline val gson
 @get:Throws(OutOfMemoryError::class)
 inline val Path.readString: String
     get() = try {
-        Files.readString(this)
+        Files.readString(this) ?: ""
     } catch (e: Exception) {
         when (e) {
             is IOException, is SecurityException -> LOGGER.error("Couldn't read $this")
@@ -26,10 +26,6 @@ inline val Path.readString: String
 
         ""
     }
-
-@get:Throws(OutOfMemoryError::class)
-inline val File.readString: String
-    get() = this.toPath().readString
 
 @Throws(
     IOException::class,
@@ -45,10 +41,17 @@ fun Path.writeToJson(element: JsonObject) {
     writer.close()
 }
 
+@Throws(
+    IOException::class,
+    IllegalArgumentException::class,
+    UnsupportedOperationException::class,
+    FileAlreadyExistsException::class,
+    SecurityException::class
+)
 fun File.writeToJson(element: JsonObject) = this.toPath().writeToJson(element)
 
 fun Path.fromJson(clearIfException: Boolean = false): JsonObject = try {
-    gson.fromJson(this.readString, JsonObject::class.java)
+    gson.fromJson(this.readString, JsonObject::class.java) ?: JsonObject()
 } catch (e: JsonSyntaxException) {
     if (clearIfException) runCatching(Path::clearJson).onFailure(Throwable::printStackTrace)
 

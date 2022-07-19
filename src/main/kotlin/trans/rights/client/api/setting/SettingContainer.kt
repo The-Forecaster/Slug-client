@@ -5,11 +5,7 @@ import trans.rights.client.api.commons.Modular
 interface SettingContainer {
     val children: List<Setting<*>>
 
-    fun get(name: String): Setting<*>? {
-        for (setting in this.children) if (setting.name.lowercase() == name.lowercase()) return setting
-
-        return null
-    }
+    fun get(name: String): Setting<*>? = this.children.find { it.name.lowercase() == name.lowercase() }
 }
 
 // This is kind of dumb, but we have to do it

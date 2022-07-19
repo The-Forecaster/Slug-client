@@ -10,7 +10,7 @@ import trans.rights.client.impl.command.arguments.getHack
 import trans.rights.client.impl.command.arguments.hack
 
 object ToggleCommand : Command("toggle", "toggle a hack", "/toggle <hack>") {
-    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
+    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
         return builder.then(argument<CommandSource, Hack>("hack", hack()).executes { ctx ->
             getHack(ctx, "hack").toggle()
 

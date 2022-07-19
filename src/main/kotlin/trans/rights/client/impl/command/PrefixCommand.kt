@@ -12,7 +12,7 @@ import trans.rights.client.api.command.CommandManager
 import trans.rights.client.util.clientSend
 
 object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/prefix <value>"), Wrapper {
-    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
+    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
         return builder.then(argument("value", word())).executes { ctx: CommandContext<CommandSource> ->
             ctx.getArgument("value", String::class.java).let {
                 CommandManager.prefix = it[0]

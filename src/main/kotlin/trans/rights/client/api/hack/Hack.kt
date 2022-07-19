@@ -3,7 +3,6 @@ package trans.rights.client.api.hack
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import trans.rights.BasicEventManager
-import trans.rights.TransRights
 import trans.rights.TransRights.Companion.LOGGER
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
@@ -13,12 +12,11 @@ import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
 import trans.rights.client.util.clearJson
 import trans.rights.client.util.fromJson
-import trans.rights.client.util.readString
 import trans.rights.client.util.writeToJson
 import java.io.File
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
-    private val file: File = File("${TransRights.mainDirectory}/hacks/$name.json")
+    private val file: File = File("${HackManager.directory}$name.json")
 
     abstract val settings: Settings
 
@@ -57,7 +55,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                 return
             }
 
-            if (file.readString == "{}") {
+            if (file.fromJson().size() == 0) {
                 this.save(file)
                 return
             }

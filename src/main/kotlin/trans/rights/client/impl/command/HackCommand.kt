@@ -30,7 +30,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
         }
     }
 
-    override fun register(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
+    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
         HackManager.values.stream().forEach { hack ->
             builder.then(argument("setting", setting(hack))).then(argument("value", word())).executes {
                 takeInput(getString(it, "value"), getSetting(it, "setting", hack)!!)

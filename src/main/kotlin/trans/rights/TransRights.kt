@@ -1,16 +1,16 @@
 package trans.rights
 
-import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import trans.rights.client.api.Wrapper
+import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.commons.Manager
-import trans.rights.client.impl.gui.ClickGuiScreen
+import trans.rights.client.api.hack.HackManager
+import trans.rights.client.impl.friend.FriendManager
 import trans.rights.event.bus.EventManager
+import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.createDirectory
-import kotlin.io.path.exists
 
 class TransRights : ModInitializer {
     companion object : Wrapper {
@@ -20,10 +20,16 @@ class TransRights : ModInitializer {
 
         @JvmStatic
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
+
+        private val managers = listOf(FriendManager, HackManager, CommandManager)
+
+        fun load() = managers.stream().forEach(Manager<*, *>::load)
+
+        fun unload() = managers.stream().forEach(Manager<*, *>::unload)
     }
 
     init {
-        if (!mainDirectory.exists()) mainDirectory.createDirectory()
+        if (!Files.exists(mainDirectory)) Files.createDirectory(mainDirectory)
     }
 
     override fun onInitialize() {
@@ -31,11 +37,9 @@ class TransRights : ModInitializer {
 
         LOGGER.info("Starting $NAME...")
 
-        Manager.load()
+        load()
 
-        BasicEventManager.register(ClickGuiScreen.keyListener)
-
-        Runtime.getRuntime().addShutdownHook(Thread { Manager.unload() })
+        Runtime.getRuntime().addShutdownHook(Thread(::unload))
 
         LOGGER.info("$NAME has been started in ${System.currentTimeMillis() - start} ms!")
     }
