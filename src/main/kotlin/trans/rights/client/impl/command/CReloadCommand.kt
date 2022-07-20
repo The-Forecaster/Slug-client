@@ -45,5 +45,5 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
     }
 
     override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
-        builder.executes { reload() }.then(argument("type", word())).executes(::reload)
+        builder.executes(::reload).then(argument("type", word())).executes(::reload)
 }

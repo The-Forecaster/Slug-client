@@ -11,21 +11,22 @@ import trans.rights.client.impl.friend.FriendManager
 import trans.rights.event.bus.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.stream.Stream
 
 class TransRights : ModInitializer {
     companion object : Wrapper {
-        const val NAME: String = "Trans-Rights"
+        const val NAME = "Trans-Rights"
 
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
 
         @JvmStatic
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
-        private val managers = listOf(FriendManager, HackManager, CommandManager)
+        private val managers = Stream.of(FriendManager, HackManager, CommandManager)
 
-        fun load() = managers.stream().forEach(Manager<*, *>::load)
+        fun load() = managers.forEach(Manager<*, *>::load)
 
-        fun unload() = managers.stream().forEach(Manager<*, *>::unload)
+        fun unload() = managers.forEach(Manager<*, *>::unload)
     }
 
     init {

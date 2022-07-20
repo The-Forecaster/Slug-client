@@ -24,6 +24,8 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
     //     private var key: Int = file.fromJson().get("key").asInt
     private var shouldCloseOnEsc = true
 
+    private var key = 'y'
+
     init {
         var offset = 0
 
@@ -45,12 +47,13 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
     override fun shouldCloseOnEsc() = shouldCloseOnEsc
 
     override fun load() {
-        if (Files.exists(file)) Files.createFile(file)
+        if (!Files.exists(file)) Files.createFile(file)
 
         BasicEventManager.register(listener<KeyEvent>({
-            // if (it.key == key) minecraft.setScreen(this)
-
-            // it.cancel()
+            if (it.key == this.key.code) {
+                minecraft.setScreen(this)
+                it.cancel()
+            }
         }, Integer.MAX_VALUE))
     }
 
