@@ -1,5 +1,6 @@
 package trans.rights.client.impl.gui
 
+import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -7,12 +8,13 @@ import trans.rights.BasicEventManager
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Manager
+import trans.rights.client.api.gui.components.Frame
+import trans.rights.client.api.gui.components.buttons.Button
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.events.KeyEvent
-import trans.rights.client.api.gui.components.Frame
-import trans.rights.client.api.gui.components.buttons.Button
 import trans.rights.event.listener.listener
+import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -33,14 +35,35 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
             offset += 20
 
             object : Button<Hack>(20, offset, 60, 20, it) {
-                override fun render(stack: MatrixStack) {}
+                override fun render(stack: MatrixStack) {
+                    DrawableHelper.fill(
+                        stack,
+                        this.xPos,
+                        this.yPos,
+                        this.width + this.xPos,
+                        this.height + this.yPos,
+                        Color.LIGHT_GRAY.rgb
+                    )
+                }
             }
         }) {
-            override fun render(stack: MatrixStack) {}
+            override fun render(stack: MatrixStack) {
+                DrawableHelper.fill(
+                    stack,
+                    this.xPos,
+                    this.yPos,
+                    this.width + this.xPos,
+                    this.height + this.yPos,
+                    Color.LIGHT_GRAY.rgb
+                )
+
+                this.buttons.forEach { it.render(stack) }
+            }
         })
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) = values.forEach { it.render(matrices) }
+    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) =
+        values.forEach { it.render(matrices) }
 
     override fun shouldPause() = false
 

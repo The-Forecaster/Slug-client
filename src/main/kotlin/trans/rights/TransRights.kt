@@ -8,6 +8,7 @@ import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.impl.friend.FriendManager
+import trans.rights.client.impl.gui.ClickGuiScreen
 import trans.rights.event.bus.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
@@ -22,7 +23,7 @@ class TransRights : ModInitializer {
         @JvmStatic
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
-        private val managers = Stream.of(FriendManager, HackManager, CommandManager)
+        private val managers = Stream.of(FriendManager, HackManager, CommandManager, ClickGuiScreen)
 
         fun load() = managers.forEach(Manager<*, *>::load)
 

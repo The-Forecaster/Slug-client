@@ -22,7 +22,6 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
 
     private fun reloadMc() {
         minecraft.inGameHud.chatHud.clientSend("Reloading minecraft...")
-
         minecraft.reloadResourcesConcurrently()
     }
 

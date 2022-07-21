@@ -43,15 +43,12 @@ open class EventManager : EventBus {
     override fun unregister(subscriber: Any): Boolean = subscriber.listeners.map(::unregister).all()
 
     override fun <T : Any> dispatch(event: T): T {
-        (registry[event::class] as MutableList<Listener<T>>?)?.forEach { it(event) }
+        (registry[this::class] as MutableList<Listener<T>>?)?.forEach { it(event) }
         return event
     }
 
     fun <T : Cancellable> dispatch(event: T): T {
-        (registry[event::class] as MutableList<Listener<T>>?)?.forEach {
-            if (event.isCancelled) return@forEach else it(event)
-        }
-
+        (registry[this::class] as MutableList<Listener<T>>?)?.forEach { if (event.isCancelled) return@forEach else it(event) }
         return event
     }
 }

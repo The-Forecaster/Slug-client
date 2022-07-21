@@ -1,6 +1,6 @@
 plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
@@ -9,9 +9,7 @@ archivesBaseName = project.archives_base_name
 version project.mod_version
 group project.mod_group
 
-loom {
-    accessWidenerPath = file('src/main/resources/transrights.accesswidener')
-}
+loom.accessWidenerPath = file('src/main/resources/transrights.accesswidener')
 
 compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '17'
 
@@ -37,26 +35,26 @@ dependencies {
     modImplementation 'net.fabricmc:fabric-loader:0.14.8'
 
     // mod dependencies
-    include modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3') {
+    include modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4') {
         exclude module: 'kotlin-stdlib-jdk8'
         exclude module: 'kotlin-stdlib-common'
     }
 
-    include modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.7.0') {
+    include modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.7.10') {
         exclude module: 'kotlin-stdlib'
     }
 
-    include modImplementation('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0') {
+    include modImplementation('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10') {
         exclude module: 'kotlin-stdlib-common'
         exclude module: 'annotations'
     }
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property 'version', project.version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
     }
 }
 
