@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  *
  * @author Austin
  */
-interface Listener<T: Any> {
+interface Listener<T : Any> {
 
     /** the class of the target event */
     val target: KClass<T>
