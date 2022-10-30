@@ -9,7 +9,7 @@ import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.impl.gui.ClickGuiScreen
-import trans.rights.event.bus.EventManager
+import trans.rights.event.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Stream

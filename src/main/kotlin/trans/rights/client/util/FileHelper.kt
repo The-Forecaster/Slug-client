@@ -11,8 +11,7 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
-private inline val gson
-    get() = GsonBuilder().setLenient().setPrettyPrinting().create()
+private val gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
 @get:Throws(OutOfMemoryError::class)
 inline val Path.readString: String
@@ -50,7 +49,7 @@ fun Path.writeToJson(element: JsonObject) {
 )
 fun File.writeToJson(element: JsonObject) = this.toPath().writeToJson(element)
 
-fun Path.fromJson(clearIfException: Boolean = false): JsonObject = try {
+fun Path.fromJson(clearIfException: Boolean = true) = try {
     gson.fromJson(this.readString, JsonObject::class.java) ?: JsonObject()
 } catch (e: JsonSyntaxException) {
     if (clearIfException) runCatching(Path::clearJson).onFailure(Throwable::printStackTrace)

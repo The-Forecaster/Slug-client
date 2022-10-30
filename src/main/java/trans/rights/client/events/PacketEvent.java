@@ -2,7 +2,7 @@ package trans.rights.client.events;
 
 import net.minecraft.network.Packet;
 import org.jetbrains.annotations.NotNull;
-import trans.rights.event.type.Cancellable;
+import trans.rights.event.Cancellable;
 
 public abstract class PacketEvent extends Cancellable {
     private Packet<?> packet;

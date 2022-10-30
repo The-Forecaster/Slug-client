@@ -14,14 +14,14 @@ import trans.rights.client.util.clientSend
 
 object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
-        minecraft.inGameHud.chatHud.clientSend("Reloading the client...")
+        this.clientSend("Reloading the client...")
 
         TransRights.unload()
         TransRights.load()
     }
 
     private fun reloadMc() {
-        minecraft.inGameHud.chatHud.clientSend("Reloading minecraft...")
+        this.clientSend("Reloading minecraft...")
         minecraft.reloadResourcesConcurrently()
     }
 

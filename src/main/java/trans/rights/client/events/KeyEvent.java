@@ -1,6 +1,6 @@
 package trans.rights.client.events;
 
-import trans.rights.event.type.Cancellable;
+import trans.rights.event.Cancellable;
 
 public final class KeyEvent extends Cancellable {
     private final int key, scancode, action, modifiers;

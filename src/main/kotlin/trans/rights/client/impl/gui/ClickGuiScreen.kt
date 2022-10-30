@@ -13,7 +13,7 @@ import trans.rights.client.api.gui.components.buttons.Button
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.events.KeyEvent
-import trans.rights.event.listener.listener
+import trans.rights.event.listener
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path

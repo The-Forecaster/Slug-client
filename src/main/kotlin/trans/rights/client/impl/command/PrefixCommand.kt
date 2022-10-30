@@ -17,7 +17,7 @@ object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/pr
             ctx.getArgument("value", String::class.java).let {
                 CommandManager.prefix = it[0]
 
-                minecraft.inGameHud.chatHud.clientSend("Prefix set to $it")
+                this.clientSend("Prefix set to $it")
             }
 
             SINGLE_SUCCESS

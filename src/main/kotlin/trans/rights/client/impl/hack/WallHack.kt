@@ -4,8 +4,8 @@ import net.minecraft.block.Blocks
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.BlockSideDrawEvent
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.listener.EventHandler
-import trans.rights.event.listener.listener
+import trans.rights.event.EventHandler
+import trans.rights.event.listener
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
     private val blocks = mutableSetOf(Blocks.DIAMOND_ORE, Blocks.ANCIENT_DEBRIS, Blocks.ENDER_CHEST, Blocks.BEDROCK)

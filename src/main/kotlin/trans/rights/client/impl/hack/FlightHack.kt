@@ -11,8 +11,8 @@ import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.listener.EventHandler
-import trans.rights.event.listener.listener
+import trans.rights.event.EventHandler
+import trans.rights.event.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = NumberSetting("Speed", "How fast you want to fly.", 15.0)

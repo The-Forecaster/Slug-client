@@ -16,7 +16,7 @@ import trans.rights.client.util.writeToJson
 import java.io.File
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
-    private val file: File = File("${HackManager.directory}$name.json")
+    private val file: File = File("${HackManager.directory}/$name.json")
 
     abstract val settings: Settings
 

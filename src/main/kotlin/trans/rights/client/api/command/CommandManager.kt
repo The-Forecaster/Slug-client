@@ -18,8 +18,7 @@ import trans.rights.client.impl.command.source.ChatCommandSource
 import trans.rights.client.util.error
 import trans.rights.client.util.fromJson
 import trans.rights.client.util.writeToJson
-import trans.rights.event.listener.HIGHEST
-import trans.rights.event.listener.listener
+import trans.rights.event.listener
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -37,7 +36,7 @@ object CommandManager : Manager<Command, List<Command>>, Wrapper {
             minecraft.setScreen(ChatScreen(minecraft.inGameHud.chatHud.messageHistory.toString()))
             event.cancel()
         }
-    }, priority = HIGHEST)
+    }, priority = 500)
 
     @JvmOverloads
     fun dispatch(message: String, source: CommandSource = ChatCommandSource(minecraft)) {

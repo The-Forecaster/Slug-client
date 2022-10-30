@@ -7,8 +7,8 @@ import trans.rights.client.impl.friend.isFriend
 import trans.rights.client.impl.setting.BooleanSetting
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.listener.EventHandler
-import trans.rights.event.listener.listener
+import trans.rights.event.EventHandler
+import trans.rights.event.listener
 
 object AuraHack : Hack("Aura", "Automatically hit people near you") {
     private val customTick = NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 4)
