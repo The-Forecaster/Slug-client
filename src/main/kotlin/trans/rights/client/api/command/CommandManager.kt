@@ -43,7 +43,7 @@ object CommandManager : Manager<Command, List<Command>>, Wrapper {
         try {
             dispatcher.execute(dispatcher.parse(message, source))
         } catch (e: CommandSyntaxException) {
-            minecraft.inGameHud.chatHud.error(e.context)
+            this.error(e.context)
         }
     }
 

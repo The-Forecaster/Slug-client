@@ -36,11 +36,7 @@ object HackCommand : Command("hack-command", "Change the settings of a Hack", "/
                 takeInput(getString(it, "value"), getSetting(it, "setting", hack)!!)
 
                 this.clientSend(
-                    "§a${
-                        getSetting(
-                            it, "setting", hack
-                        )!!.name
-                    } set to ${getString(it, "value")}"
+                    "§a${getSetting(it, "setting", hack)!!.name} set to ${getString(it, "value")}"
                 )
 
                 SINGLE_SUCCESS
