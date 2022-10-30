@@ -5,13 +5,15 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
 import com.mojang.brigadier.exceptions.BuiltInExceptions
+import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.minecraft.command.CommandSource
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.commons.Modular
 import trans.rights.client.util.clientSend
 
-abstract class Command(name: String, description: String, private val syntax: String, private vararg val aliases: String) :
-    Modular(name, description), Wrapper {
+abstract class Command(
+    name: String, description: String, private val syntax: String, private vararg val aliases: String
+) : Modular(name, description), Wrapper {
     protected val builtin = BuiltInExceptions()
 
     fun register(dispatcher: CommandDispatcher<CommandSource>) {
@@ -20,12 +22,17 @@ abstract class Command(name: String, description: String, private val syntax: St
     }
 
     private fun register(dispatcher: CommandDispatcher<CommandSource>, name: String) {
-        dispatcher.register(this.build(literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
-            this.clientSend("$description : $syntax")
+        dispatcher.register(
+            this.build(
+                literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
+                    this.clientSend("$description : $syntax")
 
-            SINGLE_SUCCESS
-        })))
+                    SINGLE_SUCCESS
+                })
+            )
+        )
     }
 
+    @Throws(CommandSyntaxException::class)
     abstract fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource>
 }

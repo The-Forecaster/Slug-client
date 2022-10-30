@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType.word
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.minecraft.command.CommandSource
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
@@ -32,6 +33,7 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
+    @Throws(CommandSyntaxException::class)
     private fun reload(context: CommandContext<CommandSource>): Int {
         when (getString(context, "type")) {
             null, "mc", "minecraft" -> reloadMc()
@@ -43,6 +45,7 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
+    @Throws(CommandSyntaxException::class)
     override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
         builder.executes(::reload).then(argument("type", word())).executes(::reload)
 }

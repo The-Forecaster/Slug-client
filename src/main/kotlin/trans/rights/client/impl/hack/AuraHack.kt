@@ -5,36 +5,34 @@ import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.friend.isFriend
 import trans.rights.client.impl.setting.BooleanSetting
-import trans.rights.client.impl.setting.NumberSetting
+import trans.rights.client.impl.setting.IntSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.EventHandler
 import trans.rights.event.listener
 
 object AuraHack : Hack("Aura", "Automatically hit people near you") {
-    private val customTick = NumberSetting("tick-delay", "How many ticks to wait until the next attack.", 4)
+    private val customTick = IntSetting("tick-delay", "How many ticks to wait until the next attack.", 4)
 
-    private val customDelay = BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true, customTick)
+    private val customDelay =
+        BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true, customTick)
     private val hitFriends = BooleanSetting("Friends", "Whether to attack friends or not", false)
 
     override val settings = Settings(customDelay, hitFriends)
 
     private var ticks: Int = 0
 
-    @EventHandler
-    val updateListener = listener<TickEvent.Post> { event ->
+    override val listeners = listOf(listener<TickEvent.Post> { event ->
         if (event.isInWorld && getTarget() != null) {
             if (!customDelay.value && !player!!.handSwinging) {
                 minecraft.interactionManager?.attackEntity(player, getTarget())
             } else if (customDelay.value) {
-                if (customTick.value == ticks.toDouble()) {
+                if (customTick.value.toInt() == ticks) {
                     minecraft.interactionManager?.attackEntity(player, getTarget())
 
                     ticks = 0
-                }
-                else ticks++
+                } else ticks++
             }
         }
-    }
+    })
 
     private fun getTarget(): PlayerEntity? {
         if (minecraft.networkHandler!!.playerList.isEmpty()) return null

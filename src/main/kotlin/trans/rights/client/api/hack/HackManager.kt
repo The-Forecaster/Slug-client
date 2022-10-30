@@ -10,7 +10,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 object HackManager : Manager<Hack, List<Hack>> {
-    override val values = listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack)
+    override val values = listOf(AntiFabric, AntiKick, AuraHack, FlightHack, WallHack).sortedWith(Comparator.comparing(Hack::name))
 
     internal val directory: Path = Path.of("$mainDirectory/hacks")
 

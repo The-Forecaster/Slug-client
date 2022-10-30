@@ -11,7 +11,6 @@ import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.NumberSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.EventHandler
 import trans.rights.event.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
@@ -20,24 +19,18 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     override val settings = Settings(speed)
 
-    @EventHandler
-    val updateListener = listener<TickEvent.Post> {
+    override val listeners = listOf(listener<TickEvent.Post> {
         if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
-    }
-
-    @EventHandler
-    val packetReceiveListener = listener<PacketEvent.PostReceive> { event ->
+    }, listener<PacketEvent.PostReceive> { event ->
         if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
             it.allowFlying = true
             it.flying = true
             it.flySpeed = trueSpeed()
         }
-    }
-
-    @EventHandler
-    val packetSendListener = listener<PacketEvent.PreSend> { event ->
-        if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
-    }
+    }, listener<PacketEvent.PreSend> { event ->
+        if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying =
+            true
+    })
 
     private fun trueSpeed() = (speed.value / 10).toFloat()
 
@@ -48,12 +41,10 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     }
 
     override fun onDisable() {
-        if (!nullCheck()) {
-            player!!.run {
-                if (!this.isCreative) this.abilities.allowFlying = false
-                this.abilities.flySpeed = 0.05f
-                this.abilities.flying = false
-            }
+        player?.let {
+            if (!it.isCreative) it.abilities.allowFlying = false
+            it.abilities.flySpeed = 0.05f
+            it.abilities.flying = false
         }
     }
 }

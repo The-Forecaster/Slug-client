@@ -3,7 +3,7 @@ package trans.rights.client.api.setting
 abstract class Setting<T>(
     name: String, description: String, default: T, vararg children: Setting<*>
 ) : ModularSettingContainer(name, description), Comparable<Setting<*>> {
-    var value: T = default
+    var value = default
     override var children = children.toList()
 
     open fun set(other: T) {

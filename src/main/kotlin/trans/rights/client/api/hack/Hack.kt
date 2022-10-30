@@ -13,18 +13,21 @@ import trans.rights.client.impl.setting.Settings
 import trans.rights.client.util.clearJson
 import trans.rights.client.util.fromJson
 import trans.rights.client.util.writeToJson
+import trans.rights.event.Listener
 import java.io.File
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val file: File = File("${HackManager.directory}/$name.json")
 
-    abstract val settings: Settings
+    open val settings: Settings = Settings()
+
+    open val listeners: List<Listener<*>> = listOf<Listener<*>>()
 
     var enabled: Boolean = false
 
-    protected fun enable() {
+    private fun enable() {
         if (!this.enabled) {
-            BasicEventManager.register(this)
+            BasicEventManager.register(listeners)
 
             this.onEnable()
 
@@ -34,7 +37,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     protected fun disable() {
         if (this.enabled) {
-            BasicEventManager.unregister(this)
+            BasicEventManager.unregister(listeners)
 
             this.onDisable()
 

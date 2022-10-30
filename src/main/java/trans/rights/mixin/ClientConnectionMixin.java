@@ -16,12 +16,6 @@ import java.io.IOException;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
-    /*
-    @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
-    private static void beforeRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        postCancel(new PacketEvent.PreReceive(packet), info);
-    } */
-
     @Inject(method = "handlePacket", at = @At("TAIL"), cancellable = true)
     private static void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
         postCancel(new PacketEvent.PostReceive(packet), info);
@@ -35,12 +29,6 @@ public class ClientConnectionMixin {
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
         postCancel(new PacketEvent.PreSend(packet), info);
     }
-
-    /*
-    @Inject(at = @At("TAIL"), method = "send*", cancellable = true)
-    private void afterSend(Packet<?> packet, CallbackInfo info) {
-        postCancel(new PacketEvent.PostSend(packet), info);
-    } */
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {

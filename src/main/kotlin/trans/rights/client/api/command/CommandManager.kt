@@ -23,7 +23,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 
-// We don't need to load hackcommand here since we do it in the Hackmanager for null safety purposes
+/** We don't need to load [trans.rights.client.impl.command.HackCommand] here since we do it in [trans.rights.client.api.hack.HackManager] for null safety purposes **/
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
     override val values = listOf(CReloadCommand, PrefixCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
     private val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
@@ -43,7 +43,7 @@ object CommandManager : Manager<Command, List<Command>>, Wrapper {
         try {
             dispatcher.execute(dispatcher.parse(message, source))
         } catch (e: CommandSyntaxException) {
-            this.error(e.context)
+            error(e.context)
         }
     }
 
