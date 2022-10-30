@@ -21,7 +21,7 @@ abstract class Command(name: String, description: String, private val syntax: St
 
     private fun register(dispatcher: CommandDispatcher<CommandSource>, name: String) {
         dispatcher.register(this.build(literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
-            minecraft.inGameHud.chatHud.clientSend("$description : $syntax")
+            this.clientSend("$description : $syntax")
 
             SINGLE_SUCCESS
         })))
