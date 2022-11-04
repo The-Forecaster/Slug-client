@@ -2,4 +2,4 @@ package trans.rights.client.api.gui.components.buttons
 
 import trans.rights.client.api.gui.Component
 
-abstract class Button<T>(xPos: Int, yPos: Int, width: Int, height: Int, val parent: T) : Component(xPos, yPos, width, height)
+abstract class Button<T>(xPos: Int, yPos: Int, width: Int, height: Int, private val parent: T) : Component(xPos, yPos, width, height)

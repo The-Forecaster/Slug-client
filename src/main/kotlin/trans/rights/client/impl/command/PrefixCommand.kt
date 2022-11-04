@@ -14,7 +14,6 @@ import trans.rights.client.util.clientSend
 
 object PrefixCommand : Command("prefix", "Used to set the client's prefix", "/prefix <value>"), Wrapper {
 
-    @Throws(CommandSyntaxException::class)
     override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
         builder.then(argument("value", word())).executes { ctx: CommandContext<CommandSource> ->
             ctx.getArgument("value", String::class.java).let {

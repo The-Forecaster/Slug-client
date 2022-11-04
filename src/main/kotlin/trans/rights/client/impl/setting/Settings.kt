@@ -1,6 +1,6 @@
 package trans.rights.client.impl.setting
 
-import trans.rights.client.api.commons.Manager
+import trans.rights.client.api.Manager
 import trans.rights.client.api.setting.ModularSettingContainer
 import trans.rights.client.api.setting.Setting
 

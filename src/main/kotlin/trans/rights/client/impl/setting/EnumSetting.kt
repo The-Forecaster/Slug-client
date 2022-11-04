@@ -11,7 +11,7 @@ class EnumSetting<T : Enum<*>>(
      * set function but accepts a string instead of an enum constant
      *
      * @param other string to set the enum value to
-     * @return true if the string is equal to one of the enum constants in the enum's base class, false otherwise
+     * @return true if the string is able to be set to one of the enum constants in this setting
      */
     fun set(other: String): Boolean {
         for (value in this.values) {

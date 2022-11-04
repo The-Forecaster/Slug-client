@@ -1,10 +1,10 @@
-package trans.rights.client.api.commons
+package trans.rights.client.api
 
 interface Nameable {
     val name: String
 }
 
-interface Manager<out T, L : Collection<T>> {
+interface Manager<out T, out L : Collection<T>> {
     val values: L
 
     fun load()

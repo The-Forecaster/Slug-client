@@ -5,8 +5,8 @@ import com.google.gson.JsonPrimitive
 import net.minecraft.client.network.ClientPlayerEntity
 import trans.rights.TransRights.Companion.mainDirectory
 import trans.rights.client.api.Wrapper
-import trans.rights.client.api.commons.Manager
-import trans.rights.client.api.commons.Nameable
+import trans.rights.client.api.Manager
+import trans.rights.client.api.Nameable
 import trans.rights.client.util.fromJson
 import trans.rights.client.util.writeToJson
 import java.io.File

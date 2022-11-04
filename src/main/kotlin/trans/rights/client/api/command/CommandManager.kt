@@ -9,7 +9,7 @@ import net.minecraft.command.CommandSource
 import trans.rights.BasicEventManager
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
-import trans.rights.client.api.commons.Manager
+import trans.rights.client.api.Manager
 import trans.rights.client.events.KeyEvent
 import trans.rights.client.impl.command.CReloadCommand
 import trans.rights.client.impl.command.PrefixCommand
@@ -22,14 +22,12 @@ import trans.rights.event.listener
 import java.nio.file.Files
 import java.nio.file.Path
 
-
-/** We don't need to load [trans.rights.client.impl.command.HackCommand] here since we do it in [trans.rights.client.api.hack.HackManager] for null safety purposes **/
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
     override val values = listOf(CReloadCommand, PrefixCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
     private val file: Path = Path.of("${TransRights.mainDirectory}/prefix.json")
     val dispatcher = CommandDispatcher<CommandSource>()
 
-    var prefix: Char = '.'
+    var prefix = '.'
 
     private val chatListener = listener<KeyEvent>({ event ->
         if (this.prefix.code == event.key) {
@@ -58,13 +56,14 @@ object CommandManager : Manager<Command, List<Command>>, Wrapper {
     override fun load() {
         if (!Files.exists(file)) {
             Files.createFile(file)
-        } else if (file.fromJson().size() == 0) {
+        }
+        if (file.fromJson().size() == 0) {
             save()
         }
 
         BasicEventManager.register(chatListener)
 
-        values.forEach { command -> command.register(dispatcher) }
+        for (command in values) command.register(dispatcher)
     }
 
     override fun unload() {

@@ -3,16 +3,16 @@ package trans.rights
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import trans.rights.client.api.Manager
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.CommandManager
-import trans.rights.client.api.commons.Manager
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.impl.gui.ClickGuiScreen
 import trans.rights.event.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.stream.Stream
+import java.util.LinkedList
 
 class TransRights : ModInitializer {
     companion object : Wrapper {
@@ -20,10 +20,10 @@ class TransRights : ModInitializer {
 
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
 
-        @JvmStatic
+        @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
-        private val managers = Stream.of(FriendManager, HackManager, CommandManager, ClickGuiScreen)
+        private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen))
 
         fun load() = managers.forEach(Manager<*, *>::load)
 

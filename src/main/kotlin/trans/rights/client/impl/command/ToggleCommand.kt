@@ -12,7 +12,6 @@ import trans.rights.client.impl.command.arguments.hack
 
 object ToggleCommand : Command("toggle", "toggle a hack", "/toggle <hack>") {
 
-    @Throws(CommandSyntaxException::class)
     override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
         builder.then(argument<CommandSource, Hack>("hack", hack()).executes { ctx ->
             getHack(ctx, "hack").toggle()

@@ -9,12 +9,12 @@ import trans.rights.TransRights
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
-import trans.rights.client.impl.setting.NumberSetting
+import trans.rights.client.impl.setting.FloatSetting
 import trans.rights.client.impl.setting.Settings
 import trans.rights.event.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
-    private val speed = NumberSetting("Speed", "How fast you want to fly.", 15.0)
+    private val speed = FloatSetting("Speed", "How fast you want to fly.", 15f, 0.1f)
     // private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
 
     override val settings = Settings(speed)
@@ -28,11 +28,12 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
             it.flySpeed = trueSpeed()
         }
     }, listener<PacketEvent.PreSend> { event ->
-        if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying =
-            true
+        if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
+            (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
+        }
     })
 
-    private fun trueSpeed() = (speed.value / 10).toFloat()
+    private fun trueSpeed() = (speed.value / 10f)
 
     override fun onEnable() {
         if (nullCheck()) disable()

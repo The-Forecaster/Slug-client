@@ -7,7 +7,7 @@ import net.minecraft.text.Text
 import trans.rights.BasicEventManager
 import trans.rights.TransRights
 import trans.rights.client.api.Wrapper
-import trans.rights.client.api.commons.Manager
+import trans.rights.client.api.Manager
 import trans.rights.client.api.gui.components.Frame
 import trans.rights.client.api.gui.components.buttons.Button
 import trans.rights.client.api.hack.Hack
@@ -27,6 +27,13 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
     private var shouldCloseOnEsc = true
 
     private var key = 'y'
+
+    private val keyListener = listener<KeyEvent>({
+        if (it.key == this.key.code) {
+            minecraft.setScreen(this)
+            it.cancel()
+        }
+    }, Integer.MAX_VALUE)
 
     init {
         var offset = 0
@@ -57,7 +64,7 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
                     Color.LIGHT_GRAY.rgb
                 )
 
-                this.buttons.forEach { it.render(stack) }
+                for (button in this.children) button.render(stack)
             }
         })
     }
@@ -72,13 +79,10 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
     override fun load() {
         if (!Files.exists(file)) Files.createFile(file)
 
-        BasicEventManager.register(listener<KeyEvent>({
-            if (it.key == this.key.code) {
-                minecraft.setScreen(this)
-                it.cancel()
-            }
-        }, Integer.MAX_VALUE))
+        BasicEventManager.register(keyListener)
     }
 
-    override fun unload() {}
+    override fun unload() {
+        BasicEventManager.unregister(keyListener)
+    }
 }

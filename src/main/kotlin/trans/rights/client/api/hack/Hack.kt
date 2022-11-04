@@ -2,28 +2,38 @@ package trans.rights.client.api.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
+import com.mojang.brigadier.Command
+import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.arguments.StringArgumentType
+import com.mojang.brigadier.arguments.StringArgumentType.getString
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
+import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
+import com.mojang.brigadier.exceptions.BuiltInExceptions
+import net.minecraft.command.CommandSource
 import trans.rights.BasicEventManager
 import trans.rights.TransRights.Companion.LOGGER
+import trans.rights.client.api.Modular
 import trans.rights.client.api.Wrapper
-import trans.rights.client.api.commons.Modular
-import trans.rights.client.impl.setting.BooleanSetting
-import trans.rights.client.impl.setting.EnumSetting
-import trans.rights.client.impl.setting.NumberSetting
-import trans.rights.client.impl.setting.Settings
+import trans.rights.client.impl.command.arguments.getSetting
+import trans.rights.client.impl.command.arguments.setting
+import trans.rights.client.impl.setting.*
 import trans.rights.client.util.clearJson
+import trans.rights.client.util.clientSend
 import trans.rights.client.util.fromJson
 import trans.rights.client.util.writeToJson
 import trans.rights.event.Listener
-import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
-    private val file: File = File("${HackManager.directory}/$name.json")
+    private val path: Path = Path.of("${HackManager.directory}$name.json")
 
     open val settings: Settings = Settings()
 
-    open val listeners: List<Listener<*>> = listOf<Listener<*>>()
+    open val listeners = listOf<Listener<*>>()
 
-    var enabled: Boolean = false
+    var enabled = false
 
     private fun enable() {
         if (!this.enabled) {
@@ -51,31 +61,37 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     open fun onDisable() {}
 
-    fun load(file: File = this.file) {
+    fun load(path: Path = this.path) {
+        if (!Files.exists(path)) {
+            Files.createFile(path)
+            return
+        }
+
+        if (this.path.fromJson().size() == 0) {
+            this.save(this.path)
+            return
+        }
+
         try {
-            if (!this.file.exists()) {
-                this.file.createNewFile()
-                return
-            }
-
-            if (file.fromJson().size() == 0) {
-                this.save(file)
-                return
-            }
-
-            val json = file.fromJson(true)
+            val json = this.path.fromJson(true)
 
             this.enabled = json.get("enabled").asBoolean
 
             this.settings.allSettings.stream().forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
-                    is NumberSetting -> setting.set(json.get(setting.name).asDouble)
+                    is DoubleSetting -> setting.set(json.get(setting.name).asDouble)
+                    is FloatSetting -> setting.set(json.get(setting.name).asFloat)
+                    is IntSetting -> setting.set(json.get(setting.name).asInt)
+                    is ShortSetting -> setting.set(json.get(setting.name).asShort)
+                    is LongSetting -> setting.set(json.get(setting.name).asLong)
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
+
+            if (this.enabled) BasicEventManager.register(this.listeners)
         } catch (e: Exception) {
-            file.clearJson()
+            this.path.clearJson()
 
             LOGGER.error("$name failed to load")
 
@@ -83,7 +99,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         }
     }
 
-    fun save(file: File = this.file) = try {
+    private fun save(path: Path = this.path) = try {
         JsonObject().let {
 
             it.add("enabled", JsonPrimitive(enabled))
@@ -91,16 +107,57 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
             this.settings.allSettings.forEach { setting ->
                 when (setting) {
                     is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
-                    is NumberSetting -> it.add(setting.name, JsonPrimitive(setting.value))
+                    is NumberSetting<*> -> it.add(setting.name, JsonPrimitive(setting.value))
                     is EnumSetting -> it.add(setting.name, JsonPrimitive(setting.value.toString()))
                 }
             }
 
-            file.writeToJson(it)
+            path.writeToJson(it)
         }
     } catch (e: Exception) {
         LOGGER.error("$name failed to save")
 
         e.printStackTrace()
     }
+
+    fun unload(path: Path = this.path) {
+        if (this.enabled) BasicEventManager.unregister(this.listeners)
+
+        this.save(path)
+    }
+
+    fun register(dispatcher: CommandDispatcher<CommandSource>) {
+        dispatcher.register(
+            this.build(literal<CommandSource>(this.name).then(
+                argument("setting", setting(this))
+            ).then(argument("value", StringArgumentType.word())).executes {
+                val input = getString(it, "value")
+                val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument()
+                    .create()
+
+                try {
+                    when (setting) {
+                        is BooleanSetting -> setting.set(input.toBoolean())
+                        is DoubleSetting -> setting.set(input.toDouble())
+                        is FloatSetting -> setting.set(input.toFloat())
+                        is IntSetting -> setting.set(input.toInt())
+                        is ShortSetting -> setting.set(input.toShort())
+                        is LongSetting -> setting.set(input.toLong())
+                        is EnumSetting -> setting.set(input)
+                    }
+                } catch (e: Exception) {
+                    throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                }
+
+                clientSend(
+                    "§a${getSetting(it, "setting", this)!!.name} set to ${getString(it, "value")}"
+                )
+
+                Command.SINGLE_SUCCESS
+            })
+        )
+    }
+
+    open fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder
+
 }

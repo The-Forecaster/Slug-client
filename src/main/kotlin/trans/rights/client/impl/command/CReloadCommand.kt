@@ -45,7 +45,6 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         return SINGLE_SUCCESS
     }
 
-    @Throws(CommandSyntaxException::class)
     override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
         builder.executes(::reload).then(argument("type", word())).executes(::reload)
 }

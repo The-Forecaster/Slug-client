@@ -1,6 +1,6 @@
 package trans.rights.client.api.setting
 
-import trans.rights.client.api.commons.Modular
+import trans.rights.client.api.Modular
 
 interface SettingContainer {
     val children: List<Setting<*>>
