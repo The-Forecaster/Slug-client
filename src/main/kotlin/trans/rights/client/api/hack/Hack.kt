@@ -29,7 +29,7 @@ import java.nio.file.Path
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val path: Path = Path.of("${HackManager.directory}$name.json")
 
-    open val settings: Settings = Settings()
+    open val settings = Settings()
 
     open val listeners = listOf<Listener<*>>()
 
@@ -143,15 +143,13 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is IntSetting -> setting.set(input.toInt())
                         is ShortSetting -> setting.set(input.toShort())
                         is LongSetting -> setting.set(input.toLong())
-                        is EnumSetting -> setting.set(input)
+                        is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument().create()
                     }
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()
                 }
 
-                clientSend(
-                    "§a${getSetting(it, "setting", this)!!.name} set to ${getString(it, "value")}"
-                )
+                clientSend("§a${setting.name} set to $input")
 
                 Command.SINGLE_SUCCESS
             })
@@ -159,5 +157,4 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     open fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder
-
 }
