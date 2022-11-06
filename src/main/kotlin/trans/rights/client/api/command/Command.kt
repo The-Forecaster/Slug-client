@@ -22,13 +22,10 @@ abstract class Command(
 
     private fun register(dispatcher: CommandDispatcher<CommandSource>, name: String) {
         dispatcher.register(
-            this.build(
-                literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
-                    this.clientSend("$description : $syntax")
-
-                    SINGLE_SUCCESS
-                })
-            )
+            this.build(literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
+                this.clientSend("$description : $syntax")
+                SINGLE_SUCCESS
+            }))
         )
     }
 

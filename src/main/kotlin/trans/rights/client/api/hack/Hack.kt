@@ -2,7 +2,7 @@ package trans.rights.client.api.hack
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
-import com.mojang.brigadier.Command
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType.getString
@@ -77,7 +77,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
             this.enabled = json.get("enabled").asBoolean
 
-            this.settings.allSettings.stream().forEach { setting ->
+            for (setting in settings.allSettings) {
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is DoubleSetting -> setting.set(json.get(setting.name).asDouble)
@@ -88,7 +88,6 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-
             if (this.enabled) BasicEventManager.register(this.listeners)
         } catch (e: Exception) {
             this.path.clearJson()
@@ -104,7 +103,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
             it.add("enabled", JsonPrimitive(enabled))
 
-            this.settings.allSettings.forEach { setting ->
+            for (setting in this.settings.allSettings) {
                 when (setting) {
                     is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
                     is NumberSetting<*> -> it.add(setting.name, JsonPrimitive(setting.value))
@@ -143,7 +142,8 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is IntSetting -> setting.set(input.toInt())
                         is ShortSetting -> setting.set(input.toShort())
                         is LongSetting -> setting.set(input.toLong())
-                        is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                        is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
+                            .create()
                     }
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()
@@ -151,7 +151,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
                 clientSend("§a${setting.name} set to $input")
 
-                Command.SINGLE_SUCCESS
+                SINGLE_SUCCESS
             })
         )
     }

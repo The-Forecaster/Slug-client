@@ -25,9 +25,13 @@ class TransRights : ModInitializer {
 
         private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen))
 
-        fun load() = managers.forEach(Manager<*, *>::load)
+        fun load() {
+            for (manager in managers) manager.load()
+        }
 
-        fun unload() = managers.forEach(Manager<*, *>::unload)
+        fun unload() {
+            for (manager in managers) manager.unload()
+        }
     }
 
     init {

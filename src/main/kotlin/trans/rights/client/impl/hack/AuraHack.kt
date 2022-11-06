@@ -18,14 +18,14 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
 
     override val settings = Settings(customDelay, hitFriends)
 
-    private var ticks: Int = 0
+    private var ticks = 0
 
     override val listeners = listOf(listener<TickEvent.Post> { event ->
         if (event.isInWorld && getTarget() != null) {
             if (!customDelay.value && !player!!.handSwinging) {
                 minecraft.interactionManager?.attackEntity(player, getTarget())
             } else if (customDelay.value) {
-                if (customTick.value.toInt() == ticks) {
+                if (customTick.value == ticks) {
                     minecraft.interactionManager?.attackEntity(player, getTarget())
 
                     ticks = 0
