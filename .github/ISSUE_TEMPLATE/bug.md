@@ -3,7 +3,6 @@ name:  Bug
 about: File a bug/issue
 title: '[BUG]'
 labels: '[Bug]'
-assignees: ''
 
 ---
 
