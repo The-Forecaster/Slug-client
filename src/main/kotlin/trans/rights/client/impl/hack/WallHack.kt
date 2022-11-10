@@ -1,18 +1,15 @@
 package trans.rights.client.impl.hack
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import net.minecraft.block.Block
 import net.minecraft.block.Blocks
+import net.minecraft.command.CommandSource
 import trans.rights.client.api.hack.Hack
-import trans.rights.client.events.BlockSideDrawEvent
-import trans.rights.event.listener
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
     private val blocks = mutableSetOf(Blocks.DIAMOND_ORE, Blocks.ANCIENT_DEBRIS, Blocks.ENDER_CHEST, Blocks.BEDROCK)
 
-    override val listeners = listOf(listener<BlockSideDrawEvent> { event ->
-        if (nullCheck()) return@listener
-
-        if (!blocks.contains(event.block)) event.cancel()
-    })
+    fun shouldRender(block: Block) = blocks.contains(block)
 
     override fun onEnable() {
         if (nullCheck()) {
@@ -25,4 +22,6 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
     override fun onDisable() {
         if (!nullCheck()) minecraft.worldRenderer.reload()
     }
+
+    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder
 }

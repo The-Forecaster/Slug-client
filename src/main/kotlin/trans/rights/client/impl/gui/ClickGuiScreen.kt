@@ -69,8 +69,9 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
         })
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) =
-        values.forEach { it.render(matrices) }
+    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
+        for (frame in values) frame.render(matrices)
+    }
 
     override fun shouldPause() = false
 

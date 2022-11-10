@@ -11,6 +11,6 @@ import trans.rights.client.impl.hack.AntiFabric;
 public class ClientBrandRetrieverMixin {
     @Inject(method = "getClientModName", at = @At("HEAD"), cancellable = true, remap = false)
     private static void clientModNameModifier(CallbackInfoReturnable<String> info) {
-        if (AntiFabric.INSTANCE.getEnabled()) info.setReturnValue("vanilla");
+        if (AntiFabric.INSTANCE.isEnabled()) info.setReturnValue("vanilla");
     }
 }

@@ -21,7 +21,8 @@ class HackArgumentType internal constructor() : ArgumentType<Hack> {
 
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>?, builder: SuggestionsBuilder?
-    ): CompletableFuture<Suggestions> = CommandSource.suggestMatching(HackManager.values.stream().map(Hack::name), builder)
+    ): CompletableFuture<Suggestions> =
+        CommandSource.suggestMatching(HackManager.values.stream().map(Hack::name), builder)
 }
 
 fun hack() = HackArgumentType()

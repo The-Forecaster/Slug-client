@@ -7,18 +7,12 @@ import trans.rights.client.impl.hack.*
 import java.nio.file.Files
 import java.nio.file.Path
 
-object HackManager : Manager<Hack, LinkedHashSet<Hack>> {
-    override val values = LinkedHashSet(
-        listOf(
-            AntiFabric,
-            AntiKick,
-            AuraHack,
-            FlightHack,
-            WallHack
-        ).sortedWith(Comparator.comparing(Hack::name))
-    )
-
+object HackManager : Manager<Hack, List<Hack>> {
     internal val directory: Path = Path.of("$mainDirectory/hacks/")
+
+    override val values = listOf(
+        AntiFabric, AntiKick, AuraHack, FlightHack, WallHack
+    ).sortedWith(Comparator.comparing(Hack::name))
 
     override fun load() {
         if (Files.notExists(directory)) Files.createDirectory(directory)

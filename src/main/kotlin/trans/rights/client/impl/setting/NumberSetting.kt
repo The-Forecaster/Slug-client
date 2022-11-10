@@ -16,14 +16,13 @@ class IntSetting(name: String, description: String, default: Int, vararg childre
 class ShortSetting(name: String, description: String, default: Short, vararg children: Setting<*>) :
     NumberSetting<Short>(name, description, default, 1, *children)
 
-class DoubleSetting(name: String, description: String, default: Double, increment: Double, vararg children: Setting<*>) :
-    NumberSetting<Double>(name, description, default, increment, *children) {
-    fun set(other: Double, round: Boolean) =
-        if (round) this.value = other.round(this.increment) else this.value = other
+class DoubleSetting(
+    name: String, description: String, default: Double, increment: Double, vararg children: Setting<*>
+) : NumberSetting<Double>(name, description, default, increment, *children) {
+    fun set(other: Double, round: Boolean) = if (round) this.value = other.round(this.increment) else this.value = other
 }
 
 class FloatSetting(name: String, description: String, default: Float, increment: Float, vararg children: Setting<*>) :
     NumberSetting<Float>(name, description, default, increment, *children) {
-    fun set(other: Float, round: Boolean) =
-        if (round) this.value = other.round(this.increment) else this.value = other
+    fun set(other: Float, round: Boolean) = if (round) this.value = other.round(this.increment) else this.value = other
 }

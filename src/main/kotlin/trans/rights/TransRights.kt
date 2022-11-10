@@ -3,7 +3,6 @@ package trans.rights
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import trans.rights.client.api.Manager
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.hack.HackManager
@@ -12,7 +11,6 @@ import trans.rights.client.impl.gui.ClickGuiScreen
 import trans.rights.event.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.LinkedList
 
 class TransRights : ModInitializer {
     companion object : Wrapper {
@@ -23,7 +21,7 @@ class TransRights : ModInitializer {
         @JvmField
         var LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
-        private val managers = LinkedList(listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen))
+        private val managers = listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen)
 
         fun load() {
             for (manager in managers) manager.load()

@@ -9,16 +9,15 @@ import trans.rights.client.api.setting.Setting
  *
  * Use only once per module
  */
-class Settings(override val values: List<ModularSettingContainer>) : Manager<ModularSettingContainer, List<ModularSettingContainer>> {
+class Settings(override val values: List<ModularSettingContainer>) :
+    Manager<ModularSettingContainer, List<ModularSettingContainer>> {
     constructor(vararg settings: ModularSettingContainer) : this(settings.asList())
 
     val allSettings = this.values.flatMap { if (it is Setting<*>) (it.children + it) else it.children }
 
     fun get(setting: String) = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
 
-    override fun load() {
-        this.values.stream().sorted(Comparator.comparing(ModularSettingContainer::name))
-    }
+    override fun load() {}
 
     override fun unload() {}
 }
@@ -26,6 +25,7 @@ class Settings(override val values: List<ModularSettingContainer>) : Manager<Mod
 /**
  * For when you want to make a parent setting without the parent actually being a setting lol
  */
-class SettingGroup(name: String, description: String, vararg children: Setting<*>) : ModularSettingContainer(name, description) {
+class SettingGroup(name: String, description: String, vararg children: Setting<*>) :
+    ModularSettingContainer(name, description) {
     override val children = children.toList()
 }

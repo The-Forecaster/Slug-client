@@ -33,29 +33,30 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     open val listeners = listOf<Listener<*>>()
 
-    var enabled = false
+    var isEnabled = false
+        private set
 
     private fun enable() {
-        if (!this.enabled) {
+        if (!this.isEnabled) {
             BasicEventManager.register(listeners)
 
             this.onEnable()
 
-            this.enabled = true
+            this.isEnabled = true
         }
     }
 
     protected fun disable() {
-        if (this.enabled) {
+        if (this.isEnabled) {
             BasicEventManager.unregister(listeners)
 
             this.onDisable()
 
-            this.enabled = false
+            this.isEnabled = false
         }
     }
 
-    fun toggle() = if (this.enabled) disable() else enable()
+    fun toggle() = if (this.isEnabled) disable() else enable()
 
     open fun onEnable() {}
 
@@ -75,7 +76,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         try {
             val json = this.path.fromJson(true)
 
-            this.enabled = json.get("enabled").asBoolean
+            this.isEnabled = json.get("enabled").asBoolean
 
             for (setting in settings.allSettings) {
                 when (setting) {
@@ -88,7 +89,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-            if (this.enabled) BasicEventManager.register(this.listeners)
+            if (this.isEnabled) BasicEventManager.register(this.listeners)
         } catch (e: Exception) {
             this.path.clearJson()
 
@@ -101,7 +102,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     private fun save(path: Path = this.path) = try {
         JsonObject().let {
 
-            it.add("enabled", JsonPrimitive(enabled))
+            it.add("enabled", JsonPrimitive(isEnabled))
 
             for (setting in this.settings.allSettings) {
                 when (setting) {
@@ -120,7 +121,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     fun unload(path: Path = this.path) {
-        if (this.enabled) BasicEventManager.unregister(this.listeners)
+        if (this.isEnabled) BasicEventManager.unregister(this.listeners)
 
         this.save(path)
     }

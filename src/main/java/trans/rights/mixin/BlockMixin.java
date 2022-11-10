@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import trans.rights.BasicEventManager;
 import trans.rights.client.events.BlockSideDrawEvent;
+import trans.rights.client.impl.hack.WallHack;
 
 /**
  * This modifies the Block class, used to xray with the {@link trans.rights.client.impl.hack.WallHack}
@@ -19,6 +20,6 @@ import trans.rights.client.events.BlockSideDrawEvent;
 public class BlockMixin {
     @Inject(method = "shouldDrawSide", at = @At("RETURN"), cancellable = true)
     private static void shouldDrawSideModifier(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(!BasicEventManager.INSTANCE.dispatch(new BlockSideDrawEvent(state.getBlock())).isCancelled());
+        info.setReturnValue(WallHack.INSTANCE.shouldRender(state.getBlock()));
     }
 }
