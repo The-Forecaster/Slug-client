@@ -145,6 +145,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is LongSetting -> setting.set(input.toLong())
                         is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
                             .create()
+                        else -> this.clientSend("You cannot set that setting like this")
                     }
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()

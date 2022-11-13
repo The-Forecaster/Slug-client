@@ -3,6 +3,7 @@ package trans.rights.client.impl.command.arguments
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType
 import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.exceptions.BuiltInExceptions
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
@@ -11,10 +12,11 @@ import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.setting.Setting
 import java.util.concurrent.CompletableFuture
 
-class SettingArgumentType internal constructor(private val hack: Hack) : ArgumentType<String> {
+class SettingArgumentType internal constructor(private val hack: Hack) : ArgumentType<Setting<*>> {
 
     @Throws(CommandSyntaxException::class)
-    override fun parse(reader: StringReader): String = reader.readString()
+    override fun parse(reader: StringReader): Setting<*> =
+        hack.settings.get(reader.readString()) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
 
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>, builder: SuggestionsBuilder?

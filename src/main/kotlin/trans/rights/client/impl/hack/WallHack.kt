@@ -1,9 +1,7 @@
 package trans.rights.client.impl.hack
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
-import net.minecraft.command.CommandSource
 import trans.rights.client.api.hack.Hack
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
@@ -22,6 +20,4 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
     override fun onDisable() {
         if (!nullCheck()) minecraft.worldRenderer.reload()
     }
-
-    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder
 }
