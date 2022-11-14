@@ -132,8 +132,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                 argument("setting", setting(this))
             ).then(argument("value", StringArgumentType.word())).executes {
                 val input = getString(it, "value")
-                val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument()
-                    .create()
+                val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
 
                 try {
                     when (setting) {
@@ -151,7 +150,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()
                 }
 
-                clientSend("§a${setting.name} set to $input")
+                this.clientSend("§a${setting.name} set to $input")
 
                 SINGLE_SUCCESS
             })
