@@ -28,14 +28,16 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     }
 
     override fun unload() {
-        save()
+        JsonObject().let {
+            for (friend in values) it.add(friend.name, null)
+
+            friendFile.writeToJson(it)
+        }
         values.clear()
     }
 
-    private fun save() = JsonObject().let {
-        for (friend in values) it.add(friend.name, null)
-
-        friendFile.writeToJson(it)
+    fun add(name: String) {
+        values.add(Friend(name, minecraft.socialInteractionsManager.getUuid(name)))
     }
 }
 

@@ -27,7 +27,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
-    private val path: Path = Path.of("${HackManager.directory}$name.json")
+    private val path: Path = Path.of("${HackManager.directory}/$name.json")
 
     open val settings = Settings()
 
