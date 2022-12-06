@@ -38,7 +38,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     private fun enable() {
         if (!this.isEnabled) {
-            BasicEventManager.register(listeners)
+            BasicEventManager.registerAll(this.listeners)
 
             this.onEnable()
 
@@ -48,7 +48,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     protected fun disable() {
         if (this.isEnabled) {
-            BasicEventManager.unregister(listeners)
+            BasicEventManager.unregisterAll(this.listeners)
 
             this.onDisable()
 
@@ -89,7 +89,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-            if (this.isEnabled) BasicEventManager.register(this.listeners)
+            if (this.isEnabled) BasicEventManager.registerAll(this.listeners)
         } catch (e: Exception) {
             this.path.clearJson()
 
@@ -121,7 +121,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     fun unload(path: Path = this.path) {
-        if (this.isEnabled) BasicEventManager.unregister(this.listeners)
+        if (this.isEnabled) BasicEventManager.unregisterAll(this.listeners)
 
         this.save(path)
     }
@@ -144,7 +144,10 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is LongSetting -> setting.set(input.toLong())
                         is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
                             .create()
-                        else -> this.clientSend("You cannot set that setting like this")
+                        else -> {
+                            this.clientSend("You cannot set that setting like this")
+                            throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                        }
                     }
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()

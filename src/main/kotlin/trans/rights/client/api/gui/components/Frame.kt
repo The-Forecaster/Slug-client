@@ -8,5 +8,7 @@ import trans.rights.client.api.gui.components.buttons.Button
 
 open class Frame<T>(xPos: Int, yPos: Int, width: Int, height: Int, override val children: Collection<Button<T>>) :
     Component(xPos, yPos, width, height), Wrapper, Container {
-    override fun render(stack: MatrixStack) = children.forEach { it.render(stack) }
+    override fun render(stack: MatrixStack) {
+        for (button in children) button.render(stack)
+    }
 }

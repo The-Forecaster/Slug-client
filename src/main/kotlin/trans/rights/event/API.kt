@@ -37,7 +37,7 @@ interface EventBus {
      *
      * @param listeners the iterable of listeners you want to be added
      */
-    fun registerAll(listeners: Iterable<Listener<*>>) {
+    fun registerAll(listeners: Collection<Listener<*>>) {
         for (listener in listeners) this.register(listener)
     }
 
@@ -64,7 +64,7 @@ interface EventBus {
      * @param listeners iterable of listeners you want to be removed
      * @see unregister
      */
-    fun unregisterAll(listeners: Iterable<Listener<*>>) {
+    fun unregisterAll(listeners: Collection<Listener<*>>) {
         for (listener in listeners) this.unregister(listener)
     }
 

@@ -30,7 +30,7 @@ object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Fram
 
     private val keyListener = listener<KeyEvent>({
         if (it.key == this.key.code) {
-            minecraft.setScreen(this)
+            minecraft.setScreen(ClickGuiScreen)
             it.cancel()
         }
     }, Integer.MAX_VALUE)
