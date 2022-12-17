@@ -25,7 +25,7 @@ public class ClientConnectionMixin {
         if (BasicEventManager.INSTANCE.dispatch(event).isCancelled()) info.cancel();
     }
 
-    @Inject(method = "send*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "send", at = @At("HEAD"), cancellable = true)
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
         postCancel(new PacketEvent.PreSend(packet), info);
     }
