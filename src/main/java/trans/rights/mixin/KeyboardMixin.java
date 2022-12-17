@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import trans.rights.BasicEventManager;
-import trans.rights.client.events.KeyEvent;
+import trans.rights.events.KeyEvent;
 
 @Mixin(Keyboard.class)
 public class KeyboardMixin {

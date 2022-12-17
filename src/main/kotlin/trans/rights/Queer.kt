@@ -1,14 +1,14 @@
 package trans.rights
 
+import me.austin.rush.EventManager
 import net.fabricmc.api.ModInitializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import trans.rights.client.api.Wrapper
-import trans.rights.client.api.command.CommandManager
-import trans.rights.client.api.hack.HackManager
-import trans.rights.client.impl.friend.FriendManager
-import trans.rights.client.impl.gui.ClickGuiScreen
-import me.austin.rush.EventManager
+import trans.rights.api.Wrapper
+import trans.rights.api.command.CommandManager
+import trans.rights.api.hack.HackManager
+import trans.rights.impl.friend.FriendManager
+import trans.rights.impl.gui.ClickGuiScreen
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -20,7 +20,9 @@ class Queer : ModInitializer {
 
         val LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
-        private val managers = listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen)
+        private val managers = listOf(
+            FriendManager, HackManager, CommandManager, ClickGuiScreen
+        )
 
         fun load() {
             for (manager in managers) manager.load()

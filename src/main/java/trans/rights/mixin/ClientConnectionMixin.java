@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import trans.rights.BasicEventManager;
-import trans.rights.client.events.PacketEvent;
-import trans.rights.client.impl.hack.AntiKick;
+import trans.rights.events.PacketEvent;
+import trans.rights.impl.hack.AntiKick;
 
 import java.io.IOException;
 

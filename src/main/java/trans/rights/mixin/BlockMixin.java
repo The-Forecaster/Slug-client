@@ -9,9 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import trans.rights.BasicEventManager;
-import trans.rights.client.events.BlockSideDrawEvent;
-import trans.rights.client.impl.hack.WallHack;
+import trans.rights.impl.hack.WallHack;
 
 /**
  * This modifies the Block class, used to xray with the {@link trans.rights.client.impl.hack.WallHack}
