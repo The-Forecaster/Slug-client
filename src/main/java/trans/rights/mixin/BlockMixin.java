@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import trans.rights.impl.hack.WallHack;
 
 /**
- * This modifies the Block class, used to xray with the {@link trans.rights.client.impl.hack.WallHack}
+ * This modifies the Block class, used to xray with {@link trans.rights.impl.hack.WallHack}
  */
 @Mixin(Block.class)
 public class BlockMixin {
