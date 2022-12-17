@@ -18,6 +18,6 @@ import trans.rights.impl.hack.WallHack;
 public class BlockMixin {
     @Inject(method = "shouldDrawSide", at = @At("RETURN"), cancellable = true)
     private static void shouldDrawSideModifier(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
-        info.setReturnValue(WallHack.INSTANCE.shouldRender(state.getBlock()));
+        if (WallHack.INSTANCE.isEnabled()) info.setReturnValue(WallHack.INSTANCE.shouldRender(state.getBlock()));
     }
 }
