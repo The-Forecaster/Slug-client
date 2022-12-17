@@ -20,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "trans.rights.TransRights"
+      "trans.rights.Queer"
     ]
   },
   "mixins": [

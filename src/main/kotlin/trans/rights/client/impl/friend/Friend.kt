@@ -2,7 +2,7 @@ package trans.rights.client.impl.friend
 
 import com.google.gson.JsonObject
 import net.minecraft.client.network.ClientPlayerEntity
-import trans.rights.TransRights.Companion.mainDirectory
+import trans.rights.Queer.Companion.mainDirectory
 import trans.rights.client.api.Manager
 import trans.rights.client.api.Nameable
 import trans.rights.client.api.Wrapper

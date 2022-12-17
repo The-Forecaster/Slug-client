@@ -5,13 +5,13 @@ import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket
 import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.util.math.Vec3d
-import trans.rights.TransRights
+import trans.rights.Queer
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.events.PacketEvent
 import trans.rights.client.events.TickEvent
 import trans.rights.client.impl.setting.FloatSetting
 import trans.rights.client.impl.setting.Settings
-import trans.rights.event.listener
+import me.austin.rush.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = FloatSetting("Speed", "How fast you want to fly.", 15f, 0.1f)
@@ -19,26 +19,30 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
 
     override val settings = Settings(speed)
 
-    override val listeners = listOf(listener<TickEvent.Post> {
-        if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
-    }, listener<PacketEvent.PostReceive> { event ->
-        if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
-            it.allowFlying = true
-            it.flying = true
-            it.flySpeed = trueSpeed()
+    override val listeners = listOf(
+        listener<TickEvent.Post> {
+            if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
+        },
+        listener<PacketEvent.PostReceive> { event ->
+            if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
+                it.allowFlying = true
+                it.flying = true
+                it.flySpeed = trueSpeed()
+            }
+        },
+        listener<PacketEvent.PreSend> { event ->
+            if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
+                (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
+            }
         }
-    }, listener<PacketEvent.PreSend> { event ->
-        if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
-            (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
-        }
-    })
+    )
 
     private fun trueSpeed() = (speed.value / 10f)
 
     override fun onEnable() {
         if (nullCheck()) disable()
 
-        TransRights.LOGGER.info("$name enabled")
+        Queer.LOGGER.info("$name enabled")
     }
 
     override fun onDisable() {

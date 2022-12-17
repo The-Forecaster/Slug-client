@@ -6,8 +6,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
 import com.mojang.brigadier.exceptions.BuiltInExceptions
 import net.minecraft.command.CommandSource
-import trans.rights.client.api.Wrapper
 import trans.rights.client.api.Modular
+import trans.rights.client.api.Wrapper
 import trans.rights.client.util.clientSend
 
 abstract class Command(

@@ -8,18 +8,17 @@ import trans.rights.client.api.command.CommandManager
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.impl.friend.FriendManager
 import trans.rights.client.impl.gui.ClickGuiScreen
-import trans.rights.event.EventManager
+import me.austin.rush.EventManager
 import java.nio.file.Files
 import java.nio.file.Path
 
-class TransRights : ModInitializer {
+class Queer : ModInitializer {
     companion object : Wrapper {
         const val NAME = "Trans-Rights"
 
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
 
-        @JvmField
-        var LOGGER: Logger = LoggerFactory.getLogger(NAME)
+        val LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
         private val managers = listOf(FriendManager, HackManager, CommandManager, ClickGuiScreen)
 

@@ -1,6 +1,6 @@
 package trans.rights.client.events;
 
-import trans.rights.event.Cancellable;
+import me.austin.rush.Cancellable;
 
 public final class KeyEvent extends Cancellable {
     private final int key;

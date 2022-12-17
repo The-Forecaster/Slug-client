@@ -1,6 +1,6 @@
 package trans.rights.client.api.setting
 
-abstract class Setting<T>(
+abstract class Setting<T> protected constructor(
     name: String, description: String, default: T, vararg children: Setting<*>
 ) : ModularSettingContainer(name, description), Comparable<Setting<*>> {
     var value = default

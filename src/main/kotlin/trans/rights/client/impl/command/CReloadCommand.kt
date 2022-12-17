@@ -8,7 +8,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.minecraft.command.CommandSource
-import trans.rights.TransRights
+import trans.rights.Queer
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.command.Command
 import trans.rights.client.util.clientSend
@@ -17,8 +17,8 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
     private fun reloadClient() {
         clientSend("Reloading the client...")
 
-        TransRights.unload()
-        TransRights.load()
+        Queer.unload()
+        Queer.load()
     }
 
     private fun reloadMc() {

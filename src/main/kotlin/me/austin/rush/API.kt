@@ -1,4 +1,4 @@
-package trans.rights.event
+package me.austin.rush
 
 import kotlin.reflect.KClass
 
@@ -134,6 +134,7 @@ interface Listener<T : Any> {
 
 abstract class Cancellable {
     var isCancelled = false
+        private set
 
     fun cancel() {
         this.isCancelled = true

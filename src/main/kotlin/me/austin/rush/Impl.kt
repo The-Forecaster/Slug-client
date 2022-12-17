@@ -1,4 +1,4 @@
-package trans.rights.event
+package me.austin.rush
 
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.ConcurrentHashMap

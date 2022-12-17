@@ -21,11 +21,3 @@ class Settings(override val values: List<ModularSettingContainer>) :
 
     override fun unload() {}
 }
-
-/**
- * For when you want to make a parent setting without the parent actually being a setting lol
- */
-class SettingGroup(name: String, description: String, vararg children: Setting<*>) :
-    ModularSettingContainer(name, description) {
-    override val children = children.toList()
-}

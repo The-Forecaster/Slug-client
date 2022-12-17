@@ -12,7 +12,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.exceptions.BuiltInExceptions
 import net.minecraft.command.CommandSource
 import trans.rights.BasicEventManager
-import trans.rights.TransRights.Companion.LOGGER
+import trans.rights.Queer.Companion.LOGGER
 import trans.rights.client.api.Modular
 import trans.rights.client.api.Wrapper
 import trans.rights.client.impl.command.arguments.getSetting
@@ -22,7 +22,7 @@ import trans.rights.client.util.clearJson
 import trans.rights.client.util.clientSend
 import trans.rights.client.util.fromJson
 import trans.rights.client.util.writeToJson
-import trans.rights.event.Listener
+import me.austin.rush.Listener
 import java.nio.file.Files
 import java.nio.file.Path
 

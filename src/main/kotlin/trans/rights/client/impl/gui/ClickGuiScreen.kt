@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import trans.rights.BasicEventManager
-import trans.rights.TransRights
+import trans.rights.Queer
 import trans.rights.client.api.Wrapper
 import trans.rights.client.api.Manager
 import trans.rights.client.api.gui.components.Frame
@@ -13,15 +13,15 @@ import trans.rights.client.api.gui.components.buttons.Button
 import trans.rights.client.api.hack.Hack
 import trans.rights.client.api.hack.HackManager
 import trans.rights.client.events.KeyEvent
-import trans.rights.event.listener
+import me.austin.rush.listener
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
 
-object ClickGuiScreen : Screen(Text.of(TransRights.NAME)), Wrapper, Manager<Frame<*>, List<Frame<*>>> {
+object ClickGuiScreen : Screen(Text.of(Queer.NAME)), Wrapper, Manager<Frame<*>, List<Frame<*>>> {
     override val values: List<Frame<*>>
 
-    private val file: Path = Path.of("${TransRights.mainDirectory}/clickguiscreen.json")
+    private val file: Path = Path.of("${Queer.mainDirectory}/clickguiscreen.json")
 
     //     private var key: Int = file.fromJson().get("key").asInt
     private var shouldCloseOnEsc = true

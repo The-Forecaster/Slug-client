@@ -3,7 +3,7 @@ package trans.rights.client.util
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
-import trans.rights.TransRights.Companion.LOGGER
+import trans.rights.Queer.Companion.LOGGER
 import java.io.BufferedWriter
 import java.io.File
 import java.io.IOException

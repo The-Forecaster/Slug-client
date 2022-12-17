@@ -1,6 +1,6 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
@@ -11,28 +11,22 @@ group project.mod_group
 
 loom.accessWidenerPath = file('src/main/resources/transrights.accesswidener')
 
-compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '17'
+compileKotlin.kotlinOptions.jvmTarget = '17'
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set 17
     it.options.encoding 'UTF-8'
 }
 
-java {
-    withSourcesJar()
+java.withSourcesJar()
 
-    withJavadocJar()
-}
-
-repositories {
-    mavenCentral()
-}
+repositories.mavenCentral()
 
 dependencies {
     // fabric dependencies
     minecraft "com.mojang:minecraft:$minecraft_version"
-    mappings "net.fabricmc:yarn:$minecraft_version+$yarn_mappings:v2"
-    modImplementation 'net.fabricmc:fabric-loader:0.14.9'
+    mappings "net.fabricmc:yarn:$minecraft_version+build.1:v2"
+    modImplementation 'net.fabricmc:fabric-loader:0.14.11'
 
     // mod dependencies
     include modImplementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4') {
@@ -40,11 +34,11 @@ dependencies {
         exclude module: 'kotlin-stdlib-common'
     }
 
-    include modImplementation('org.jetbrains.kotlin:kotlin-reflect:1.7.20') {
+    include modImplementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
         exclude module: 'kotlin-stdlib'
     }
 
-    include modImplementation('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20') {
+    include modImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
         exclude module: 'kotlin-stdlib-common'
         exclude module: 'annotations'
     }
