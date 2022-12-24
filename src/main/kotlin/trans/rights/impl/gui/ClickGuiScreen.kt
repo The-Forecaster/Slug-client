@@ -13,6 +13,7 @@ import trans.rights.api.hack.Hack
 import trans.rights.api.hack.HackManager
 import trans.rights.events.KeyEvent
 import me.austin.rush.listener
+import trans.rights.util.fromJson
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
@@ -22,7 +23,6 @@ object ClickGuiScreen : Screen(Text.of(Queer.NAME)), Wrapper, trans.rights.api.M
 
     private val file: Path = Path.of("${Queer.mainDirectory}/clickguiscreen.json")
 
-    //     private var key: Int = file.fromJson().get("key").asInt
     private var shouldCloseOnEsc = true
 
     private var key = 'y'

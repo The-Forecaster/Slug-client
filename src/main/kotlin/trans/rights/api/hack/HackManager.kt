@@ -1,5 +1,9 @@
 package trans.rights.api.hack
 
+import com.mojang.brigadier.CommandDispatcher
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.command.CommandRegistryAccess
 import trans.rights.Queer.Companion.mainDirectory
 import trans.rights.api.Manager
 import trans.rights.api.command.CommandManager
@@ -17,7 +21,9 @@ object HackManager : Manager<Hack, List<Hack>> {
 
         for (hack in values) {
             hack.load()
-            hack.register(CommandManager.dispatcher)
+            ClientCommandRegistrationCallback.EVENT.register { commandDispatcher: CommandDispatcher<FabricClientCommandSource>, _: CommandRegistryAccess ->
+                hack.register(commandDispatcher)
+            }
         }
     }
 

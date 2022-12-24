@@ -10,4 +10,6 @@ mutable    field net/minecraft/network/packet/s2c/play/PlayerAbilitiesS2CPacket 
 accessible field net/minecraft/network/packet/c2s/play/UpdatePlayerAbilitiesC2SPacket flying Z
 mutable    field net/minecraft/network/packet/c2s/play/UpdatePlayerAbilitiesC2SPacket flying Z
 
+accessible method net/minecraft/client/hud/gui/ChatHud
+
 

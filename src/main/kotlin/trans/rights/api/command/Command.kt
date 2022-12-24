@@ -3,9 +3,9 @@ package trans.rights.api.command
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
 import com.mojang.brigadier.exceptions.BuiltInExceptions
-import net.minecraft.command.CommandSource
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import trans.rights.api.Modular
 import trans.rights.api.Wrapper
 import trans.rights.util.clientSend
@@ -15,19 +15,19 @@ abstract class Command(
 ) : Modular(name, description), Wrapper {
     protected val builtin = BuiltInExceptions()
 
-    fun register(dispatcher: CommandDispatcher<CommandSource>) {
+    fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         this.register(dispatcher, this.name)
         for (alias in aliases) this.register(dispatcher, alias)
     }
 
-    private fun register(dispatcher: CommandDispatcher<CommandSource>, name: String) {
+    private fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>, name: String) {
         dispatcher.register(
-            this.build(literal<CommandSource>(name).then(literal<CommandSource>("help").executes {
+            this.build(literal(name).then(literal("help").executes {
                 this.clientSend("$description : $syntax")
                 SINGLE_SUCCESS
             }))
         )
     }
 
-    abstract fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource>
+    abstract fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource>
 }

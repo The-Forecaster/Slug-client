@@ -9,18 +9,9 @@ archivesBaseName = project.archives_base_name
 version project.mod_version
 group project.mod_group
 
-loom.accessWidenerPath = file('src/main/resources/transrights.accesswidener')
-
-compileKotlin.kotlinOptions.jvmTarget = '17'
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release.set 17
-    it.options.encoding 'UTF-8'
+repositories {
+    mavenCentral()
 }
-
-java.withSourcesJar()
-
-repositories.mavenCentral()
 
 dependencies {
     // fabric dependencies
@@ -42,22 +33,48 @@ dependencies {
         exclude module: 'kotlin-stdlib-common'
         exclude module: 'annotations'
     }
+
+    include modImplementation(fabricApi.module('fabric-command-api-v2', '0.68.1+1.19.3'))
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/transrights.accesswidener')
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+compileKotlin{
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set 17
+    it.options.encoding 'UTF-8'
 }
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft_version
 
-    filesMatching('fabric.mod.json') {
-        expand 'version': project.version
+    duplicatesStrategy DuplicatesStrategy.WARN
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'fabric.mod.json'
+        expand 'version': project.version, 'mcversion': project.minecraft_version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'fabric.mod.json'
     }
 }
 
 jar {
-    from('LICENSE') {
-        rename {
-            "${it}_$archivesBaseName"
-        }
-    }
+    from('LICENSE')
 
     manifest.attributes('Main-Class': 'trans.rights.Main')
 }

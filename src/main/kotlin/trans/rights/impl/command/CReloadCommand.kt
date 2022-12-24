@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
 import trans.rights.Queer
 import trans.rights.api.Wrapper
@@ -34,17 +35,21 @@ object CReloadCommand : trans.rights.api.command.Command("creload", "Reload part
     }
 
     @Throws(CommandSyntaxException::class)
-    private fun reload(context: CommandContext<CommandSource>): Int {
-        when (getString(context, "type")) {
-            null, "mc", "minecraft" -> reloadMc()
-            "client" -> reloadClient()
-            "all", "full" -> reload()
-            else -> throw builtin.dispatcherUnknownArgument().create()
+    private fun reload(context: CommandContext<FabricClientCommandSource>): Int {
+        try {
+            when (getString(context, "type")) {
+                null, "mc", "minecraft" -> reloadMc()
+                "client" -> reloadClient()
+                "all", "full" -> reload()
+                else -> throw builtin.dispatcherUnknownArgument().create()
+            }
+        } catch (e: IllegalArgumentException) {
+            reloadClient()
         }
 
         return SINGLE_SUCCESS
     }
 
-    override fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> =
+    override fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> =
         builder.executes(::reload).then(argument("type", word())).executes(::reload)
 }

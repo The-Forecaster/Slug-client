@@ -3,6 +3,7 @@ package trans.rights.impl.friend
 import com.google.gson.JsonObject
 import net.minecraft.client.network.ClientPlayerEntity
 import trans.rights.Queer.Companion.mainDirectory
+import trans.rights.api.Manager
 import trans.rights.api.Wrapper
 import trans.rights.util.fromJson
 import trans.rights.util.writeToJson
@@ -11,7 +12,7 @@ import java.util.UUID
 
 data class Friend(override val name: String, val uuid: UUID) : trans.rights.api.Nameable
 
-object FriendManager : trans.rights.api.Manager<Friend, MutableList<Friend>>,
+object FriendManager : Manager<Friend, MutableList<Friend>>,
     Wrapper {
     override val values = ArrayList<Friend>()
 

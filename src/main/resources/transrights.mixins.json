@@ -10,6 +10,7 @@
     "BlockMixin",
     "ClientBrandRetrieverMixin",
     "ClientConnectionMixin",
+    "ClientPlayNetworkHandlerMixin",
     "KeyboardMixin",
     "MinecraftClientMixin"
   ]

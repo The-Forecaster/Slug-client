@@ -15,7 +15,7 @@ class HackArgumentType internal constructor() : ArgumentType<Hack> {
 
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): Hack? {
-        for (hack in HackManager.values) if (reader.string.lowercase() == hack.name.lowercase()) return hack
+        for (hack in HackManager.values) if (reader.readString().lowercase() == hack.name.lowercase()) return hack
         return null
     }
 

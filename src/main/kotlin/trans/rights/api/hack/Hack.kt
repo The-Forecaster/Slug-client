@@ -6,9 +6,8 @@ import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType.getString
+import com.mojang.brigadier.arguments.StringArgumentType.word
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
-import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.exceptions.BuiltInExceptions
 import net.minecraft.command.CommandSource
 import trans.rights.BasicEventManager
@@ -22,6 +21,10 @@ import trans.rights.util.clientSend
 import trans.rights.util.fromJson
 import trans.rights.util.writeToJson
 import me.austin.rush.Listener
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -126,11 +129,15 @@ abstract class Hack(name: String, description: String) : trans.rights.api.Modula
         this.save(path)
     }
 
-    fun register(dispatcher: CommandDispatcher<CommandSource>) {
+    fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(
-            this.build(literal<CommandSource>(this.name).then(
+            this.build(literal(this.name).then(
                 argument("setting", setting(this))
-            ).then(argument("value", StringArgumentType.word())).executes {
+            ).executes {
+                it.source.sendFeedback(Text.of("§a$name is set to ${getSetting(it, "setting", this)?.value}"))
+
+                SINGLE_SUCCESS
+            }.then(argument("value", word()))).executes {
                 val input = getString(it, "value")
                 val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
 
@@ -145,20 +152,20 @@ abstract class Hack(name: String, description: String) : trans.rights.api.Modula
                         is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
                             .create()
                         else -> {
-                            this.clientSend("You cannot set that setting like this")
+                            it.source.sendFeedback(Text.of("You cannot set that setting like this"))
                             throw BuiltInExceptions().dispatcherUnknownArgument().create()
                         }
                     }
+
+                    it.source.sendFeedback(Text.of("§a${setting.name} set to $input"))
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()
                 }
 
-                this.clientSend("§a${setting.name} set to $input")
-
                 SINGLE_SUCCESS
-            })
+            }
         )
     }
 
-    open fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> = builder
+    open fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> = builder
 }
