@@ -3,11 +3,16 @@ package trans.rights.impl.hack
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.api.hack.Hack
+import trans.rights.impl.setting.EnumSetting
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
     enum class Opacity {
         SOME, NONE
     }
+    
+    private val opacity = EnumSetting<Opacity>("Opacity", "Whether you want the blocks to be visible", Opacity.SOME)
+    
+    override val settings = Settings(opacity)
     
     private val blocks = mutableSetOf(Blocks.DIAMOND_ORE, Blocks.ANCIENT_DEBRIS, Blocks.ENDER_CHEST, Blocks.BEDROCK)
 
