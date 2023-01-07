@@ -13,7 +13,7 @@ import trans.rights.impl.hack.Wallhack;
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
     @Inject(method = "getAmbientOcclusionLightLevel", at = @At("HEAD"), cancellable = true)
-    private void getAmbientOcclusionLevel(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir){\
+    private void getAmbientOcclusionLevel(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir){
         if (Wallhack.INSTANCE.opacity.value == Wallhack.Opacity.SOME && Wallhack.INSTANCE.isEnabled()) cir.setReturnValue(1f);
     }
 }
