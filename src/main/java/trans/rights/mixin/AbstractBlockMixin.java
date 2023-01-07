@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import trans.rights.impl.hack.Wallhack;
+import trans.rights.impl.hack.WallHack;
 
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
