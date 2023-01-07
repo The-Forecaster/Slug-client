@@ -4,6 +4,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import trans.rights.api.hack.Hack
 import trans.rights.impl.setting.EnumSetting
+import trans.rights.impl.setting.Settings
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
     enum class Opacity {
