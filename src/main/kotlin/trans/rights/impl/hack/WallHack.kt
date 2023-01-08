@@ -11,7 +11,7 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
         SOME, NONE
     }
     
-    private val opacity = EnumSetting<Opacity>("Opacity", "Whether you want the blocks to be visible", Opacity.SOME)
+    val opacity = EnumSetting<Opacity>("Opacity", "Whether you want the blocks to be visible", Opacity.SOME)
     
     override val settings = Settings(opacity)
     
