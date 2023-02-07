@@ -1,6 +1,14 @@
+buildscript {
+    ext.kotlin_version = '1.8.10'
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
@@ -41,11 +49,6 @@ loom {
     accessWidenerPath = file('src/main/resources/transrights.accesswidener')
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allSource
-}
-
 compileKotlin{
     kotlinOptions {
         jvmTarget = '17'
@@ -77,4 +80,8 @@ jar {
     from('LICENSE')
 
     manifest.attributes('Main-Class': 'trans.rights.Main')
+}
+
+java {
+    withSourcesJar()
 }

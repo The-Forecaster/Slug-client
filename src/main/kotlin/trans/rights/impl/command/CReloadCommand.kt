@@ -11,10 +11,10 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
 import trans.rights.Queer
 import trans.rights.api.Wrapper
+import trans.rights.api.command.Command
 import trans.rights.util.clientSend
 
-object CReloadCommand : trans.rights.api.command.Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"),
-    Wrapper {
+object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
     private fun reloadClient() {
         clientSend("Reloading the client...")
 

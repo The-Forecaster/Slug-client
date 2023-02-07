@@ -14,6 +14,8 @@ import trans.rights.api.hack.HackManager
 import trans.rights.events.KeyEvent
 import me.austin.rush.listener
 import trans.rights.util.fromJson
+import trans.rights.impl.friend.FriendManager
+import trans.rights.impl.friend.Friend
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
@@ -49,6 +51,34 @@ object ClickGuiScreen : Screen(Text.of(Queer.NAME)), Wrapper, trans.rights.api.M
                         this.width + this.xPos,
                         this.height + this.yPos,
                         Color.LIGHT_GRAY.rgb
+                    )
+                }
+            }
+        }) {
+            override fun render(stack: MatrixStack) {
+                DrawableHelper.fill(
+                    stack,
+                    this.xPos,
+                    this.yPos,
+                    this.width + this.xPos,
+                    this.height + this.yPos,
+                    Color.LIGHT_GRAY.rgb
+                )
+
+                for (button in this.children) button.render(stack)
+            }
+        }, object : Frame<Friend>(100, 20, 60, FriendManager.values.size * 20, FriendManager.values.map {
+            offset += 20
+
+            object : Button<Friend>(20, offset, 60, 20, it) {
+                override fun render(stack: MatrixStack) {
+                    DrawableHelper.fill(
+                        stack,
+                        this.xPos,
+                        this.yPos,
+                        this.width + this.xPos,
+                        this.height + this.yPos,
+                        Color.YELLOW.rgb
                     )
                 }
             }
