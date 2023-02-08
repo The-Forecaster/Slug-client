@@ -46,7 +46,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = file('src/main/resources/transrights.accesswidener')
+    accessWidenerPath = file('src/main/resources/slug.accesswidener')
 }
 
 compileKotlin{
@@ -79,7 +79,7 @@ processResources {
 jar {
     from('LICENSE')
 
-    manifest.attributes('Main-Class': 'trans.rights.Main')
+    manifest.attributes('Main-Class': 'me.austin.Main')
 }
 
 java {

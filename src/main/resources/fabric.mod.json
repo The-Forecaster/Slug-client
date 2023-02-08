@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "trans-rights",
+  "id": "slug",
   "version": "${version}",
 
-  "name": "Trans-rights",
+  "name": "Slug",
   "description": "trans people are valid uwu",
   "authors": [
     "Austin"
   ],
   "contact": {
-    "homepage": "https://github.com/the-forecaster/Trans-Rights",
+    "homepage": "https://github.com/the-forecaster/Slug-clietn",
     "github": "https://github.com/the-forecaster",
     "discord": "Austin the Forecaster#0760"
   },
@@ -20,11 +20,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "trans.rights.Queer"
+      "me.austin.client.Slug"
     ]
   },
   "mixins": [
-    "transrights.mixins.json"
+    "slug.mixins.json"
   ],
 
   "depends": {
@@ -32,5 +32,5 @@
     "minecraft": "${mcversion}",
     "java": ">=17"
   },
-  "accessWidener": "transrights.accesswidener"
+  "accessWidener": "slug.accesswidener"
 }
