@@ -11,7 +11,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.exceptions.BuiltInExceptions
 import net.minecraft.command.CommandSource
 import me.austin.client.BasicEventManager
-import me.austin.client.Queer.Companion.LOGGER
+import me.austin.client.Slug.Companion.LOGGER
 import me.austin.client.api.Wrapper
 import me.austin.client.impl.command.arguments.getSetting
 import me.austin.client.impl.command.arguments.setting

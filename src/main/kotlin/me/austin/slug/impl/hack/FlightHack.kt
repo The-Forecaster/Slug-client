@@ -5,7 +5,7 @@ import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket
 import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket
 import net.minecraft.util.math.Vec3d
-import me.austin.client.Queer
+import me.austin.client.Slug.Companion.LOGGER
 import me.austin.client.api.hack.Hack
 import me.austin.client.events.PacketEvent
 import me.austin.client.events.TickEvent
@@ -31,9 +31,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
             }
         },
         listener<PacketEvent.PreSend> { event ->
-            if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
-                (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
-            }
+            if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
         }
     )
 
@@ -42,7 +40,7 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     override fun onEnable() {
         if (nullCheck()) disable()
 
-        Queer.LOGGER.info("$name enabled")
+        LOGGER.info("$name enabled")
     }
 
     override fun onDisable() {

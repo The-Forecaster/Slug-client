@@ -2,7 +2,7 @@ package me.austin.client.impl.friend
 
 import com.google.gson.JsonObject
 import net.minecraft.client.network.ClientPlayerEntity
-import me.austin.client.Queer.Companion.mainDirectory
+import me.austin.client.Slug.Companion.mainDirectory
 import me.austin.client.api.Manager
 import me.austin.client.api.Wrapper
 import me.austin.client.util.fromJson

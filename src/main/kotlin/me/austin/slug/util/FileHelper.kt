@@ -3,7 +3,7 @@ package me.austin.client.util
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
-import me.austin.client.Queer.Companion.LOGGER
+import me.austin.client.Slug.Companion.LOGGER
 import java.io.BufferedWriter
 import java.io.File
 import java.io.IOException
@@ -19,7 +19,7 @@ inline val Path.readString: String
         Files.readString(this) ?: ""
     } catch (e: Exception) {
         when (e) {
-            is IOException, is SecurityException -> LOGGER.error("Couldn't read $this")
+            is IOException, is SecurityException -> LOGGER.error("Couldn't read $this ${e.printStackTrace()}")
             else -> throw e
         }
 

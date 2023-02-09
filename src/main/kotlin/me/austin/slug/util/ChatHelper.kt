@@ -1,7 +1,7 @@
 package me.austin.client.util
 
 import net.minecraft.text.Text
-import me.austin.client.Queer.Companion.NAME
+import me.austin.client.Slug.Companion.NAME
 import me.austin.client.api.Wrapper
 
 const val modifier = "§"

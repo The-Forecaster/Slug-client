@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
-import me.austin.client.Queer.Companion.mainDirectory
+import me.austin.client.Slug.Companion.mainDirectory
 import me.austin.client.api.Manager
 import me.austin.client.api.command.CommandManager
 import me.austin.client.impl.hack.*

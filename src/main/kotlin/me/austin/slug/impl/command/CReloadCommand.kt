@@ -9,7 +9,7 @@ import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
-import me.austin.client.Queer
+import me.austin.client.Slug
 import me.austin.client.api.Wrapper
 import me.austin.client.api.command.Command
 import me.austin.client.util.clientSend
@@ -18,8 +18,8 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
     private fun reloadClient() {
         clientSend("Reloading the client...")
 
-        Queer.unload()
-        Queer.load()
+        Slug.unload()
+        Slug.load()
     }
 
     private fun reloadMc() {

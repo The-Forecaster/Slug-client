@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import me.austin.client.BasicEventManager
-import me.austin.client.Queer
+import me.austin.client.Slug
 import me.austin.client.api.Wrapper
 import me.austin.client.api.gui.components.Frame
 import me.austin.client.api.gui.components.buttons.Button
@@ -21,10 +21,10 @@ import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
 
-object ClickGuiScreen : Screen(Text.of(Queer.NAME)), Wrapper, Manager<Frame<*>, List<Frame<*>>> {
+object ClickGuiScreen : Screen(Text.of(Slug.NAME)), Wrapper, Manager<Frame<*>, List<Frame<*>>> {
     override val values: List<Frame<*>>
 
-    private val file: Path = Path.of("${Queer.mainDirectory}/clickguiscreen.json")
+    private val file: Path = Path.of("${Slug.mainDirectory}/clickguiscreen.json")
 
     private var shouldCloseOnEsc = true
 
