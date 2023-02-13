@@ -1,8 +1,9 @@
 package me.austin.client.events;
 
-import net.minecraft.network.Packet;
 import org.jetbrains.annotations.NotNull;
+
 import me.austin.rush.Cancellable;
+import net.minecraft.network.Packet;
 
 public abstract class PacketEvent extends Cancellable {
     private final Packet<?> packet;

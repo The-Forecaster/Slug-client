@@ -132,6 +132,11 @@ interface Listener<T : Any> {
     operator fun invoke(param: T)
 }
 
+/**
+ * Framework for a cancellable event
+ * 
+ * @author Austin
+ */
 abstract class Cancellable {
     var isCancelled = false
         private set

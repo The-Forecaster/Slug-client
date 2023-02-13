@@ -1,14 +1,18 @@
 package me.austin;
 
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Locale;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is the main class used to let people know not to run this file
@@ -52,7 +56,7 @@ public final class Main {
      * @return the Operating System that the program is run on
      */
     private static OS getOS() {
-        var osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        final var osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
 
         if (osName.contains("nux") || osName.contains("nix")) return OS.NIX;
         else if (osName.contains("darwin") || osName.contains("mac")) return OS.OSX;

@@ -1,18 +1,19 @@
 package me.austin.client.mixin;
 
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.PacketListener;
+import java.io.IOException;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import io.netty.channel.ChannelHandlerContext;
 import me.austin.client.BasicEventManager;
 import me.austin.client.events.PacketEvent;
 import me.austin.client.impl.hack.AntiKick;
-
-import java.io.IOException;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.PacketListener;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
@@ -22,7 +23,8 @@ public class ClientConnectionMixin {
     }
 
     private static void postCancel(PacketEvent event, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled()) info.cancel();
+        if (BasicEventManager.INSTANCE.dispatch(event).isCancelled())
+            info.cancel();
     }
 
     @Inject(method = "send", at = @At("HEAD"), cancellable = true)
@@ -32,6 +34,7 @@ public class ClientConnectionMixin {
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
-        if (throwable instanceof IOException && AntiKick.INSTANCE.isEnabled()) info.cancel();
+        if (throwable instanceof IOException && AntiKick.INSTANCE.isEnabled())
+            info.cancel();
     }
 }

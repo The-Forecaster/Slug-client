@@ -17,7 +17,6 @@ val minecraft_version: String by project
 val kotlin_version: String by project
 
 repositories.mavenCentral()
-// loom.accessWidenerPath = file("src/main/resources/slug.accesswidener")
 java.withSourcesJar()
 
 dependencies {
@@ -79,5 +78,9 @@ tasks {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraft_version))
         }
+    }
+
+    loom {
+        val accessWidenerPath = file("src/main/resources/slug.accesswidener")
     }
 }

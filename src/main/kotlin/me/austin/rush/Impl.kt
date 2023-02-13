@@ -76,11 +76,12 @@ private val <T : Any> KClass<T>.listeners
 private val Any.listeners
     get() = this::class.listeners.mapTo(ArrayList()) { it.handleCall(this) }
 
+
 private fun <T : Any> KCallable<T>.handleCall(receiver: Any? = null): T {
     val accessible = this.isAccessible
     this.isAccessible = true
 
-    // This will get a both static and non-static listeners in the jvm
+    // Cool hack to get both static and non-static listeners in the jvm
     return try { call(receiver) } catch (e: Throwable) { call() } finally { this.isAccessible = accessible }
 }
 
