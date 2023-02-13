@@ -17,6 +17,7 @@ val minecraft_version: String by project
 val kotlin_version: String by project
 
 repositories.mavenCentral()
+
 java.withSourcesJar()
 
 dependencies {
@@ -28,7 +29,7 @@ dependencies {
         modImplementation(module)
     }
 
-    fun library(module: String,  dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
+    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
         include(module, dependencyConfiguration)
         modImplementation(module, dependencyConfiguration)
     }
@@ -44,9 +45,7 @@ dependencies {
         exclude("kotlin-stdlib-common")
     }
 
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
-        exclude("kotlin-stdlib")
-    }
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") { exclude("kotlin-stdlib") }
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
         exclude("kotlin-stdlib-common")
@@ -57,15 +56,11 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
-    }
+    withType<KotlinCompile> { kotlinOptions { jvmTarget = "17" } }
 
     jar {
         from("LICENSE")
-    
+
         manifest.attributes("Main-Class" to "me.austin.Main")
     }
 
@@ -74,13 +69,14 @@ tasks {
         options.encoding = "UTF-8"
     }
 
-    getByName<ProcessResources>("processResources") {    
+    getByName<ProcessResources>("processResources") {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraft_version))
         }
     }
 
+    // TODO: figure how to get the aw to work
     loom {
-        val accessWidenerPath = file("src/main/resources/slug.accesswidener")
+        // accessWidenerPath = file("src/main/resources/slug.accesswidener")
     }
 }

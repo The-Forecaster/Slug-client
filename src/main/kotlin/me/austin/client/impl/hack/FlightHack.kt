@@ -20,18 +20,19 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     override val settings = Settings(speed)
 
     override val listeners = listOf(
-        listener<TickEvent.Post> {
+        listener<TickEvent.Post> { _ ->
             if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
         },
-        listener<PacketEvent.PostReceive> { event ->
+        listener<PacketEvent.PostReceive> { _ ->
+            /**
             if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
                 it.allowFlying = true
                 it.flying = true
                 it.flySpeed = trueSpeed()
-            }
+            } **/
         },
-        listener<PacketEvent.PreSend> { event ->
-            if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
+        listener<PacketEvent.PreSend> { _ ->
+            // if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
         }
     )
 

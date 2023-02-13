@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import me.austin.client.util.ChatHelperKt;
+import me.austin.client.api.command.CommandManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 
 @Mixin(ClientPlayNetworkHandler.class)
