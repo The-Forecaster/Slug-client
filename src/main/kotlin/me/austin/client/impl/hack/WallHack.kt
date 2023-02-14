@@ -17,7 +17,7 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
     
     private val blocks = mutableSetOf(Blocks.DIAMOND_ORE, Blocks.ANCIENT_DEBRIS, Blocks.ENDER_CHEST, Blocks.BEDROCK)
 
-    fun shouldRender(block: Block) = blocks.contains(block) || opacity.value != Opacity.NONE
+    fun shouldRender(block: Block) = blocks.contains(block)
 
     override fun onEnable() {
         if (nullCheck()) {

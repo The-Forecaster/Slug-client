@@ -21,9 +21,6 @@ repositories.mavenCentral()
 java.withSourcesJar()
 
 dependencies {
-    fun ModuleDependency.exclude(path: String): ModuleDependency {
-        return exclude(mapOf("module" to path))
-    }
     fun library(module: Dependency) {
         include(module)
         modImplementation(module)
@@ -32,6 +29,10 @@ dependencies {
     fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
         include(module, dependencyConfiguration)
         modImplementation(module, dependencyConfiguration)
+    }
+
+    fun ModuleDependency.exclude(path: String): ModuleDependency {
+        return exclude(mapOf("module" to path))
     }
 
     // fabric dependencies
