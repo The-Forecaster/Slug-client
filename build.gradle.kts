@@ -21,6 +21,8 @@ repositories.mavenCentral()
 java.withSourcesJar()
 
 dependencies {
+    // Thanks to Luna for these
+    // https://github.com/Luna5ama/TrollHack
     fun library(module: Dependency) {
         include(module)
         modImplementation(module)
@@ -57,7 +59,11 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> { kotlinOptions { jvmTarget = "17" } }
+    withType<KotlinCompile> { 
+        kotlinOptions { 
+            jvmTarget = "17" 
+        } 
+    }
 
     jar {
         from("LICENSE")
@@ -65,12 +71,12 @@ tasks {
         manifest.attributes("Main-Class" to "me.austin.Main")
     }
 
-    withType(JavaCompile::class).configureEach {
+    withType<JavaCompile>().configureEach {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
 
-    getByName<ProcessResources>("processResources") {
+    processResources {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraft_version))
         }

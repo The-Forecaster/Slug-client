@@ -29,12 +29,14 @@ import net.minecraft.text.Text
 import java.nio.file.Files
 import java.nio.file.Path
 
-abstract class Hack(name: String, description: String) : Modular(name, description),
-    Wrapper {
+abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val path: Path = Path.of("${HackManager.directory}/$name.json")
 
+    // This is the list of settings for the hack
+    // if a setting isn't contained here then the client won't be able to find it
     open val settings = Settings()
 
+    // These will be registered every time this hack is enabled
     open val listeners = listOf<Listener<*>>()
 
     var isEnabled = false

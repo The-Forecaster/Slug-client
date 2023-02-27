@@ -13,8 +13,7 @@ import java.util.UUID
 
 data class Friend(override val name: String, val uuid: UUID) : Nameable
 
-object FriendManager : Manager<Friend, MutableList<Friend>>,
-    Wrapper {
+object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     override val values = ArrayList<Friend>()
 
     private val friendFile = File("${mainDirectory}/friends.json")

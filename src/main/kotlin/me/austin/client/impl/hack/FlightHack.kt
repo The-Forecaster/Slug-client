@@ -15,24 +15,12 @@ import me.austin.rush.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
     private val speed = FloatSetting("Speed", "How fast you want to fly.", 15f, 0.1f)
-    // private val cancelSpeed = settings.add(BooleanSetting("Cancel-speed", "Do you want to cancel current speed before doing adding speed?", true))
 
     override val settings = Settings(speed)
 
     override val listeners = listOf(
         listener<TickEvent> { _ ->
             if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
-        },
-        listener<PacketEvent.PostReceive> { _ ->
-            /**
-            if (event.packet is PlayerAbilitiesS2CPacket) (event.packet as PlayerAbilitiesS2CPacket).let {
-                it.allowFlying = true
-                it.flying = true
-                it.flySpeed = trueSpeed()
-            } **/
-        },
-        listener<PacketEvent.PreSend> { _ ->
-            // if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet as UpdatePlayerAbilitiesC2SPacket).flying = true
         }
     )
 

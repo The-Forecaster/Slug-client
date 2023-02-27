@@ -35,6 +35,7 @@ object AuraHack : Hack("Aura", "Automatically hit people near you") {
     private fun getTarget(): PlayerEntity? {
         if (minecraft.networkHandler!!.playerList.isEmpty()) return null
 
+        // Best way of doing this even though its kinda stupid
         return minecraft.world!!.players.stream().sorted(Comparator.comparingDouble { player ->
             minecraft.player!!.distanceTo(player).toDouble()
         }).filter { !player!!.isFriend || !hitFriends.value }.findFirst().orElse(null)

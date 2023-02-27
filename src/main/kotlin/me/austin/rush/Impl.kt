@@ -17,6 +17,7 @@ import kotlin.reflect.typeOf
 open class EventManager : EventBus {
     override val registry = ConcurrentHashMap<KClass<*>, MutableList<Listener<*>>>()
 
+    // Using this here so we don't have to make more reflection calls
     private val cache = ConcurrentHashMap<Any, MutableList<Listener<*>>>()
 
     override fun register(listener: Listener<*>) {
@@ -51,6 +52,13 @@ open class EventManager : EventBus {
         (registry[event::class] as? MutableList<Listener<T>>)?.let { synchronized(it) { for (listener in it) listener(event) } }
     }
 
+    /**
+     * Dispatches an event that is cancellable. 
+     * When the event is cancelled it will not be posted to any listeners after
+     * 
+     * @param the event which will be posted
+     * @return the event passed through
+     */
     fun <T : Cancellable> dispatch(event: T): T {
         (registry[event::class] as? MutableList<Listener<T>>)?.let {
             synchronized(it) {
@@ -65,7 +73,7 @@ open class EventManager : EventBus {
     }
 }
 
-// Most of this is pasted from bush https://github.com/therealbush/eventbus-kotlin, check him out if you want to see actually good code
+// Most of this is pasted or inspired from bush https://github.com/therealbush/eventbus-kotlin, check him out if you want to see actually good code
 
 private val KCallable<*>.isListener
     get() = this.findAnnotation<EventHandler>() != null && this.returnType.isSubtypeOf(typeOf<Listener<*>>())
