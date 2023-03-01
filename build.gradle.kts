@@ -71,7 +71,7 @@ tasks {
         manifest.attributes("Main-Class" to "me.austin.Main")
     }
 
-    withType<JavaCompile>().configureEach {
+    withType<JavaCompile> {
         options.release.set(17)
         options.encoding = "UTF-8"
     }
@@ -82,8 +82,7 @@ tasks {
         }
     }
 
-    // TODO: figure how to get the aw to work
     loom {
-        // accessWidenerPath = file("src/main/resources/slug.accesswidener")
+        accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
     }
 }
