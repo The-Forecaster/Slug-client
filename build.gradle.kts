@@ -14,7 +14,6 @@ val version: String by project
 val group: String by project
 
 val minecraft_version: String by project
-val kotlin_version: String by project
 
 repositories.mavenCentral()
 
@@ -36,6 +35,8 @@ dependencies {
     fun ModuleDependency.exclude(path: String): ModuleDependency {
         return exclude(mapOf("module" to path))
     }
+
+    val kotlin_version: String by project
 
     // fabric dependencies
     minecraft("com.mojang:minecraft:$minecraft_version")

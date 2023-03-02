@@ -1,12 +1,12 @@
 package me.austin.client.mixin;
 
+import me.austin.client.impl.events.KeyEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import me.austin.client.BasicEventManager;
-import me.austin.client.events.KeyEvent;
 import net.minecraft.client.Keyboard;
 
 @Mixin(Keyboard.class)

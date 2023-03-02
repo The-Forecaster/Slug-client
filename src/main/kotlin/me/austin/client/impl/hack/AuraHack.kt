@@ -2,7 +2,7 @@ package me.austin.client.impl.hack
 
 import net.minecraft.entity.player.PlayerEntity
 import me.austin.client.api.hack.Hack
-import me.austin.client.events.TickEvent
+import me.austin.client.impl.events.TickEvent
 import me.austin.client.impl.friend.isFriend
 import me.austin.client.impl.setting.BooleanSetting
 import me.austin.client.impl.setting.IntSetting

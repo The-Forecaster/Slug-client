@@ -2,6 +2,7 @@ package me.austin.client.mixin;
 
 import java.io.IOException;
 
+import me.austin.client.impl.events.PacketEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -9,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.netty.channel.ChannelHandlerContext;
 import me.austin.client.BasicEventManager;
-import me.austin.client.events.PacketEvent;
 import me.austin.client.impl.hack.AntiKick;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
