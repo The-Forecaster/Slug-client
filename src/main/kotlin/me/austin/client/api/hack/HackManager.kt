@@ -7,6 +7,7 @@ import net.minecraft.command.CommandRegistryAccess
 import me.austin.client.Slug.Companion.mainDirectory
 import me.austin.client.api.Manager
 import me.austin.client.api.command.CommandManager
+import me.austin.client.BasicEventManager
 import me.austin.client.impl.hack.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -21,6 +22,7 @@ object HackManager : Manager<Hack, List<Hack>> {
 
         for (hack in values) {
             hack.load()
+
             ClientCommandRegistrationCallback.EVENT.register { commandDispatcher: CommandDispatcher<FabricClientCommandSource>, _: CommandRegistryAccess ->
                 hack.register(commandDispatcher)
             }
