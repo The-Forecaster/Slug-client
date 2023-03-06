@@ -12,7 +12,6 @@ import me.austin.client.api.hack.HackManager
 import java.util.concurrent.CompletableFuture
 
 class HackArgumentType internal constructor() : ArgumentType<Hack> {
-
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): Hack? {
         for (hack in HackManager.values) if (reader.readString().lowercase() == hack.name.lowercase()) return hack
@@ -28,3 +27,19 @@ class HackArgumentType internal constructor() : ArgumentType<Hack> {
 fun hack() = HackArgumentType()
 
 fun getHack(context: CommandContext<*>, name: String): Hack = context.getArgument(name, Hack::class.java)
+
+class SettingArgumentType internal constructor(private val hack: Hack) : ArgumentType<Setting<*>> {
+    @Throws(CommandSyntaxException::class)
+    override fun parse(reader: StringReader): Setting<*> =
+        hack.settings.get(reader.readString()) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
+
+    override fun <S : Any> listSuggestions(
+        context: CommandContext<S>, builder: SuggestionsBuilder?
+    ): CompletableFuture<Suggestions> =
+        CommandSource.suggestMatching(this.hack.settings.allSettings.map(Setting<*>::name), builder)
+}
+
+fun setting(hack: Hack) = SettingArgumentType(hack)
+
+fun getSetting(context: CommandContext<*>, name: String, hack: Hack = getHack(context, "hack")): Setting<*>? =
+    hack.settings.get(name)
