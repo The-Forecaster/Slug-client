@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import me.austin.client.api.command.Command
 import me.austin.client.api.Wrapper
 
-class CoordsCommand : Command("coords", "Copies your current coordinates to the clipboard", "/coords"), Wrapper {
+class CoordinatesCommand : Command("coordinates", "Copies your current coordinates to the clipboard", "/coordinates", "coords"), Wrapper {
     override fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> = builder.executes({
         if (player != null) {
             val text = Math.floor(player!!.getX()).toString() + " " + Math.floor(player!!.getY()) + " " + Math.floor(player!!.getZ());
