@@ -13,6 +13,7 @@ import java.nio.file.Path
 
 private val gson = GsonBuilder().setLenient().setPrettyPrinting().create()
 
+// If this ever throws a memory error then you're fucked
 @get:Throws(OutOfMemoryError::class)
 inline val Path.readString: String
     get() = try {
@@ -59,6 +60,7 @@ fun Path.fromJson(clearIfException: Boolean = true) = try {
 
 fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(clearIfException)
 
+/** Writes an empty JsonObject to the file */
 @Throws(
     IOException::class,
     IllegalArgumentException::class,

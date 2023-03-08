@@ -73,6 +73,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     fun load(path: Path = this.path) {
         if (!Files.exists(path)) {
             Files.createFile(path)
+            this.save(this.path)
             return
         }
 
@@ -108,25 +109,25 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     private fun save(path: Path = this.path) = try {
-        JsonObject().let {
+            JsonObject().let {
 
-            it.add("enabled", JsonPrimitive(isEnabled))
+                it.add("enabled", JsonPrimitive(isEnabled))
 
-            for (setting in this.settings.allSettings) {
-                when (setting) {
-                    is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
-                    is NumberSetting<*> -> it.add(setting.name, JsonPrimitive(setting.value))
-                    is EnumSetting -> it.add(setting.name, JsonPrimitive(setting.value.toString()))
+                for (setting in this.settings.allSettings) {
+                    when (setting) {
+                        is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
+                        is NumberSetting<*> -> it.add(setting.name, JsonPrimitive(setting.value))
+                        is EnumSetting -> it.add(setting.name, JsonPrimitive(setting.value.toString()))
+                    }
                 }
+
+                path.writeToJson(it)
             }
+        } catch (e: Exception) {
+            LOGGER.error("$name failed to save")
 
-            path.writeToJson(it)
+            e.printStackTrace()
         }
-    } catch (e: Exception) {
-        LOGGER.error("$name failed to save")
-
-        e.printStackTrace()
-    }
 
     fun unload(path: Path = this.path) {
         if (this.isEnabled) BasicEventManager.unregisterAll(this.listeners)
