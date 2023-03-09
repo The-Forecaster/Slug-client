@@ -13,10 +13,9 @@ import net.minecraft.command.argument.serialize.ArgumentSerializer
 import me.austin.client.api.Wrapper
 import me.austin.client.api.Manager
 import me.austin.client.impl.command.*
-import me.austin.client.impl.command.arguments.hack
 
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
-    override val values = listOf(TestCommand, CReloadCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
+    override val values = listOf(CoordsCommand, TestCommand, CReloadCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
 
     private val dispatcher = CommandDispatcher<CommandSource>()
 

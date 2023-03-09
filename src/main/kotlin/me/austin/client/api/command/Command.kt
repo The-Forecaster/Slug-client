@@ -10,6 +10,10 @@ import me.austin.client.api.Modular
 import me.austin.client.api.Wrapper
 import me.austin.client.util.clientSend
 
+/**
+ * Most of this is copied or inspired from Meteor client, they got it working so why change it
+ * https://github.com/MeteorDevelopment/meteor-client
+ */
 abstract class Command(
     name: String, description: String, private val syntax: String, private vararg val aliases: String
 ) : Modular(name, description), Wrapper {
