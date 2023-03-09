@@ -13,12 +13,7 @@ import me.austin.client.api.Manager
 import me.austin.client.impl.command.*
 
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
-<<<<<<< Updated upstream
-    override val values = listOf(CoordsCommand, TestCommand, CReloadCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
-=======
     override val values = listOf(CoordsCommand, TestCommand, CReloadCommand, ToggleCommand)
->>>>>>> Stashed changes
-
     private val dispatcher = CommandDispatcher<CommandSource>()
 
     private val commandSource = ChatCommandSource(minecraft)
