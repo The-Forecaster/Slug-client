@@ -8,14 +8,16 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientCommandSource
 import net.minecraft.command.CommandRegistryAccess
 import net.minecraft.command.CommandSource
-import net.minecraft.command.argument.ArgumentTypes
-import net.minecraft.command.argument.serialize.ArgumentSerializer
 import me.austin.client.api.Wrapper
 import me.austin.client.api.Manager
 import me.austin.client.impl.command.*
 
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
+<<<<<<< Updated upstream
     override val values = listOf(CoordsCommand, TestCommand, CReloadCommand, ToggleCommand).sortedWith(Comparator.comparing(Command::name))
+=======
+    override val values = listOf(CoordsCommand, TestCommand, CReloadCommand, ToggleCommand)
+>>>>>>> Stashed changes
 
     private val dispatcher = CommandDispatcher<CommandSource>()
 

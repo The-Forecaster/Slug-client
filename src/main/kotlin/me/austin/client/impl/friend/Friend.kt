@@ -39,6 +39,10 @@ object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     fun add(name: String) {
         values.add(Friend(name, minecraft.socialInteractionsManager.getUuid(name)))
     }
+
+    fun remove(name: String) {
+        values.removeIf { it.name == name }
+    }
 }
 
 internal val ClientPlayerEntity.isFriend

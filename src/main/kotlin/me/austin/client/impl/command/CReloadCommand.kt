@@ -12,9 +12,10 @@ import net.minecraft.command.CommandSource
 import me.austin.client.Slug
 import me.austin.client.api.Wrapper
 import me.austin.client.api.command.Command
+import me.austin.client.api.command.CommandManager
 import me.austin.client.util.clientSend
 
-object CReloadCommand : Command("creload", "Reload parts of the client or mc", "/creload <mc or client>"), Wrapper {
+object CReloadCommand : Command("creload", "Reload parts of the client or mc", CommandManager.prefix + "creload <mc or client>"), Wrapper {
     private fun reloadClient() {
         clientSend("Reloading the client...")
 
@@ -27,11 +28,9 @@ object CReloadCommand : Command("creload", "Reload parts of the client or mc", "
         minecraft.reloadResourcesConcurrently()
     }
 
-    private fun reload(): Int {
+    private fun reload() {
         reloadMc()
         reloadClient()
-
-        return SINGLE_SUCCESS
     }
 
     @Throws(CommandSyntaxException::class)

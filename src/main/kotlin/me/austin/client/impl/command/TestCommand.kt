@@ -11,10 +11,10 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.argument.TextArgumentType.text
 import net.minecraft.text.Text
 import me.austin.client.api.command.Command
+import me.austin.client.api.command.CommandManager
 
-object TestCommand : Command("careastats", "test", "test") {
-    override fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> {
-        return builder.then(
+object TestCommand : Command("careastats", "test", CommandManager.prefix + "test") {
+    override fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> = builder.then(
             literal("ctitle")
                 .then(literal("clear")
                     .executes { ctx -> executeClear(ctx.source) })
@@ -54,7 +54,6 @@ object TestCommand : Command("careastats", "test", "test") {
                         )
                 )
         )
-    }
 
     private fun executeClear(source: FabricClientCommandSource): Int {
         source.client.inGameHud.clearTitle()

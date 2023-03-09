@@ -35,8 +35,12 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     protected val keybind = ShortSetting("KeyBind", "If this key is pressed then the module will be toggled", 0)
 
     // This is the list of settings for the hack
+<<<<<<< Updated upstream
     // if a setting isn't contained here then the client won't be able to find it
     open val settings = Settings(keybind)
+=======
+    open val settings = Settings()
+>>>>>>> Stashed changes
 
     // These will be registered every time this hack is enabled
     open val listeners = listOf<Listener<*>>()

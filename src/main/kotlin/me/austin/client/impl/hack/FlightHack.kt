@@ -23,14 +23,14 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
             if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
         },
         listener<PacketEvent.PostReceive> { event ->
-            if (event.packet is PlayerAbilitiesS2CPacket) (event.packet).let {
+            if (event.packet is PlayerAbilitiesS2CPacket) event.packet.let {
                 it.allowFlying = true
                 it.flying = true
                 it.flySpeed = trueSpeed()
             }
         },
         listener<PacketEvent.PreSend> { event ->
-            if (event.packet is UpdatePlayerAbilitiesC2SPacket) (event.packet).flying = true
+            if (event.packet is UpdatePlayerAbilitiesC2SPacket) event.packet.flying = true
         }
     )
 

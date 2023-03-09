@@ -16,6 +16,9 @@ class IntSetting(name: String, description: String, default: Int, vararg childre
 class ShortSetting(name: String, description: String, default: Short, vararg children: Setting<*>) :
     NumberSetting<Short>(name, description, default, 1, *children)
 
+class ByteSetting(name: String, description: String, default: Byte, vararg children: Setting<*>) :
+    NumberSetting<Byte>(name, description, default, 1, *children)
+
 class DoubleSetting(
     name: String, description: String, default: Double, increment: Double, vararg children: Setting<*>
 ) : NumberSetting<Double>(name, description, default, increment, *children) {
