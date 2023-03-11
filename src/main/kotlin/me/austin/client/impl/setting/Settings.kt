@@ -1,6 +1,5 @@
 package me.austin.client.impl.setting
 
-import me.austin.client.api.Manager
 import me.austin.client.api.setting.ModularSettingContainer
 import me.austin.client.api.setting.Setting
 

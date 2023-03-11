@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
-import net.minecraft.command.CommandSource
 import me.austin.client.api.command.Command
 import me.austin.client.api.command.CommandManager
 import me.austin.client.api.hack.Hack

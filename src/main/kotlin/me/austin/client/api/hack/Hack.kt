@@ -4,12 +4,10 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.exceptions.BuiltInExceptions
-import net.minecraft.command.CommandSource
 import me.austin.client.BasicEventManager
 import me.austin.client.Slug.Companion.LOGGER
 import me.austin.client.api.Wrapper
@@ -17,11 +15,12 @@ import me.austin.client.impl.command.arguments.getSetting
 import me.austin.client.impl.command.arguments.setting
 import me.austin.client.impl.setting.*
 import me.austin.client.util.clearJson
-import me.austin.client.util.clientSend
 import me.austin.client.api.Modular
+import me.austin.client.impl.events.KeyEvent
 import me.austin.client.util.fromJson
 import me.austin.client.util.writeToJson
 import me.austin.rush.Listener
+import me.austin.rush.listener
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
@@ -32,14 +31,21 @@ import java.nio.file.Path
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val path: Path = Path.of("${HackManager.directory}/$name.json")
 
-    protected val keybind = ShortSetting("KeyBind", "If this key is pressed then the module will be toggled", 0)
+    private val keyBind = ShortSetting("KeyBind", "If this key is pressed then the module will be toggled", 0)
+
+    private val keyListener = listener<KeyEvent> {
+        if (it.key.toShort() == this.keyBind.value) {
+            this.toggle()
+            it.cancel()
+        }
+    }
 
     // This is the list of settings for the hack
     // if a setting isn't contained here then the client won't be able to find it
-    open val settings = Settings(keybind)
+    open val settings = Settings(keyBind)
 
     // These will be registered every time this hack is enabled
-    open val listeners = listOf<Listener<*>>()
+    open val listeners = listOf<Listener<*>>(keyListener)
 
     var isEnabled = false
         private set
@@ -73,12 +79,12 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     fun load(path: Path = this.path) {
         if (!Files.exists(path)) {
             Files.createFile(path)
-            this.save(this.path)
+            this.save()
             return
         }
 
         if (this.path.fromJson().size() == 0) {
-            this.save(this.path)
+            this.save()
             return
         }
 
@@ -108,7 +114,8 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         }
     }
 
-    private fun save(path: Path = this.path) = try {
+    private fun save(path: Path = this.path) {
+        try {
             JsonObject().let {
 
                 it.add("enabled", JsonPrimitive(isEnabled))
@@ -128,6 +135,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
             e.printStackTrace()
         }
+    }
 
     fun unload(path: Path = this.path) {
         if (this.isEnabled) BasicEventManager.unregisterAll(this.listeners)

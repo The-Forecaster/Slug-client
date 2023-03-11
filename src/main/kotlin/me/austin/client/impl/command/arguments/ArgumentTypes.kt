@@ -15,7 +15,8 @@ import java.util.concurrent.CompletableFuture
 
 class HackArgumentType internal constructor() : ArgumentType<Hack> {
     @Throws(CommandSyntaxException::class)
-    override fun parse(reader: StringReader): Hack? = HackManager.values.find { reader.readString().lowercase() == it.name.lowercase() }
+    override fun parse(reader: StringReader): Hack =
+        HackManager.values.find { reader.readString().lowercase() == it.name.lowercase() } ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
 
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>?, builder: SuggestionsBuilder?

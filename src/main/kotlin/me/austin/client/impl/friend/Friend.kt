@@ -11,7 +11,7 @@ import me.austin.client.api.Nameable
 import java.io.File
 import java.util.UUID
 
-data class Friend(final override val name: String, val uuid: UUID) : Nameable
+data class Friend(override val name: String, val uuid: UUID) : Nameable
 
 object FriendManager : Manager<Friend, MutableList<Friend>>, Wrapper {
     override val values = ArrayList<Friend>()
