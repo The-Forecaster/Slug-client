@@ -2,22 +2,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.8.20"
     id("fabric-loom") version "1.1-SNAPSHOT"
 }
 
-val sourceCompatibility = JavaVersion.VERSION_17
-val targetCompatibility = JavaVersion.VERSION_17
-
-val archivesBaseName: String by project
 val version: String by project
 val group: String by project
 
 val minecraft_version: String by project
 
-repositories.mavenCentral()
-
-java.withSourcesJar()
+base {
+    val archivesBaseName: String by project
+    archivesName.set(archivesBaseName)
+}
 
 dependencies {
     // Thanks to Luna for these
@@ -40,8 +37,8 @@ dependencies {
 
     // fabric dependencies
     minecraft("com.mojang:minecraft:$minecraft_version")
-    mappings("net.fabricmc:yarn:$minecraft_version+build.1:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.14.11")
+    mappings("net.fabricmc:yarn:$minecraft_version+build.3:v2")
+    modImplementation("net.fabricmc:fabric-loader:0.14.17")
 
     // mod dependencies
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
@@ -49,21 +46,26 @@ dependencies {
         exclude("kotlin-stdlib-common")
     }
 
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") { exclude("kotlin-stdlib") }
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
+        exclude("kotlin-stdlib")
+    }
 
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
         exclude("kotlin-stdlib-common")
         exclude("annotations")
     }
-
-    library(fabricApi.module("fabric-command-api-v2", "0.68.1+1.19.3"))
 }
 
 tasks {
-    withType<KotlinCompile> { 
-        kotlinOptions { 
-            jvmTarget = "17" 
-        } 
+    repositories {
+        mavenCentral()
+    }
+
+    java {
+        withSourcesJar()
+
+        val sourceCompatibility = JavaVersion.VERSION_17
+        val targetCompatibility = JavaVersion.VERSION_17
     }
 
     jar {
@@ -75,6 +77,12 @@ tasks {
     withType<JavaCompile> {
         options.release.set(17)
         options.encoding = "UTF-8"
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
     }
 
     processResources {

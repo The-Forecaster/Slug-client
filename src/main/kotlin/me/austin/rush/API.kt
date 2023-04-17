@@ -141,6 +141,9 @@ abstract class Cancellable {
     var isCancelled = false
         private set
 
+    /**
+     * Use this function to set isCancelled to true
+     */
     fun cancel() {
         this.isCancelled = true
     }

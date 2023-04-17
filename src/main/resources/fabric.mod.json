@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Slug",
-  "description": "trans people are valid uwu",
+  "description": "\"Utility client\"",
   "authors": [
     "Austin"
   ],
@@ -28,8 +28,8 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.11",
-    "minecraft": "${mcversion}",
+    "fabricloader": ">=0.14.17",
+    "minecraft": "~${mcversion}",
     "java": ">=17"
   },
   "accessWidener": "slug.accesswidener"

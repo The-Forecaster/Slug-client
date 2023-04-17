@@ -17,7 +17,7 @@ import kotlin.reflect.typeOf
 open class EventManager : EventBus {
     override val registry = ConcurrentHashMap<KClass<*>, MutableList<Listener<*>>>()
 
-    // Using this here so we don't have to make more reflection calls
+    // Using this here, so we don't have to make more reflection calls
     private val cache = ConcurrentHashMap<Any, MutableList<Listener<*>>>()
 
     override fun register(listener: Listener<*>) {
@@ -49,14 +49,18 @@ open class EventManager : EventBus {
     }
 
     override fun <T : Any> dispatch(event: T) {
-        (registry[event::class] as? MutableList<Listener<T>>)?.let { synchronized(it) { for (listener in it) listener(event) } }
+        (registry[event::class] as? MutableList<Listener<T>>)?.let {
+            synchronized(it) {
+                for (listener in it) listener(event)
+            }
+        }
     }
 
     /**
      * Dispatches an event that is cancellable. 
      * When the event is cancelled it will not be posted to any listeners after
      * 
-     * @param the event which will be posted
+     * @param event the event which will be posted
      * @return the event passed through
      */
     fun <T : Cancellable> dispatch(event: T): T {

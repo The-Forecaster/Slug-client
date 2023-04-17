@@ -33,7 +33,7 @@ public final class Main {
      * @throws IOException                     if there was an error creating files or folders
      * @author Austin, Toxic
      */
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
+    public static void main(final String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         if (JOptionPane.showConfirmDialog(null, "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?", "Slug-client", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
@@ -68,12 +68,12 @@ public final class Main {
     private enum OS {
         WINDOWS {
             @Override
-            protected String[] getCommand(@NotNull URL url) {
+            protected final String[] getCommand(@NotNull final URL url) {
                 return new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
             }
         }, OSX {
             @Override
-            protected String[] getCommand(@NotNull URL url) {
+            protected final String[] getCommand(@NotNull final URL url) {
                 return new String[]{"open", url.toString()};
             }
         }, NIX, UNKNOWN;
@@ -84,7 +84,7 @@ public final class Main {
          * @param uri the local file path to the target folder
          * @throws IOException if an IO error occurs
          */
-        public void open(@NotNull URI uri) throws IOException {
+        private void open(@NotNull final URI uri) throws IOException {
             Runtime.getRuntime().exec(this.getCommand(uri.toURL()));
         }
 
@@ -94,7 +94,7 @@ public final class Main {
          * @param url the file path to the target folder
          * @return the command needed to open that folder
          */
-        protected String[] getCommand(@NotNull URL url) {
+        protected String[] getCommand(@NotNull final URL url) {
             var string = url.toString();
 
             if ("file".equals(url.getProtocol())) string = string.replace("file:", "file://");
