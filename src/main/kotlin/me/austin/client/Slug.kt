@@ -8,7 +8,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class Slug : ModInitializer {
-    companion object : Wrapper {
+    private companion object : Wrapper {
         const val NAME = "Slug"
 
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
@@ -16,6 +16,7 @@ class Slug : ModInitializer {
         val LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
         val shutdownHook = {
+            LOGGER.info("Shutting down $NAME")
         }
     }
 

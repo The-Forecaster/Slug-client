@@ -7,16 +7,13 @@ plugins {
 }
 
 // Good lord please find a better way to do this
-val mod_version: String by project
-version = mod_version
-val maven_group: String by project
-group = maven_group
+version = "0.0.1"
+group = "me.austin"
 
 val minecraft_version: String by project
 
 base {
-    val archivesBaseName: String by project
-    archivesName.set(archivesBaseName)
+    archivesName.set("slug")
 }
 
 repositories {
@@ -24,28 +21,22 @@ repositories {
 }
 
 dependencies {
-    // Thanks to Luna for these
-    // https://github.com/Luna5ama/TrollHack
-    fun library(module: Dependency) {
-        include(module)
-        modImplementation(module)
-    }
-
     fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
         include(module, dependencyConfiguration)
         modImplementation(module, dependencyConfiguration)
     }
 
-    fun ModuleDependency.exclude(path: String): ModuleDependency {
-        return exclude(mapOf("module" to path))
-    }
-
     val kotlin_version: String by project
+    val loader_version: String by project
+
+    val apiModules = setOf(
+        "fabric-lifecycle-events-v1"
+    )
 
     // fabric dependencies
     minecraft("com.mojang:minecraft:$minecraft_version")
     mappings("net.fabricmc:yarn:$minecraft_version+build.3:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.14.17")
+    modImplementation("net.fabricmc:fabric-loader:$loader_version")
 
     // mod dependencies
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
@@ -60,6 +51,10 @@ dependencies {
     library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
         exclude("kotlin-stdlib-common")
         exclude("annotations")
+    }
+
+    for (apiModule in apiModules) {
+        modImplementation(fabricApi.module(apiModule, "0.75.1+1.18.2"))
     }
 }
 
