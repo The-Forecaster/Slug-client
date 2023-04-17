@@ -6,14 +6,21 @@ plugins {
     id("fabric-loom") version "1.1-SNAPSHOT"
 }
 
-val version: String by project
-val group: String by project
+// Good lord please find a better way to do this
+val mod_version: String by project
+version = mod_version
+val maven_group: String by project
+group = maven_group
 
 val minecraft_version: String by project
 
 base {
     val archivesBaseName: String by project
     archivesName.set(archivesBaseName)
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -56,18 +63,15 @@ dependencies {
     }
 }
 
+java {
+    withSourcesJar()
+}
+
+loom {
+    accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
+}
+
 tasks {
-    repositories {
-        mavenCentral()
-    }
-
-    java {
-        withSourcesJar()
-
-        val sourceCompatibility = JavaVersion.VERSION_17
-        val targetCompatibility = JavaVersion.VERSION_17
-    }
-
     jar {
         from("LICENSE")
 
@@ -89,9 +93,5 @@ tasks {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraft_version))
         }
-    }
-
-    loom {
-        accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
     }
 }

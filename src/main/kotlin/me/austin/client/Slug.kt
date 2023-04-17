@@ -14,6 +14,9 @@ class Slug : ModInitializer {
         val mainDirectory: Path = Path.of("${minecraft.runDirectory}/${NAME.lowercase()}")
 
         val LOGGER: Logger = LoggerFactory.getLogger(NAME)
+
+        val shutdownHook = {
+        }
     }
 
     init {
@@ -25,7 +28,7 @@ class Slug : ModInitializer {
 
         LOGGER.info("Starting $NAME...")
 
-        Runtime.getRuntime().addShutdownHook(Thread())
+        Runtime.getRuntime().addShutdownHook(Thread(shutdownHook))
 
         LOGGER.info("$NAME has been started in ${System.currentTimeMillis() - start} ms!")
     }
