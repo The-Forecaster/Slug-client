@@ -6,14 +6,13 @@ plugins {
     id("fabric-loom") version "1.1-SNAPSHOT"
 }
 
-// Good lord please find a better way to do this
 version = "0.0.1"
 group = "me.austin"
 
-val minecraft_version: String by project
+val minecraftVersion = "1.18.2"
 
 base {
-    archivesName.set("slug")
+    archivesName.set("slug-$version")
 }
 
 repositories {
@@ -26,31 +25,31 @@ dependencies {
         modImplementation(module, dependencyConfiguration)
     }
 
-    val kotlin_version: String by project
-    val loader_version: String by project
+    val kotlinVersion = "1.8.20"
+    val loaderVersion = "0.14.17"
 
     val apiModules = setOf(
         "fabric-lifecycle-events-v1"
     )
 
     // fabric dependencies
-    minecraft("com.mojang:minecraft:$minecraft_version")
-    mappings("net.fabricmc:yarn:$minecraft_version+build.3:v2")
-    modImplementation("net.fabricmc:fabric-loader:$loader_version")
+    minecraft("com.mojang:minecraft:$minecraftVersion")
+    mappings("net.fabricmc:yarn:$minecraftVersion+build.3:v2")
+    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
 
     // mod dependencies
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
-        exclude("kotlin-stdlib-jdk8")
-        exclude("kotlin-stdlib-common")
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib-common")
     }
 
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version") {
-        exclude("kotlin-stdlib")
+    library("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion") {
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
     }
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
-        exclude("kotlin-stdlib-common")
-        exclude("annotations")
+    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion") {
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib-common")
+        exclude("org.jetbrains.kotlin", "annotations")
     }
 
     for (apiModule in apiModules) {
@@ -86,7 +85,7 @@ tasks {
 
     processResources {
         filesMatching("fabric.mod.json") {
-            expand(mapOf("version" to version, "mcversion" to minecraft_version))
+            expand(mapOf("version" to version, "mcversion" to minecraftVersion))
         }
     }
 }
