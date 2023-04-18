@@ -10,6 +10,7 @@ version = "0.0.1"
 group = "me.austin"
 
 val minecraftVersion = "1.18.2"
+val kotlinVersion = "1.8.20"
 
 base {
     archivesName.set("slug-$version")
@@ -25,9 +26,6 @@ dependencies {
         modImplementation(module, dependencyConfiguration)
     }
 
-    val kotlinVersion = "1.8.20"
-    val loaderVersion = "0.14.17"
-
     val apiModules = setOf(
         "fabric-lifecycle-events-v1"
     )
@@ -35,7 +33,7 @@ dependencies {
     // fabric dependencies
     minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings("net.fabricmc:yarn:$minecraftVersion+build.3:v2")
-    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
+    modImplementation("net.fabricmc:fabric-loader:0.14.17")
 
     // mod dependencies
     library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
