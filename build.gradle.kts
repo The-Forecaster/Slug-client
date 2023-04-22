@@ -21,9 +21,8 @@ repositories {
 }
 
 dependencies {
-    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
-        include(module, dependencyConfiguration)
-        modImplementation(module, dependencyConfiguration)
+    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit = {}) {
+        include(implementation(module, dependencyConfiguration))
     }
 
     val apiModules = setOf(
@@ -36,27 +35,20 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:0.14.17")
 
     // mod dependencies
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-RC") {
         exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
         exclude("org.jetbrains.kotlin", "kotlin-stdlib-common")
     }
+
+    library("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     library("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion") {
         exclude("org.jetbrains.kotlin", "kotlin-stdlib")
     }
 
-    library("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion") {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib-common")
-        exclude("org.jetbrains.kotlin", "annotations")
+    apiModules.forEach {
+        modImplementation(fabricApi.module(it, "0.76.0+$minecraftVersion"))
     }
-
-    for (apiModule in apiModules) {
-        modImplementation(fabricApi.module(apiModule, "0.75.1+1.18.2"))
-    }
-}
-
-java {
-    withSourcesJar()
 }
 
 loom {
@@ -65,25 +57,29 @@ loom {
 
 tasks {
     jar {
-        from("LICENSE")
+        from("LICENSE") {
+            rename {
+                "${it}_${base.archivesName.get()}"
+            }
+        }
 
         manifest.attributes("Main-Class" to "me.austin.Main")
-    }
-
-    withType<JavaCompile> {
-        options.release.set(17)
-        options.encoding = "UTF-8"
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
     }
 
     processResources {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraftVersion))
+        }
+    }
+
+    withType<JavaCompile>().configureEach {
+        options.release.set(17)
+        options.encoding = "UTF-8"
+    }
+
+    withType<KotlinCompile>().all {
+        kotlinOptions {
+            jvmTarget = "17"
         }
     }
 }
