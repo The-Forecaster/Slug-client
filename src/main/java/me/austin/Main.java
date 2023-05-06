@@ -14,45 +14,9 @@ import java.util.Locale;
  * This is the main class used to let people know not to run this file
  */
 public final class Main {
-    private enum OS {
-        WINDOWS {
-            @Override
-            protected final String[] getCommand(@NotNull final URL url) {
-                return new String[] { "rundll32", "url.dll,FileProtocolHandler", url.toString() };
-            }
-        }, OSX {
-            @Override
-            protected final String[] getCommand(@NotNull final URL url) {
-                return new String[] { "open", url.toString()};
-            }
-        }, NIX, UNKNOWN;
-
-        /**
-         * Runs a script based on the operating system that is currently running
-         *
-         * @param uri the local file path to the target folder
-         * @throws IOException if an IO error occurs
-         */
-        private void open(@NotNull final URI uri) throws IOException {
-            Runtime.getRuntime().exec(this.getCommand(uri.toURL()));
-        }
-
-        /**
-         * Gets the file opening command for this specific operating system
-         *
-         * @param url the file path to the target folder
-         * @return the command needed to open that folder
-         */
-        protected String[] getCommand(@NotNull final URL url) {
-            var string = url.toString();
-
-            if ("file".equals(url.getProtocol())) string = string.replace("file:", "file://");
-
-            return new String[] { "Xdg-open", string };
-        }
-    }
-
     private static final ImageIcon icon = new ImageIcon("src/main/resources/assets/slug/error.jpg");
+
+    private Main() {}
 
     /**
      * Gets the OS of the system the file runs on
@@ -83,14 +47,7 @@ public final class Main {
     public static void main(final String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        if (JOptionPane.showConfirmDialog(
-                null,
-                "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?",
-                "Slug-client",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                icon
-        ) == 0) {
+        if (JOptionPane.showConfirmDialog(null, "Don't run this file, put it in your mods folder!\nWould you like to open up your mods folder?", "Slug-client", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, icon) == 0) {
             final var modsFile = switch (getOS()) {
                 case WINDOWS -> new File(System.getenv("AppData") + "/.minecraft/mods");
                 case OSX -> new File(System.getProperty("user.home") + "/Library/Application Support/minecraft/mods");
@@ -104,5 +61,41 @@ public final class Main {
         }
     }
 
-    private Main() {}
+    private enum OS {
+        WINDOWS {
+            @Override
+            protected final String[] getCommand(@NotNull final URL url) {
+                return new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
+            }
+        }, OSX {
+            @Override
+            protected final String[] getCommand(@NotNull final URL url) {
+                return new String[]{"open", url.toString()};
+            }
+        }, NIX, UNKNOWN;
+
+        /**
+         * Runs a script based on the operating system that is currently running
+         *
+         * @param uri the local file path to the target folder
+         * @throws IOException if an IO error occurs
+         */
+        private void open(@NotNull final URI uri) throws IOException {
+            Runtime.getRuntime().exec(this.getCommand(uri.toURL()));
+        }
+
+        /**
+         * Gets the file opening command for this specific operating system
+         *
+         * @param url the file path to the target folder
+         * @return the command needed to open that folder
+         */
+        protected String[] getCommand(@NotNull final URL url) {
+            var string = url.toString();
+
+            if ("file".equals(url.getProtocol())) string = string.replace("file:", "file://");
+
+            return new String[]{"Xdg-open", string};
+        }
+    }
 }

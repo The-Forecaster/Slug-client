@@ -1,8 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "slug",
-  "version": "${ version}",
-
+  "version": "${version}",
   "name": "Slug",
   "description": "\"Utility client\"",
   "authors": [
@@ -13,20 +12,17 @@
     "github": "https://github.com/the-forecaster",
     "discord": "Austin the Forecaster#0760"
   },
-
   "license": "MIT",
   "icon": "assets/slug/transpride.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.austin.client.Slug"
+      "me.austin.client.impl.fabric.Slug"
     ]
   },
   "mixins": [
     "slug.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.14.17",
     "minecraft": "~${mcversion}",

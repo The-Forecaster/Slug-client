@@ -13,7 +13,7 @@ val minecraftVersion = "1.18.2"
 val kotlinVersion = "1.8.20"
 
 base {
-    archivesName.set("slug-$version")
+    archivesName.set("slug")
 }
 
 repositories {
@@ -21,30 +21,29 @@ repositories {
 }
 
 dependencies {
-    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit = {}) {
+    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
         include(implementation(module, dependencyConfiguration))
     }
 
-    val apiModules = setOf(
-        "fabric-lifecycle-events-v1"
+    fun library(
+        group: String, module: String, version: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit
+    ) {
+        library("$group:$module:$version", dependencyConfiguration)
+    }
+
+    val apiModules = setOf<String>(
     )
 
+    files("libs/rush-2.2.jar")
+
     // fabric dependencies
-    minecraft("com.mojang:minecraft:$minecraftVersion")
-    mappings("net.fabricmc:yarn:$minecraftVersion+build.3:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.14.17")
+    minecraft(group = "com.mojang", name = "minecraft", version = minecraftVersion)
+    mappings(group = "net.fabricmc", name = "yarn", version = "$minecraftVersion+build.3", classifier = "v2")
+    modImplementation(group = "net.fabricmc", name = "fabric-loader", version = "0.14.17")
 
     // mod dependencies
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-RC") {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib-common")
-    }
-
-    library("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-
-    library("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion") {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
-    }
+    include(dependencyNotation = files("libs/rush-2.2.jar"))
+    implementation(dependencyNotation = files("libs/rush-2.2.jar"))
 
     apiModules.forEach {
         modImplementation(fabricApi.module(it, "0.76.0+$minecraftVersion"))
@@ -77,7 +76,7 @@ tasks {
         options.encoding = "UTF-8"
     }
 
-    withType<KotlinCompile>().all {
+    withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = "17"
         }
