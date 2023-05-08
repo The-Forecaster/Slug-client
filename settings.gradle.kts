@@ -7,3 +7,5 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+include("launch")

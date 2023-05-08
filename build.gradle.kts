@@ -10,7 +10,6 @@ version = "0.0.1"
 group = "me.austin"
 
 val minecraftVersion = "1.18.2"
-val kotlinVersion = "1.8.20"
 
 base {
     archivesName.set("slug")
@@ -21,20 +20,8 @@ repositories {
 }
 
 dependencies {
-    fun library(module: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit) {
-        include(implementation(module, dependencyConfiguration))
-    }
-
-    fun library(
-        group: String, module: String, version: String, dependencyConfiguration: ExternalModuleDependency.() -> Unit
-    ) {
-        library("$group:$module:$version", dependencyConfiguration)
-    }
-
     val apiModules = setOf<String>(
     )
-
-    files("libs/rush-2.2.jar")
 
     // fabric dependencies
     minecraft(group = "com.mojang", name = "minecraft", version = minecraftVersion)
@@ -48,6 +35,9 @@ dependencies {
     apiModules.forEach {
         modImplementation(fabricApi.module(it, "0.76.0+$minecraftVersion"))
     }
+
+    include(project(":launch"))
+    implementation(project(":launch"))
 }
 
 loom {
