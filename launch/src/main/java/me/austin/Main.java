@@ -1,7 +1,5 @@
 package me.austin;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -64,12 +62,12 @@ public final class Main {
     private enum OS {
         WINDOWS {
             @Override
-            protected final String[] getCommand(@NotNull final URL url) {
+            protected final String[] getCommand(final URL url) {
                 return new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()};
             }
         }, OSX {
             @Override
-            protected final String[] getCommand(@NotNull final URL url) {
+            protected final String[] getCommand(final URL url) {
                 return new String[]{"open", url.toString()};
             }
         }, NIX, UNKNOWN;
@@ -80,7 +78,7 @@ public final class Main {
          * @param uri the local file path to the target folder
          * @throws IOException if an IO error occurs
          */
-        private void open(@NotNull final URI uri) throws IOException {
+        private void open(final URI uri) throws IOException {
             Runtime.getRuntime().exec(this.getCommand(uri.toURL()));
         }
 
@@ -90,7 +88,7 @@ public final class Main {
          * @param url the file path to the target folder
          * @return the command needed to open that folder
          */
-        protected String[] getCommand(@NotNull final URL url) {
+        protected String[] getCommand(final URL url) {
             var string = url.toString();
 
             if ("file".equals(url.getProtocol())) string = string.replace("file:", "file://");

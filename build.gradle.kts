@@ -23,14 +23,16 @@ dependencies {
     val apiModules = setOf<String>(
     )
 
+    val bus = files("libs/eventbus-0.2.2.jar")
+
     // fabric dependencies
     minecraft(group = "com.mojang", name = "minecraft", version = minecraftVersion)
     mappings(group = "net.fabricmc", name = "yarn", version = "$minecraftVersion+build.3", classifier = "v2")
     modImplementation(group = "net.fabricmc", name = "fabric-loader", version = "0.14.17")
 
     // mod dependencies
-    include(dependencyNotation = files("libs/rush-2.2.jar"))
-    implementation(dependencyNotation = files("libs/rush-2.2.jar"))
+    include(dependencyNotation = bus)
+    implementation(dependencyNotation = bus)
 
     apiModules.forEach {
         modImplementation(fabricApi.module(it, "0.76.0+$minecraftVersion"))
