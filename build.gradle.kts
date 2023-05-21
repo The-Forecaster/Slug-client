@@ -31,8 +31,8 @@ dependencies {
     modImplementation(group = "net.fabricmc", name = "fabric-loader", version = "0.14.17")
 
     // mod dependencies
-    include(dependencyNotation = bus)
-    implementation(dependencyNotation = bus)
+    include(bus)
+    implementation(bus)
 
     apiModules.forEach {
         modImplementation(fabricApi.module(it, "0.76.0+$minecraftVersion"))
@@ -44,6 +44,14 @@ dependencies {
 
 loom {
     accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
+}
+
+java {
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks {
@@ -66,11 +74,5 @@ tasks {
     withType<JavaCompile>().configureEach {
         options.release.set(17)
         options.encoding = "UTF-8"
-    }
-
-    withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = "17"
-        }
     }
 }
