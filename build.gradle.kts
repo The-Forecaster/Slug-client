@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    kotlin("jvm") version "1.8.20"
-    id("fabric-loom") version "1.1-SNAPSHOT"
+    kotlin("jvm") version "1.8.21"
+    id("fabric-loom") version "1.2-SNAPSHOT"
 }
 
 version = "0.0.1"
