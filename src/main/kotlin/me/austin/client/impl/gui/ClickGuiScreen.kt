@@ -1,6 +1,5 @@
 package me.austin.client.impl.gui
 
-import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -16,6 +15,7 @@ import me.austin.client.impl.events.KeyEvent
 import me.austin.rush.listener
 import me.austin.client.impl.friend.FriendManager
 import me.austin.client.impl.friend.Friend
+import net.minecraft.client.gui.DrawContext
 import java.awt.Color
 import java.nio.file.Files
 import java.nio.file.Path
@@ -29,12 +29,12 @@ object ClickGuiScreen : Screen(Text.of(Slug.NAME)), Wrapper, Manager<Frame<*>, L
 
     private var key = 'y'
 
-    private val keyListener = listener<KeyEvent>({
+    private val keyListener = listener<KeyEvent>(Integer.MAX_VALUE) {
         if (it.key == this.key.code) {
             minecraft.setScreen(ClickGuiScreen)
             it.cancel()
         }
-    }, Integer.MAX_VALUE)
+    }
 
     init {
         var offset = 0
@@ -44,62 +44,40 @@ object ClickGuiScreen : Screen(Text.of(Slug.NAME)), Wrapper, Manager<Frame<*>, L
 
             object : Button<Hack>(20, offset, 60, 20, it) {
                 override fun render(stack: MatrixStack) {
-                    DrawableHelper.fill(
-                        stack,
-                        this.xPos,
-                        this.yPos,
-                        this.width + this.xPos,
-                        this.height + this.yPos,
-                        Color.LIGHT_GRAY.rgb
-                    )
+                    TODO("All of this")
                 }
             }
         }) {
             override fun render(stack: MatrixStack) {
-                DrawableHelper.fill(
-                    stack,
-                    this.xPos,
-                    this.yPos,
-                    this.width + this.xPos,
-                    this.height + this.yPos,
-                    Color.LIGHT_GRAY.rgb
-                )
+                TODO("All of this")
 
-                for (button in this.children) button.render(stack)
+                for (button in this.children) {
+                    button.render(stack)
+                }
             }
         }, object : Frame<Friend>(100, 20, 60, FriendManager.values.size * 20, FriendManager.values.map {
             offset += 20
 
             object : Button<Friend>(20, offset, 60, 20, it) {
                 override fun render(stack: MatrixStack) {
-                    DrawableHelper.fill(
-                        stack,
-                        this.xPos,
-                        this.yPos,
-                        this.width + this.xPos,
-                        this.height + this.yPos,
-                        Color.YELLOW.rgb
-                    )
+                    TODO("All of this")
                 }
             }
         }) {
             override fun render(stack: MatrixStack) {
-                DrawableHelper.fill(
-                    stack,
-                    this.xPos,
-                    this.yPos,
-                    this.width + this.xPos,
-                    this.height + this.yPos,
-                    Color.LIGHT_GRAY.rgb
-                )
+                TODO("All of this")
 
-                for (button in this.children) button.render(stack)
+                for (button in this.children) {
+                    button.render(stack)
+                }
             }
         })
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        for (frame in values) frame.render(matrices)
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+        for (frame in values) {
+            frame.render(context.matrices)
+        }
     }
 
     override fun shouldPause() = false
@@ -109,10 +87,10 @@ object ClickGuiScreen : Screen(Text.of(Slug.NAME)), Wrapper, Manager<Frame<*>, L
     override fun load() {
         if (!Files.exists(file)) Files.createFile(file)
 
-        BasicEventManager.register(keyListener)
+        BasicEventManager.subscribe(keyListener)
     }
 
     override fun unload() {
-        BasicEventManager.unregister(keyListener)
+        BasicEventManager.unsubscribe(keyListener)
     }
 }

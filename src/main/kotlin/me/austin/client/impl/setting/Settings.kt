@@ -1,6 +1,6 @@
 package me.austin.client.impl.setting
 
-import me.austin.client.api.setting.ModularSettingContainer
+import me.austin.client.api.setting.Children
 import me.austin.client.api.setting.Setting
 
 /**
@@ -8,10 +8,26 @@ import me.austin.client.api.setting.Setting
  *
  * Use only once per module
  */
-class Settings(private val values: List<ModularSettingContainer>) {
-    constructor(vararg settings: ModularSettingContainer) : this(settings.asList())
+class Settings(private val settings: List<Setting<*>>) {
+    constructor(vararg settings: Setting<*>) : this(settings.asList())
 
-    val allSettings = this.values.flatMap { if (it is Setting<*>) (it.children + it) else it.children }
+    operator fun get(setting: String): Setting<*>? {
+        return this.allSettings().find { it.name.lowercase() == setting.lowercase() }
+    }
 
-    fun get(setting: String) = this.allSettings.find { it.name.lowercase() == setting.lowercase() }
+    fun allSettings(): List<Setting<*>> {
+        val list = mutableListOf<Setting<*>>()
+
+        fun recurse(settings: Array<out Setting<*>>) {
+            for (setting in settings) {
+                if (setting is Children) {
+                    recurse(setting.children)
+                }
+                list.add(setting)
+            }
+        }
+
+        recurse(this.settings.toTypedArray())
+        return list
+    }
 }

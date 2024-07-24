@@ -11,8 +11,8 @@ import kotlin.math.floor
 object CoordsCommand : Command("coords", "Copies your current coordinates to the clipboard", CommandManager.prefix + "coords"), Wrapper {
     override fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> =
         builder.executes {
-            if (player != null) {
-                val text = floor(player!!.x).toString() + " " + floor(player!!.y) + " " + floor(player!!.z)
+            player?.let { player ->
+                val text = floor(player.x).toString() + " " + floor(player.y) + " " + floor(player.z)
                 minecraft.keyboard.clipboard = text
             }
             SINGLE_SUCCESS

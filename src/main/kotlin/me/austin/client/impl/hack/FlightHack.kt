@@ -10,11 +10,12 @@ import me.austin.client.api.hack.Hack
 import me.austin.client.impl.events.PacketEvent
 import me.austin.client.impl.events.TickEvent
 import me.austin.client.impl.setting.FloatSetting
+import me.austin.client.impl.setting.FloatSettingBuilder
 import me.austin.client.impl.setting.Settings
 import me.austin.rush.listener
 
 object FlightHack : Hack("Flight", "Fly using hacks") {
-    private val speed = FloatSetting("Speed", "How fast you want to fly.", 15f, 0.1f)
+    private val speed = FloatSettingBuilder("Speed").description("How fast you want to fly.").default(0.1f).maximum(15f).minimum(0f).build()
 
     override val settings = Settings(speed)
 
@@ -34,7 +35,9 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
         }
     )
 
-    private fun trueSpeed() = (speed.value / 10f)
+    private fun trueSpeed(): Float {
+        return speed.value / 10
+    }
 
     override fun onEnable() {
         if (nullCheck()) disable()

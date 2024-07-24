@@ -1,14 +1,29 @@
 package me.austin.client.api.setting
 
-abstract class Setting<T> protected constructor(
-    name: String, description: String, default: T, vararg children: Setting<*>
-) : ModularSettingContainer(name, description), Comparable<Setting<*>> {
-    var value = default
-    final override val children = children.toList()
+import me.austin.client.api.Children
+import me.austin.client.api.Name
 
-    fun set(other: T) {
-        this.value = other
+interface Setting<T> : Name {
+    val default: T
+
+    var value: T
+
+    fun set(value: T) {
+        this.value = value
     }
+}
 
-    override operator fun compareTo(other: Setting<*>) = this.name.compareTo(other.name)
+interface Children : Children<Setting<*>> {
+    override val children: Array<out Setting<*>>
+}
+
+interface Constrained<T : Number> {
+    val minimum: T
+    val maximum: T
+}
+
+abstract class NumberSetting<T : Number>(
+    final override val name: String, final override val default: T, protected val increment: T
+) : Setting<T> {
+    final override var value = default
 }

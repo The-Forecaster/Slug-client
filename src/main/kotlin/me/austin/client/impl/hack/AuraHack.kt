@@ -4,19 +4,18 @@ import net.minecraft.entity.player.PlayerEntity
 import me.austin.client.api.hack.Hack
 import me.austin.client.impl.events.TickEvent
 import me.austin.client.impl.friend.isFriend
-import me.austin.client.impl.setting.BooleanSetting
-import me.austin.client.impl.setting.ByteSetting
-import me.austin.client.impl.setting.Settings
+import me.austin.client.impl.setting.*
 import me.austin.rush.listener
 
 object AuraHack : Hack("Aura", "Automatically hit people near you") {
-    private val customTick = ByteSetting("tick-delay", "How many ticks to wait until the next attack.", 4)
-    private val customDelay = BooleanSetting("Wait", "Wait until vanilla attack delay is over before attacking again?", true, customTick)
-    private val hitFriends = BooleanSetting("Friends", "Whether to attack friends or not", false)
+    private val customTick = IntSettingBuilder("tick-delay").description("How many ticks to wait until the next attack.").default(0).build()
+    private val customDelay = BooleanSettingBuilder("Wait").description("Wait until vanilla attack delay is over before attacking again?").default(true).children(
+        customTick).build()
+    private val hitFriends = BooleanSettingBuilder("Friends").description("Whether to attack friends or not").default(false).build()
 
     override val settings = Settings(customDelay, hitFriends)
 
-    private var ticks: Byte = 0
+    private var ticks = 0
 
     override val listeners = listOf(listener<TickEvent> { event ->
         if (event.isInWorld && getTarget() != null) {

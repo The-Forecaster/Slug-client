@@ -12,7 +12,8 @@ import net.minecraft.client.ClientBrandRetriever;
 public class ClientBrandRetrieverMixin {
     @Inject(method = "getClientModName", at = @At("HEAD"), cancellable = true, remap = false)
     private static void clientModNameModifier(CallbackInfoReturnable<String> info) {
-        if (AntiFabric.INSTANCE.isEnabled())
+        if (AntiFabric.INSTANCE.isEnabled()) {
             info.setReturnValue("vanilla");
+        }
     }
 }

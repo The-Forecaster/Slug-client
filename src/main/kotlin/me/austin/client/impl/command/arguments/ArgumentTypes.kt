@@ -36,10 +36,10 @@ class SettingArgumentType internal constructor(private val hack: Hack) : Argumen
     override fun <S : Any> listSuggestions(
         context: CommandContext<S>, builder: SuggestionsBuilder?
     ): CompletableFuture<Suggestions> =
-        CommandSource.suggestMatching(this.hack.settings.allSettings.map(Setting<*>::name), builder)
+        CommandSource.suggestMatching(this.hack.settings.allSettings().map(Setting<*>::name), builder)
 }
 
 fun setting(hack: Hack) = SettingArgumentType(hack)
 
 fun getSetting(context: CommandContext<*>, name: String, hack: Hack = getHack(context, "hack")): Setting<*>? =
-    hack.settings.get(name)
+    hack.settings[name]

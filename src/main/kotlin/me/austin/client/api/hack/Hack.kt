@@ -16,10 +16,10 @@ import me.austin.client.impl.command.arguments.setting
 import me.austin.client.impl.setting.*
 import me.austin.client.util.clearJson
 import me.austin.client.api.Modular
+import me.austin.client.api.setting.NumberSetting
 import me.austin.client.impl.events.KeyEvent
 import me.austin.client.util.fromJson
 import me.austin.client.util.writeToJson
-import me.austin.rush.Listener
 import me.austin.rush.listener
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
@@ -31,10 +31,10 @@ import java.nio.file.Path
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
     private val path: Path = Path.of("${HackManager.directory}/$name.json")
 
-    private val keyBind = ShortSetting("KeyBind", "If this key is pressed then the module will be toggled", 0)
+    private val keyBind = IntSettingBuilder("KeyBind").default(0).description("If this key is pressed then the module will be toggled").build()
 
     private val keyListener = listener<KeyEvent> {
-        if (it.key.toShort() == this.keyBind.value) {
+        if (it.key == this.keyBind.value) {
             this.toggle()
             it.cancel()
         }
@@ -45,14 +45,14 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     open val settings = Settings(keyBind)
 
     // These will be registered every time this hack is enabled
-    open val listeners = listOf<Listener<*>>(keyListener)
+    open val listeners = listOf(keyListener)
 
     var isEnabled = false
         private set
 
     private fun enable() {
         if (!this.isEnabled) {
-            BasicEventManager.registerAll(this.listeners)
+            BasicEventManager.subscribeAll(this.listeners)
 
             this.onEnable()
 
@@ -62,7 +62,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
     protected fun disable() {
         if (this.isEnabled) {
-            BasicEventManager.unregisterAll(this.listeners)
+            BasicEventManager.unsubscribeAll(this.listeners)
 
             this.onDisable()
 
@@ -93,18 +93,17 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
             this.isEnabled = json.get("enabled").asBoolean
 
-            for (setting in settings.allSettings) {
+            for (setting in settings.allSettings()) {
                 when (setting) {
                     is BooleanSetting -> setting.set(json.get(setting.name).asBoolean)
                     is DoubleSetting -> setting.set(json.get(setting.name).asDouble)
                     is FloatSetting -> setting.set(json.get(setting.name).asFloat)
                     is IntSetting -> setting.set(json.get(setting.name).asInt)
-                    is ShortSetting -> setting.set(json.get(setting.name).asShort)
                     is LongSetting -> setting.set(json.get(setting.name).asLong)
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-            if (this.isEnabled) BasicEventManager.registerAll(this.listeners)
+            if (this.isEnabled) BasicEventManager.subscribeAll(this.listeners)
         } catch (e: Exception) {
             this.path.clearJson()
 
@@ -120,7 +119,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
 
                 it.add("enabled", JsonPrimitive(isEnabled))
 
-                for (setting in this.settings.allSettings) {
+                for (setting in this.settings.allSettings()) {
                     when (setting) {
                         is BooleanSetting -> it.add(setting.name, JsonPrimitive(setting.value))
                         is NumberSetting<*> -> it.add(setting.name, JsonPrimitive(setting.value))
@@ -138,7 +137,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     fun unload(path: Path = this.path) {
-        if (this.isEnabled) BasicEventManager.unregisterAll(this.listeners)
+        if (this.isEnabled) BasicEventManager.unsubscribeAll(this.listeners)
 
         this.save(path)
     }
@@ -161,7 +160,6 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is DoubleSetting -> setting.set(input.toDouble())
                         is FloatSetting -> setting.set(input.toFloat())
                         is IntSetting -> setting.set(input.toInt())
-                        is ShortSetting -> setting.set(input.toShort())
                         is LongSetting -> setting.set(input.toLong())
                         is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
                             .create()

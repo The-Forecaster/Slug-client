@@ -1,23 +1,25 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     java
-    kotlin("jvm") version "1.8.10"
-    id("fabric-loom") version "1.1-SNAPSHOT"
+    kotlin("jvm") version "1.9.23"
+    id("fabric-loom") version "1.7-SNAPSHOT"
 }
 
-val sourceCompatibility = JavaVersion.VERSION_17
-val targetCompatibility = JavaVersion.VERSION_17
-
-val archivesBaseName: String by project
 val version: String by project
 val group: String by project
 
 val minecraft_version: String by project
 
-repositories.mavenCentral()
+base {
+    archivesName = project.properties["archives_base_name"] as String
+}
 
-java.withSourcesJar()
+repositories {
+    mavenCentral()
+}
+
+loom {
+    accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
+}
 
 dependencies {
     // Thanks to Luna for these
@@ -40,11 +42,11 @@ dependencies {
 
     // fabric dependencies
     minecraft("com.mojang:minecraft:$minecraft_version")
-    mappings("net.fabricmc:yarn:$minecraft_version+build.1:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.14.11")
+    mappings("net.fabricmc:yarn:$minecraft_version+build.3:v2")
+    modImplementation("net.fabricmc:fabric-loader:0.15.11")
 
     // mod dependencies
-    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
+    library("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC") {
         exclude("kotlin-stdlib-jdk8")
         exclude("kotlin-stdlib-common")
     }
@@ -56,14 +58,29 @@ dependencies {
         exclude("annotations")
     }
 
-    library(fabricApi.module("fabric-command-api-v2", "0.68.1+1.19.3"))
+    library(fabricApi.module("fabric-command-api-v2", "0.100.4+1.20.6"))
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 tasks {
-    withType<KotlinCompile> { 
-        kotlinOptions { 
-            jvmTarget = "17" 
-        } 
+    processResources {
+        filesMatching("fabric.mod.json") {
+            expand(mapOf("version" to version, "mcversion" to minecraft_version))
+        }
     }
 
     jar {
@@ -72,18 +89,33 @@ tasks {
         manifest.attributes("Main-Class" to "me.austin.Main")
     }
 
-    withType<JavaCompile> {
-        options.release.set(17)
-        options.encoding = "UTF-8"
-    }
+    /**
+    withType<JavaCompile>().configureEach {
+        options.release = 21
+    } */
 
     processResources {
         filesMatching("fabric.mod.json") {
             expand(mapOf("version" to version, "mcversion" to minecraft_version))
         }
     }
+}
 
-    loom {
-        accessWidenerPath.set(file("src/main/resources/slug.accesswidener"))
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 21
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
+}
+
+kotlin {
+    jvmToolchain(21)
 }

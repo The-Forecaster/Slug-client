@@ -12,26 +12,29 @@ import io.netty.channel.ChannelHandlerContext;
 import me.austin.client.BasicEventManager;
 import me.austin.client.impl.hack.AntiKick;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.listener.PacketListener;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("TAIL"), cancellable = true)
     private static void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(new PacketEvent.PostReceive(packet)).isCancelled())
+        if (BasicEventManager.INSTANCE.post(new PacketEvent.PostReceive(packet)).isCancelled()) {
             info.cancel();
+        }
     }
 
     @Inject(method = "send", at = @At("HEAD"), cancellable = true)
     private void beforeSend(Packet<?> packet, CallbackInfo info) {
-        if (BasicEventManager.INSTANCE.dispatch(new PacketEvent.PreSend(packet)).isCancelled())
+        if (BasicEventManager.INSTANCE.post(new PacketEvent.PreSend(packet)).isCancelled()) {
             info.cancel();
+        }
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
-        if (throwable instanceof IOException && AntiKick.INSTANCE.isEnabled())
+        if (throwable instanceof IOException && AntiKick.INSTANCE.isEnabled()) {
             info.cancel();
+        }
     }
 }

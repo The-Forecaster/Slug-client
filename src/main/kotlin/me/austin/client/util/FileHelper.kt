@@ -48,17 +48,25 @@ fun Path.writeToJson(element: JsonObject) {
     FileAlreadyExistsException::class,
     SecurityException::class
 )
-fun File.writeToJson(element: JsonObject) = this.toPath().writeToJson(element)
-
-fun Path.fromJson(clearIfException: Boolean = true) = try {
-    gson.fromJson(this.readString, JsonObject::class.java) ?: JsonObject()
-} catch (e: JsonSyntaxException) {
-    if (clearIfException) runCatching(Path::clearJson).onFailure(Throwable::printStackTrace)
-
-    JsonObject()
+fun File.writeToJson(element: JsonObject) {
+    this.toPath().writeToJson(element)
 }
 
-fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(clearIfException)
+fun Path.fromJson(clearIfException: Boolean = true): JsonObject {
+    return try {
+        gson.fromJson(this.readString, JsonObject::class.java) ?: JsonObject()
+    } catch (e: JsonSyntaxException) {
+        if (clearIfException) {
+            runCatching(Path::clearJson).onFailure(Throwable::printStackTrace)
+        }
+
+        JsonObject()
+    }
+}
+
+fun File.fromJson(clearIfException: Boolean = false): JsonObject {
+    return this.toPath().fromJson(clearIfException)
+}
 
 /** Writes an empty JsonObject to the file */
 @Throws(
@@ -68,7 +76,9 @@ fun File.fromJson(clearIfException: Boolean = false) = this.toPath().fromJson(cl
     FileAlreadyExistsException::class,
     SecurityException::class
 )
-fun Path.clearJson() = this.writeToJson(JsonObject())
+fun Path.clearJson() {
+    this.writeToJson(JsonObject())
+}
 
 @Throws(
     IOException::class,
@@ -77,4 +87,6 @@ fun Path.clearJson() = this.writeToJson(JsonObject())
     FileAlreadyExistsException::class,
     SecurityException::class
 )
-fun File.clearJson() = this.toPath().clearJson()
+fun File.clearJson() {
+    this.toPath().clearJson()
+}

@@ -14,8 +14,9 @@ import net.minecraft.world.BlockView;
 @Mixin(AbstractBlock.class)
 public class AbstractBlockMixin {
     @Inject(method = "getAmbientOcclusionLightLevel", at = @At("HEAD"), cancellable = true)
-    private void getAmbientOcclusionLevel(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (WallHack.INSTANCE.getOpacity().getValue() == WallHack.Opacity.SOME && WallHack.INSTANCE.isEnabled())
+    private void getAmbientOcclusionLevel(final BlockState state, final BlockView world, final BlockPos pos, final CallbackInfoReturnable<Float> cir) {
+        if (WallHack.INSTANCE.getOpacity().getValue() == WallHack.Opacity.SOME && WallHack.INSTANCE.isEnabled()) {
             cir.setReturnValue(1f);
+        }
     }
 }

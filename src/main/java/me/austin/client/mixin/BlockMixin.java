@@ -19,8 +19,9 @@ import net.minecraft.world.BlockView;
 @Mixin(Block.class)
 public class BlockMixin {
     @Inject(method = "shouldDrawSide", at = @At("RETURN"), cancellable = true)
-    private static void shouldDrawSideModifier(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
-        if (WallHack.INSTANCE.isEnabled())
+    private static void shouldDrawSideModifier(final BlockState state, final BlockView world, final BlockPos pos, final Direction side, final BlockPos blockPos, final CallbackInfoReturnable<Boolean> info) {
+        if (WallHack.INSTANCE.isEnabled()) {
             info.setReturnValue(WallHack.INSTANCE.shouldRender(state.getBlock()));
+        }
     }
 }

@@ -13,6 +13,6 @@ import net.minecraft.client.Keyboard;
 public class KeyboardMixin {
     @Inject(method = "onKey", at = @At("HEAD"))
     private void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo info) {
-        BasicEventManager.INSTANCE.dispatch(new KeyEvent(key));
+        BasicEventManager.INSTANCE.post(new KeyEvent(key));
     }
 }

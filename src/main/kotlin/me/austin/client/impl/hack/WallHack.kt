@@ -4,6 +4,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import me.austin.client.api.hack.Hack
 import me.austin.client.impl.setting.EnumSetting
+import me.austin.client.impl.setting.EnumSettingBuilder
 import me.austin.client.impl.setting.Settings
 
 object WallHack : Hack("Wallhack", "Makes blocks see through and highlights players") {
@@ -11,7 +12,7 @@ object WallHack : Hack("Wallhack", "Makes blocks see through and highlights play
         SOME, NONE
     }
     
-    val opacity = EnumSetting<Opacity>("Opacity", "Whether you want the blocks to be visible", Opacity.SOME)
+    val opacity = EnumSettingBuilder("Opacity", Opacity.SOME).description("Whether you want the blocks to be visible").build()
     
     override val settings = Settings(opacity)
     
