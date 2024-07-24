@@ -1,18 +1,16 @@
 package me.austin.client.impl.friend
 
 import com.google.gson.JsonObject
-import net.minecraft.client.network.ClientPlayerEntity
 import me.austin.client.Slug.Companion.mainDirectory
 import me.austin.client.api.Manager
 import me.austin.client.api.Name
 import me.austin.client.api.Wrapper
 import me.austin.client.util.fromJson
 import me.austin.client.util.writeToJson
-import java.io.File
+import net.minecraft.client.network.ClientPlayerEntity
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
-import java.util.UUID
+import java.util.*
 import kotlin.io.path.exists
 
 data class Friend(override val name: String, val uuid: UUID) : Name

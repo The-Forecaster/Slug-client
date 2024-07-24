@@ -16,7 +16,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 
 object CommandManager : Manager<Command, List<Command>>, Wrapper {
     override val values = listOf(CoordsCommand, CReloadCommand, ToggleCommand)
-    private val dispatcher = CommandDispatcher<CommandSource>()
+    val dispatcher = CommandDispatcher<CommandSource>()
 
     private val commandSource = ChatCommandSource(minecraft)
 
@@ -25,10 +25,8 @@ object CommandManager : Manager<Command, List<Command>>, Wrapper {
     class ChatCommandSource(mc: MinecraftClient) : ClientCommandSource(mc.networkHandler, mc)
 
     override fun load() {
-        ClientCommandRegistrationCallback.EVENT.register { commandDispatcher: CommandDispatcher<FabricClientCommandSource>, _: CommandRegistryAccess ->
-            for (command in values) {
-                command.register(commandDispatcher)
-            }
+        for (command in values) {
+            command.register(dispatcher)
         }
     }
 

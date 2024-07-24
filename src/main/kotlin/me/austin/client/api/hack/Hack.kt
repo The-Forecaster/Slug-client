@@ -7,6 +7,8 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType.getString
 import com.mojang.brigadier.arguments.StringArgumentType.word
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
+import com.mojang.brigadier.builder.RequiredArgumentBuilder.argument
 import com.mojang.brigadier.exceptions.BuiltInExceptions
 import me.austin.client.BasicEventManager
 import me.austin.client.Slug.Companion.LOGGER
@@ -18,12 +20,12 @@ import me.austin.client.util.clearJson
 import me.austin.client.api.Modular
 import me.austin.client.api.setting.NumberSetting
 import me.austin.client.impl.events.KeyEvent
+import me.austin.client.util.clientSend
 import me.austin.client.util.fromJson
 import me.austin.client.util.writeToJson
 import me.austin.rush.listener
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.command.CommandSource
 import net.minecraft.text.Text
 import java.nio.file.Files
 import java.nio.file.Path
@@ -142,12 +144,12 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         this.save(path)
     }
 
-    fun register(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
+    fun register(dispatcher: CommandDispatcher<CommandSource>) {
         dispatcher.register(
-            this.build(literal(this.name).then(
+            this.build(literal<CommandSource>(this.name).then(
                 argument("setting", setting(this))
-            ).executes {
-                it.source.sendFeedback(Text.of("§a$name is set to ${getSetting(it, "setting", this)?.value}"))
+            ).executes { context ->
+                clientSend("§a$name is set to ${getSetting(context, "setting", this)?.value}")
 
                 SINGLE_SUCCESS
             }.then(argument("value", word()))).executes {
@@ -161,15 +163,16 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                         is FloatSetting -> setting.set(input.toFloat())
                         is IntSetting -> setting.set(input.toInt())
                         is LongSetting -> setting.set(input.toLong())
-                        is EnumSetting -> if (!setting.set(input)) throw BuiltInExceptions().dispatcherUnknownArgument()
-                            .create()
+                        is EnumSetting -> if (!setting.set(input)) {
+                            throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                        }
                         else -> {
-                            it.source.sendFeedback(Text.of("You cannot set that setting like this"))
+                            clientSend("You cannot set that setting like this")
                             throw BuiltInExceptions().dispatcherUnknownArgument().create()
                         }
                     }
 
-                    it.source.sendFeedback(Text.of("§a${setting.name} set to $input"))
+                    clientSend("§a${setting.name} set to $input")
                 } catch (e: Exception) {
                     throw BuiltInExceptions().dispatcherUnknownArgument().create()
                 }
@@ -179,5 +182,7 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         )
     }
 
-    open fun build(builder: LiteralArgumentBuilder<FabricClientCommandSource>): LiteralArgumentBuilder<FabricClientCommandSource> = builder
+    open fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
+        return builder
+    }
 }

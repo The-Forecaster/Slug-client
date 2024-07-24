@@ -1,22 +1,21 @@
 package me.austin.client.impl.gui
 
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.text.Text
 import me.austin.client.BasicEventManager
 import me.austin.client.Slug
+import me.austin.client.api.Manager
 import me.austin.client.api.Wrapper
 import me.austin.client.api.gui.components.Frame
 import me.austin.client.api.gui.components.buttons.Button
 import me.austin.client.api.hack.Hack
 import me.austin.client.api.hack.HackManager
-import me.austin.client.api.Manager
 import me.austin.client.impl.events.KeyEvent
-import me.austin.rush.listener
-import me.austin.client.impl.friend.FriendManager
 import me.austin.client.impl.friend.Friend
+import me.austin.client.impl.friend.FriendManager
+import me.austin.rush.listener
 import net.minecraft.client.gui.DrawContext
-import java.awt.Color
+import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.text.Text
 import java.nio.file.Files
 import java.nio.file.Path
 

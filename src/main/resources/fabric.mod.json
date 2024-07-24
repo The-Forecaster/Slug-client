@@ -2,21 +2,17 @@
   "schemaVersion": 1,
   "id": "slug",
   "version": "${version}",
-
   "name": "Slug",
   "description": "trans people are valid uwu",
   "authors": [
     "Austin"
   ],
   "contact": {
-    "homepage": "https://github.com/the-forecaster/Slug-clietn",
-    "github": "https://github.com/the-forecaster",
-    "discord": "Austin the Forecaster#0760"
+    "homepage": "https://github.com/the-forecaster/Slug-client",
+    "github": "https://github.com/the-forecaster"
   },
-
   "license": "MIT",
   "icon": "assets/transrights/transpride.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -26,11 +22,10 @@
   "mixins": [
     "slug.mixins.json"
   ],
-
   "depends": {
-    "fabricloader": ">=0.14.11",
+    "fabricloader": ">=0.15.11",
     "minecraft": "${mcversion}",
-    "java": ">=17"
+    "java": ">=21"
   },
   "accessWidener": "slug.accesswidener"
 }
