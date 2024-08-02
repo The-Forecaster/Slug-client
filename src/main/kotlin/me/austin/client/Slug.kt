@@ -21,15 +21,19 @@ class Slug : ModInitializer {
         val LOGGER: Logger = LoggerFactory.getLogger(NAME)
 
         private val managers = listOf(
-            FriendManager, HackManager, CommandManager, ClickGuiScreen
+            CommandManager, FriendManager, ClickGuiScreen, HackManager
         )
 
         fun load() {
-            for (manager in managers) manager.load()
+            for (manager in managers) {
+                manager.load()
+            }
         }
 
         fun unload() {
-            for (manager in managers) manager.unload()
+            for (manager in managers) {
+                manager.unload()
+            }
         }
     }
 

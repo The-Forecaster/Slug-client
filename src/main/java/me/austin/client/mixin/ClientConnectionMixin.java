@@ -18,21 +18,21 @@ import net.minecraft.network.listener.PacketListener;
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("TAIL"), cancellable = true)
-    private static void afterRead(Packet<?> packet, PacketListener listener, CallbackInfo info) {
+    private static void afterRead(final Packet<?> packet, final PacketListener listener, final CallbackInfo info) {
         if (BasicEventManager.INSTANCE.post(new PacketEvent.PostReceive(packet)).isCancelled()) {
             info.cancel();
         }
     }
 
     @Inject(method = "send", at = @At("HEAD"), cancellable = true)
-    private void beforeSend(Packet<?> packet, CallbackInfo info) {
+    private void beforeSend(final Packet<?> packet, final CallbackInfo info) {
         if (BasicEventManager.INSTANCE.post(new PacketEvent.PreSend(packet)).isCancelled()) {
             info.cancel();
         }
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
-    private void onExceptionCaught(ChannelHandlerContext context, Throwable throwable, CallbackInfo info) {
+    private void onExceptionCaught(final ChannelHandlerContext context, final Throwable throwable, final CallbackInfo info) {
         if (throwable instanceof IOException && AntiKick.INSTANCE.isEnabled()) {
             info.cancel();
         }

@@ -24,21 +24,19 @@ import me.austin.client.util.clientSend
 import me.austin.client.util.fromJson
 import me.austin.client.util.writeToJson
 import me.austin.rush.listener
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.CommandSource
-import net.minecraft.text.Text
 import java.nio.file.Files
 import java.nio.file.Path
 
 abstract class Hack(name: String, description: String) : Modular(name, description), Wrapper {
-    private val path: Path = Path.of("${HackManager.directory}/$name.json")
+    private val path = Path.of("${HackManager.directory}/$name.json")
 
     private val keyBind = IntSettingBuilder("KeyBind").default(0).description("If this key is pressed then the module will be toggled").build()
 
-    private val keyListener = listener<KeyEvent> {
-        if (it.key == this.keyBind.value) {
+    private val keyListener = listener<KeyEvent> { event ->
+        if (event.key == this.keyBind.value) {
             this.toggle()
-            it.cancel()
+            event.cancel()
         }
     }
 
@@ -72,7 +70,13 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
         }
     }
 
-    fun toggle() = if (this.isEnabled) disable() else enable()
+    fun toggle() {
+        if (this.isEnabled) {
+            disable()
+        } else {
+            enable()
+        }
+    }
 
     open fun onEnable() {}
 
@@ -105,7 +109,9 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
                     is EnumSetting -> setting.set(json.get(setting.name).asString)
                 }
             }
-            if (this.isEnabled) BasicEventManager.subscribeAll(this.listeners)
+            if (this.isEnabled) {
+                BasicEventManager.subscribeAll(this.listeners)
+            }
         } catch (e: Exception) {
             this.path.clearJson()
 
@@ -145,44 +151,43 @@ abstract class Hack(name: String, description: String) : Modular(name, descripti
     }
 
     fun register(dispatcher: CommandDispatcher<CommandSource>) {
-        dispatcher.register(
-            this.build(literal<CommandSource>(this.name).then(
-                argument("setting", setting(this))
-            ).executes { context ->
-                clientSend("§a$name is set to ${getSetting(context, "setting", this)?.value}")
+        val builder = literal<CommandSource>(this.name).then(
+            argument("setting", setting(this))
+        ).executes { context ->
+            clientSend("§a$name is set to ${getSetting(context, "setting", this)?.value}")
 
-                SINGLE_SUCCESS
-            }.then(argument("value", word()))).executes {
-                val input = getString(it, "value")
-                val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
+            SINGLE_SUCCESS
+        }.then(argument("value", word())).executes {
+            val input = getString(it, "value")
+            val setting = getSetting(it, "setting", this) ?: throw BuiltInExceptions().dispatcherUnknownArgument().create()
 
-                try {
-                    when (setting) {
-                        is BooleanSetting -> setting.set(input.toBoolean())
-                        is DoubleSetting -> setting.set(input.toDouble())
-                        is FloatSetting -> setting.set(input.toFloat())
-                        is IntSetting -> setting.set(input.toInt())
-                        is LongSetting -> setting.set(input.toLong())
-                        is EnumSetting -> if (!setting.set(input)) {
-                            throw BuiltInExceptions().dispatcherUnknownArgument().create()
-                        }
-                        else -> {
-                            clientSend("You cannot set that setting like this")
-                            throw BuiltInExceptions().dispatcherUnknownArgument().create()
-                        }
+            try {
+                when (setting) {
+                    is BooleanSetting -> setting.set(input.toBoolean())
+                    is DoubleSetting -> setting.set(input.toDouble())
+                    is FloatSetting -> setting.set(input.toFloat())
+                    is IntSetting -> setting.set(input.toInt())
+                    is LongSetting -> setting.set(input.toLong())
+                    is EnumSetting -> if (!setting.set(input)) {
+                        throw BuiltInExceptions().dispatcherUnknownArgument().create()
                     }
-
-                    clientSend("§a${setting.name} set to $input")
-                } catch (e: Exception) {
-                    throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                    else -> {
+                        clientSend("You cannot set that setting like this")
+                        throw BuiltInExceptions().dispatcherUnknownArgument().create()
+                    }
                 }
 
-                SINGLE_SUCCESS
+                clientSend("§a${setting.name} set to $input")
+            } catch (e: Exception) {
+                throw BuiltInExceptions().dispatcherUnknownArgument().create()
             }
-        )
+
+            SINGLE_SUCCESS
+        }
+        this.build(builder)
+        dispatcher.register(builder)
+
     }
 
-    open fun build(builder: LiteralArgumentBuilder<CommandSource>): LiteralArgumentBuilder<CommandSource> {
-        return builder
-    }
+    open fun build(builder: LiteralArgumentBuilder<CommandSource>) {}
 }

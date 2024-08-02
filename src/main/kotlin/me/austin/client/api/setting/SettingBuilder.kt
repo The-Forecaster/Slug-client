@@ -32,7 +32,7 @@ abstract class NumberSettingBuilder<T : Number, S : NumberSetting<T>, B : Number
     name: String
 ) : AbstractSettingBuilder<T, S, B>(name) {
     protected var increment: T? = null
-    protected var minumum: T? = null
+    protected var minimum: T? = null
     protected var maximum: T? = null
 
     fun increment(increment: T): B {
@@ -42,7 +42,7 @@ abstract class NumberSettingBuilder<T : Number, S : NumberSetting<T>, B : Number
     }
 
     fun minimum(minimum: T): B {
-        this.minumum = minimum
+        this.minimum = minimum
 
         return this as B
     }

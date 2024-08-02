@@ -21,7 +21,7 @@ public class MinecraftClientMixin {
     public ClientPlayerEntity player;
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 0, shift = At.Shift.AFTER))
-    private void onTick(CallbackInfo info) {
+    private void onTick(final CallbackInfo info) {
         BasicEventManager.INSTANCE.post(new TickEvent(this.player != null && this.world != null));
     }
 }

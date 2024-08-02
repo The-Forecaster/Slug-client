@@ -4,13 +4,17 @@ plugins {
     id("fabric-loom") version "1.7-SNAPSHOT"
 }
 
-val version: String by project
-val group: String by project
-
 val minecraft_version: String by project
+
+// todo list
+// get command system working
+// Get GUI working
+
 
 base {
     archivesName = project.properties["archives_base_name"] as String
+    version = project.properties["mod_version"] as String
+    group = project.properties["mod_group"] as String
 }
 
 repositories {

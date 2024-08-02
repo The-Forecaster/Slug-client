@@ -30,10 +30,10 @@ public class ClientPlayNetworkHandlerMixin {
         }
 
         if (message.startsWith(String.valueOf(CommandManager.INSTANCE.getPrefix()))) {
-            Slug.Companion.getLOGGER().info("Detected prefix: command is {}", message);
+            Slug.Companion.getLOGGER().info("Detected prefix: command is {} : Dispatching now", message);
 
             try {
-                CommandManager.INSTANCE.dispatch(message.substring(1, message.length() - 1));
+                CommandManager.INSTANCE.dispatch(message.substring(1));
                 Slug.Companion.getLOGGER().info("Dispatched");
             } catch (final CommandSyntaxException e) {
                 client.inGameHud.getChatHud().addMessage(Text.of(ChatHelperKt.prefix + "§c" + message));

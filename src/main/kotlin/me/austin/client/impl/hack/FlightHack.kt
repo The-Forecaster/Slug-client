@@ -24,14 +24,18 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
             if (!nullCheck()) player!!.setFlySpeed(trueSpeed(), true)
         },
         listener<PacketEvent.PostReceive> { event ->
-            if (event.packet is PlayerAbilitiesS2CPacket) event.packet.let {
-                it.allowFlying = true
-                it.flying = true
-                it.flySpeed = trueSpeed()
+            if (event.packet is PlayerAbilitiesS2CPacket) {
+                event.packet.let {
+                    it.allowFlying = true
+                    it.flying = true
+                    it.flySpeed = trueSpeed()
+                }
             }
         },
         listener<PacketEvent.PreSend> { event ->
-            if (event.packet is UpdatePlayerAbilitiesC2SPacket) event.packet.flying = true
+            if (event.packet is UpdatePlayerAbilitiesC2SPacket) {
+                event.packet.flying = true
+            }
         }
     )
 
@@ -46,10 +50,12 @@ object FlightHack : Hack("Flight", "Fly using hacks") {
     }
 
     override fun onDisable() {
-        player?.let {
-            if (!it.isCreative) it.abilities.allowFlying = false
-            it.abilities.flySpeed = 0.05f
-            it.abilities.flying = false
+        player?.let { player ->
+            if (!player.isCreative) {
+                player.abilities.allowFlying = false
+            }
+            player.abilities.flySpeed = 0.05f
+            player.abilities.flying = false
         }
     }
 }
